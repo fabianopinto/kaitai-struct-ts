@@ -176,7 +176,7 @@ export class Context {
     if (!enumDef) {
       return undefined
     }
-    
+
     // Enum definitions map integer values to string names
     // e.g., { 0: "unknown", 1: "text" }
     // We need to reverse-lookup: given "text", return 1
@@ -187,7 +187,7 @@ export class Context {
         return isNaN(numKey) ? key : numKey
       }
     }
-    
+
     return undefined
   }
 

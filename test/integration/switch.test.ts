@@ -31,12 +31,12 @@ types:
       - id: value_b
         type: u4
 `
-      const buffer = new Uint8Array([1, 0x0A, 0x0B])
+      const buffer = new Uint8Array([1, 0x0a, 0x0b])
       const result = parse(ksy, buffer)
 
       expect(result.type_code).toBe(1)
       expect(result.data).toHaveProperty('value_a')
-      expect((result.data as any).value_a).toBe(0x0B0A)
+      expect((result.data as any).value_a).toBe(0x0b0a)
     })
 
     it('should handle different switch values', () => {
@@ -102,12 +102,12 @@ types:
       - id: value_default
         type: u1
 `
-      const buffer = new Uint8Array([99, 0xFF])
+      const buffer = new Uint8Array([99, 0xff])
       const result = parse(ksy, buffer)
 
       expect(result.type_code).toBe(99)
       expect(result.data).toHaveProperty('value_default')
-      expect((result.data as any).value_default).toBe(0xFF)
+      expect((result.data as any).value_default).toBe(0xff)
     })
   })
 
@@ -184,12 +184,12 @@ types:
       - id: size
         type: u2
 `
-      const buffer = new Uint8Array([1, 0x0A])
+      const buffer = new Uint8Array([1, 0x0a])
       const result = parse(ksy, buffer)
 
       expect(result.type_code).toBe(1)
       expect(result.data).toHaveProperty('length')
-      expect((result.data as any).length).toBe(0x0A)
+      expect((result.data as any).length).toBe(0x0a)
     })
   })
 
@@ -227,14 +227,14 @@ types:
       - id: value_b
         type: u2
 `
-      const buffer = new Uint8Array([1, 2, 0x0A, 0x0B])
+      const buffer = new Uint8Array([1, 2, 0x0a, 0x0b])
       const result = parse(ksy, buffer)
 
       expect(result.category).toBe(1)
       expect(result.subtype).toBe(2)
       expect(result.data).toHaveProperty('inner_data')
       expect((result.data as any).inner_data).toHaveProperty('value_b')
-      expect((result.data as any).inner_data.value_b).toBe(0x0B0A)
+      expect((result.data as any).inner_data.value_b).toBe(0x0b0a)
     })
   })
 
@@ -255,11 +255,11 @@ seq:
         2: u2
         4: u4
 `
-      const buffer = new Uint8Array([2, 0x0A, 0x0B])
+      const buffer = new Uint8Array([2, 0x0a, 0x0b])
       const result = parse(ksy, buffer)
 
       expect(result.size_code).toBe(2)
-      expect(result.value).toBe(0x0B0A)
+      expect(result.value).toBe(0x0b0a)
     })
   })
 })

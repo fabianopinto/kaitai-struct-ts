@@ -267,9 +267,7 @@ export class Evaluator {
   ): unknown {
     const value = context.getEnumValue(enumName, valueName)
     if (value === undefined) {
-      throw new ParseError(
-        `Enum value "${enumName}::${valueName}" not found`
-      )
+      throw new ParseError(`Enum value "${enumName}::${valueName}" not found`)
     }
     return value
   }
