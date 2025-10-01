@@ -188,56 +188,34 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
 
 ## Current Work
 
-### 🔄 Phase 1 - MVP (In Progress)
-
-Next steps:
-1. Implement KSY YAML parser
-2. Implement basic type interpreter
-3. Add integration tests
-4. Complete Phase 1 documentation
-
 ## Pending Work
 
-### 📋 Phase 1 - MVP (Remaining)
+### 📋 Phase 2 - Core Features (Remaining)
 
-- [ ] **KSY Parser** (`src/parser/`)
-  - Parse YAML .ksy files
-  - Validate schema structure
-  - Build internal AST representation
-  - Handle meta section
-  - Handle seq section
-  - Handle basic types
+- [ ] **Expression Integration**
+  - Integrate evaluateExpression() with TypeInterpreter
+  - Use for if conditions
+  - Use for repeat-until
+  - Use for repeat-expr counts
+  - Use for calculated sizes/positions
 
-- [ ] **Type Interpreter** (`src/interpreter/`)
-  - Execute schema against binary data
-  - Handle sequential field reading
-  - Handle nested types
-  - Build result objects
-  - Context management (_root, _parent, _io)
-
-- [ ] **Integration Tests**
-  - Test with simple custom formats
-  - Verify end-to-end parsing
-  - Test error scenarios
-
-### 📋 Phase 2 - Core Features
-
-- [ ] **Expression Evaluator** (`src/expression/`)
-  - Lexer for tokenization
-  - Parser for AST generation
-  - Evaluator for execution
-  - Support all operators
-  - Field references
+- [ ] **Enums**
+  - Enum definitions in schema
+  - Enum value lookup
+  - Enum access in expressions (EnumName::value)
 
 - [ ] **Conditionals**
-  - if conditions
-  - Enums
-  - Switch/case
+  - if attribute support
+  - Switch/case type selection
 
-- [ ] **Repetitions**
-  - repeat: expr
-  - repeat: eos
-  - repeat: until
+- [ ] **Advanced Repetitions**
+  - repeat-until with expression evaluation
+
+- [ ] **Expression Tests**
+  - Unit tests for lexer
+  - Unit tests for parser
+  - Unit tests for evaluator
+  - Integration tests with expressions
 
 - [ ] **Instances**
   - Lazy evaluation
