@@ -1,8 +1,8 @@
 # Project Progress
 
 **Last Updated:** 2025-10-01  
-**Current Phase:** Phase 1 - MVP (In Progress)  
-**Overall Completion:** ~25%
+**Current Phase:** Phase 2 - Core Features (In Progress)  
+**Overall Completion:** ~50%
 
 ## Summary
 
@@ -58,6 +58,40 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
   - `ParseError` - Parsing errors
   - `ValidationError` - Validation errors
   - `NotImplementedError` - Feature not yet implemented
+
+- [x] **KSY Parser** (`src/parser/`)
+  - Complete YAML parser for .ksy format definitions
+  - Schema validation with detailed error messages
+  - Support for nested types in `types` section
+  - Validation options (strict mode)
+  - Type definitions for all schema elements
+
+- [x] **Type Interpreter** (`src/interpreter/`)
+  - Execute schemas against binary streams
+  - All primitive types (u1-u8, s1-s8, f4, f8)
+  - Both endianness (le, be)
+  - Nested user-defined types
+  - Repetitions (repeat: expr, repeat: eos)
+  - Contents validation
+  - Absolute positioning (pos)
+  - Sized substreams
+
+- [x] **Expression Evaluator** (`src/expression/`)
+  - Complete lexer for tokenizing expressions
+  - Recursive descent parser for AST generation
+  - Expression evaluator with context support
+  - All operators:
+    - Arithmetic: +, -, *, /, %
+    - Comparison: <, <=, >, >=, ==, !=
+    - Bitwise: <<, >>, &, |, ^
+    - Logical: and, or, not
+  - Ternary conditional (? :)
+  - Member access (object.property)
+  - Array/index access (array[index])
+  - Method calls (object.method())
+  - Enum access (EnumName::value)
+  - Proper operator precedence
+  - Type coercion and conversions
   - All errors include position information
 
 - [x] **String Encoding** (`src/utils/encoding.ts`)
@@ -71,7 +105,7 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
 ### ✅ Testing
 
 - [x] **KaitaiStream Tests** (`test/unit/stream.test.ts`)
-  - 100+ test cases covering all functionality
+  - 42 test cases covering all functionality
   - Constructor and basic properties
   - Position management
   - All integer types (signed/unsigned, all sizes, both endianness)
@@ -81,6 +115,21 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
   - Bit-level reading
   - Error handling
   - Utility methods
+
+- [x] **Integration Tests** (`test/integration/basic-parsing.test.ts`)
+  - 16 test cases for end-to-end parsing
+  - Simple fixed-size structures
+  - Big-endian and little-endian
+  - Signed and unsigned integers
+  - Floating point numbers
+  - Fixed-size strings with encodings
+  - Raw byte arrays
+  - Repetitions (expr, eos)
+  - Nested user-defined types
+  - Contents validation
+  - Error handling
+
+**Total: 58 tests passing**
 
 ### ✅ Documentation
 
