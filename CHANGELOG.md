@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-10-02
+
+### 🎉 Phase 3 Advanced Features - Switch/Case & Instances
+
+Major update with advanced Phase 3 features bringing the project to 83% completion.
+
+### Added
+
+#### Switch/Case Type Selection (7 tests)
+- ✅ Expression-based type selection with switch-on
+- ✅ Case matching with default fallback
+- ✅ Complex expressions in switch-on
+- ✅ Enum values in switch statements
+- ✅ Nested switch types
+- ✅ Built-in types in cases
+- ✅ Full integration with type system
+
+#### Instances - Lazy-Evaluated Fields (11 tests)
+- ✅ Value instances (calculated fields)
+- ✅ Pos instances (positioned reads with seek)
+- ✅ Lazy evaluation with caching
+- ✅ Automatic position restoration
+- ✅ Complex types in instances
+- ✅ Sized reads in instances
+- ✅ Conditional instances (if attribute)
+- ✅ Multiple instances per schema
+
+### Changed
+- Type inheritance now includes both enums and types through nested schemas
+- Context properly handles nested type parsing
+- Improved error messages for type resolution
+
+### Fixed
+- Type inheritance for nested schemas
+- Enum inheritance through nested types
+- Position restoration after pos instances
+
+### Notes
+- Phase 3: 30% complete
+- Overall progress: 83% to v1.0.0
+- 98 tests passing (69% increase from v0.3.0)
+
 ## [0.3.0] - 2025-10-01
 
 ### 🎉 Phase 2 Complete - Expression Integration & Enums
@@ -178,7 +220,8 @@ This release completes Phase 1 (MVP) of the project roadmap. The KaitaiStream im
 - Phase 2: KSY parser, type interpreter, expression evaluator
 - Phase 3: Advanced features, full Kaitai Struct spec compliance
 
-[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/fabianopinto/kaitai-struct-ts/releases/tag/v0.1.0
