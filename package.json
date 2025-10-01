@@ -1,6 +1,6 @@
 {
   "name": "kaitai-struct-ts",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Runtime interpreter for Kaitai Struct binary format definitions in TypeScript",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -20,9 +20,10 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

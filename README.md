@@ -60,28 +60,47 @@ console.log(result.name)
 
 ## Current Status
 
-**Phase 1 (MVP) - In Development**
+**Phase 2 (Core Features) - In Progress**
 
+### Completed
 - [x] Project setup and configuration
-- [x] KaitaiStream implementation
-- [ ] KSY parser (basic)
-- [ ] Type interpreter (basic)
-- [ ] Support for fixed-size structures
-- [x] Basic tests (KaitaiStream)
+- [x] KaitaiStream implementation (all primitive types)
+- [x] KSY parser with validation
+- [x] Type interpreter (basic parsing)
+- [x] Support for fixed-size structures
+- [x] Nested user-defined types
+- [x] Repetitions (expr, eos)
+- [x] Contents validation
+- [x] Comprehensive tests (58 tests passing)
+
+### In Progress
+- [ ] Expression evaluator
+- [ ] Conditionals (if)
+- [ ] Enums
+- [ ] repeat-until
 
 See [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for detailed roadmap and [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
 
 ## API Documentation
 
-### `parse(ksy: string, buffer: ArrayBuffer | Uint8Array): Promise<any>`
+### `parse(ksy: string, buffer: ArrayBuffer | Uint8Array, options?: ParseOptions): Record<string, unknown>`
 
 Parse binary data using a Kaitai Struct definition.
 
 **Parameters:**
 - `ksy` - YAML string containing the .ksy definition
 - `buffer` - Binary data to parse
+- `options` - Optional parsing options (validate, strict)
 
 **Returns:** Parsed object with fields defined in the .ksy file
+
+**Example:**
+```typescript
+import { parse } from 'kaitai-struct-ts'
+
+const result = parse(ksyYaml, binaryData, { validate: true })
+console.log(result.fieldName)
+```
 
 ### `KaitaiStream`
 
