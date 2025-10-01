@@ -167,22 +167,30 @@ pnpm format
 
 ## Roadmap
 
-### Phase 1: Foundation (MVP) - Current
-- Basic parsing capability
-- Fixed-size structures
-- Primitive types
+### Phase 1: Foundation (MVP) - ✅ Complete
+- ✅ Basic parsing capability
+- ✅ Fixed-size structures
+- ✅ Primitive types (u1-u8, s1-s8, f4, f8)
+- ✅ String encoding support
+- ✅ Byte arrays and positioning
 
-### Phase 2: Core Features
-- Expression evaluator
-- Conditionals and enums
-- Repetitions
-- Instances
+### Phase 2: Core Features - ✅ Complete
+- ✅ Expression evaluator (full Kaitai expression language)
+- ✅ Conditionals (if attribute)
+- ✅ Enums with expression access
+- ✅ Repetitions (repeat-expr, repeat-until, repeat-eos)
+- ✅ Calculated sizes and positions
 
-### Phase 3: Advanced Features
-- Substreams and processing
-- Bit-sized integers
-- Imports
-- Full spec compliance
+### Phase 3: Advanced Features - 🔄 In Progress (30% Complete)
+- ✅ Switch/case type selection
+- ✅ Instances (lazy-evaluated fields)
+- ⏳ Substreams and processing
+- ⏳ Parametric types
+- ⏳ Bit-sized integers
+- ⏳ Type imports
+- ⏳ Performance optimizations
+
+**Current Status:** ~85% complete toward v1.0.0
 
 ## Contributing
 
