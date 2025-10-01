@@ -138,10 +138,9 @@ export class TypeInterpreter {
     // Parse single value
     const value = this.parseValue(attr, context)
 
-    // Apply enum mapping if specified
-    if (attr.enum && this.schema.enums) {
-      return this.applyEnum(value, attr.enum)
-    }
+    // Note: We don't apply enum mapping here to keep values as integers
+    // This allows enum comparisons in expressions to work correctly
+    // Enum mapping should be done at the presentation layer if needed
 
     return value
   }
@@ -371,6 +370,12 @@ export class TypeInterpreter {
       const typeSchema = this.schema.types[type]
       // Pass parent meta for nested types
       const meta = this.schema.meta || this.parentMeta
+      
+      // Inherit parent enums if nested type doesn't have its own
+      if (this.schema.enums && !typeSchema.enums) {
+        typeSchema.enums = this.schema.enums
+      }
+      
       const interpreter = new TypeInterpreter(typeSchema, meta)
       return interpreter.parse(stream, context.current)
     }
