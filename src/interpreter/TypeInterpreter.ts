@@ -521,41 +521,4 @@ export class TypeInterpreter {
     return value
   }
 
-  /**
-   * Apply enum mapping to a value.
-   * Converts integer values to their enum names.
-   *
-   * @param value - Integer value to map
-   * @param enumName - Name of the enum
-   * @returns Enum name or original value if not found
-   * @private
-   */
-  private applyEnum(value: unknown, enumName: string): unknown {
-    if (!this.schema.enums || !this.schema.enums[enumName]) {
-      throw new ParseError(`Enum "${enumName}" not found in schema`)
-    }
-
-    const enumDef = this.schema.enums[enumName]
-
-    // Convert value to number for lookup
-    const numValue =
-      typeof value === 'number'
-        ? value
-        : typeof value === 'bigint'
-          ? Number(value)
-          : null
-
-    if (numValue === null) {
-      return value
-    }
-
-    // Look up the enum name for this value
-    const enumKey = enumDef[numValue]
-    if (enumKey !== undefined) {
-      return enumKey
-    }
-
-    // Return original value if no mapping found
-    return value
-  }
 }
