@@ -30,48 +30,35 @@ export class Evaluator {
    * @throws {ParseError} If evaluation fails
    */
   evaluate(node: ASTNode, context: Context): unknown {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const n = node as any
     switch (node.kind) {
       case 'Literal':
-        return (node as any).value
+        return n.value
 
       case 'Identifier':
-        return this.evaluateIdentifier((node as any).name, context)
+        return this.evaluateIdentifier(n.name, context)
 
       case 'BinaryOp':
-        return this.evaluateBinaryOp(
-          (node as any).operator,
-          (node as any).left,
-          (node as any).right,
-          context
-        )
+        return this.evaluateBinaryOp(n.operator, n.left, n.right, context)
 
       case 'UnaryOp':
-        return this.evaluateUnaryOp((node as any).operator, (node as any).operand, context)
+        return this.evaluateUnaryOp(n.operator, n.operand, context)
 
       case 'Ternary':
-        return this.evaluateTernary(
-          (node as any).condition,
-          (node as any).ifTrue,
-          (node as any).ifFalse,
-          context
-        )
+        return this.evaluateTernary(n.condition, n.ifTrue, n.ifFalse, context)
 
       case 'MemberAccess':
-        return this.evaluateMemberAccess((node as any).object, (node as any).property, context)
+        return this.evaluateMemberAccess(n.object, n.property, context)
 
       case 'IndexAccess':
-        return this.evaluateIndexAccess((node as any).object, (node as any).index, context)
+        return this.evaluateIndexAccess(n.object, n.index, context)
 
       case 'MethodCall':
-        return this.evaluateMethodCall(
-          (node as any).object,
-          (node as any).method,
-          (node as any).args,
-          context
-        )
+        return this.evaluateMethodCall(n.object, n.method, n.args, context)
 
       case 'EnumAccess':
-        return this.evaluateEnumAccess((node as any).enumName, (node as any).value, context)
+        return this.evaluateEnumAccess(n.enumName, n.value, context)
 
       default:
         throw new ParseError(`Unknown AST node kind: ${(node as any).kind}`)
@@ -240,11 +227,12 @@ export class Evaluator {
   private evaluateMethodCall(
     object: ASTNode,
     method: string,
-    args: ASTNode[],
+    _args: ASTNode[],
     context: Context
   ): unknown {
     const obj = this.evaluate(object, context)
-    const _evalArgs = args.map((arg) => this.evaluate(arg, context))
+    // TODO: Use args for method calls that need them
+    // const evalArgs = args.map((arg) => this.evaluate(arg, context))
 
     // Handle common methods
     if (method === 'length' || method === 'size') {

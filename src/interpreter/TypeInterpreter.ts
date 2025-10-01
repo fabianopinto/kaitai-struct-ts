@@ -259,6 +259,7 @@ export class TypeInterpreter {
       if (type === 'str') {
         const encoding = attr.encoding || this.schema.meta.encoding || 'UTF-8'
         const bytes = stream.readBytesFull()
+        // eslint-disable-next-line no-undef
         return new TextDecoder(encoding).decode(bytes)
       } else {
         return stream.readBytesFull()
