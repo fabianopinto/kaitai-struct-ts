@@ -1,0 +1,78 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.1.0] - 2025-10-01
+
+### 🎉 Phase 1 Foundation Release
+
+Initial release establishing the foundation for kaitai-struct-ts - a TypeScript runtime interpreter for Kaitai Struct binary format definitions.
+
+### Added
+
+#### Core Implementation
+- **KaitaiStream** - Complete binary stream reader (`src/stream/KaitaiStream.ts`)
+  - Unsigned integers: u1, u2le, u2be, u4le, u4be, u8le, u8be
+  - Signed integers: s1, s2le, s2be, s4le, s4be, s8le, s8be
+  - Floating point: f4le, f4be, f8le, f8be (IEEE 754)
+  - Byte arrays: fixed length, until terminator, all remaining
+  - Strings with encoding support: UTF-8, ASCII, Latin-1, UTF-16LE, UTF-16BE
+  - Bit-level reading: readBitsIntBe, readBitsIntLe
+  - Position management: seek, pos, isEof
+  - Substream support for isolated stream views
+
+#### Error Handling (`src/utils/errors.ts`)
+- `KaitaiError` - Base error class with position tracking
+- `EOFError` - End of stream errors
+- `ParseError` - Parsing failures
+- `ValidationError` - Validation failures
+- `NotImplementedError` - Feature placeholders
+
+#### String Encoding (`src/utils/encoding.ts`)
+- UTF-8 encoding/decoding with fallback implementation
+- ASCII and Latin-1 (ISO-8859-1) support
+- UTF-16 Little Endian and Big Endian
+- TextDecoder integration for additional encodings
+
+#### Testing
+- 100+ test cases for KaitaiStream (`test/unit/stream.test.ts`)
+- Full coverage of all integer types, floats, bytes, strings
+- Bit-level reading tests
+- Error scenario testing
+- Edge case coverage
+
+#### Documentation
+- Complete JSDoc on all public APIs with examples
+- File headers on all source files
+- README.md with quick start guide
+- PROJECT_DESIGN.md with detailed architecture and roadmap
+- ARCHITECTURE.md with 12 Mermaid diagrams
+- CONTRIBUTING.md with development guidelines and workflows
+- PROGRESS.md for tracking development milestones
+- SUMMARY.md for project overview
+- QUICKREF.md for quick reference
+- LICENSE (MIT)
+
+#### Infrastructure
+- TypeScript 5.9.3 with strict mode configuration
+- Build system: tsup for ESM + CJS output
+- Testing: vitest with coverage reporting and UI
+- Linting: eslint with TypeScript plugin
+- Formatting: prettier with consistent configuration
+- Version management: changesets for semantic versioning
+- Package exports configured for Node.js and browsers
+- pnpm workspace setup
+
+### Notes
+
+This release completes Phase 1 (MVP) of the project roadmap. The KaitaiStream implementation provides a solid foundation for binary data reading. Future releases will add:
+- Phase 2: KSY parser, type interpreter, expression evaluator
+- Phase 3: Advanced features, full Kaitai Struct spec compliance
+
+[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/fabianopinto/kaitai-struct-ts/releases/tag/v0.1.0
