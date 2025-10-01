@@ -22,9 +22,14 @@ seq:
 `
 
       const buffer = new Uint8Array([
-        0x4d, 0x5a, // magic "MZ"
-        0x01, 0x00, // version = 1
-        0x0a, 0x00, 0x00, 0x00, // count = 10
+        0x4d,
+        0x5a, // magic "MZ"
+        0x01,
+        0x00, // version = 1
+        0x0a,
+        0x00,
+        0x00,
+        0x00, // count = 10
       ])
 
       const result = parse(ksy, buffer)
@@ -48,8 +53,12 @@ seq:
 `
 
       const buffer = new Uint8Array([
-        0x12, 0x34, // value1 = 0x1234
-        0x56, 0x78, 0x9a, 0xbc, // value2 = 0x56789abc
+        0x12,
+        0x34, // value1 = 0x1234
+        0x56,
+        0x78,
+        0x9a,
+        0xbc, // value2 = 0x56789abc
       ])
 
       const result = parse(ksy, buffer)
@@ -74,8 +83,12 @@ seq:
 
       const buffer = new Uint8Array([
         0xff, // -1
-        0xff, 0xff, // -1
-        0xff, 0xff, 0xff, 0xff, // -1
+        0xff,
+        0xff, // -1
+        0xff,
+        0xff,
+        0xff,
+        0xff, // -1
       ])
 
       const result = parse(ksy, buffer)
@@ -207,9 +220,12 @@ seq:
 
       const buffer = new Uint8Array([
         0x03, // count
-        0x01, 0x00, // values[0] = 1
-        0x02, 0x00, // values[1] = 2
-        0x03, 0x00, // values[2] = 3
+        0x01,
+        0x00, // values[0] = 1
+        0x02,
+        0x00, // values[1] = 2
+        0x03,
+        0x00, // values[2] = 3
       ])
 
       const result = parse(ksy, buffer)
@@ -258,8 +274,10 @@ types:
 `
 
       const buffer = new Uint8Array([
-        0x4d, 0x5a, // magic
-        0x01, 0x00, // version
+        0x4d,
+        0x5a, // magic
+        0x01,
+        0x00, // version
       ])
 
       const result = parse(ksy, buffer)

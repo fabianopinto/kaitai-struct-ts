@@ -199,10 +199,7 @@ export class Lexer {
     const start = this.position
     let value = ''
 
-    while (
-      this.current !== null &&
-      this.isIdentifierPart(this.current)
-    ) {
+    while (this.current !== null && this.isIdentifierPart(this.current)) {
       value += this.current
       this.advance()
     }

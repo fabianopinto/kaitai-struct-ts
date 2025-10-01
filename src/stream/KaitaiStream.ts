@@ -11,7 +11,7 @@ import { decodeString } from '../utils/encoding'
 /**
  * KaitaiStream provides methods for reading binary data with proper type handling
  * and endianness support. It's the core class for parsing binary formats.
- * 
+ *
  * Supports reading:
  * - Unsigned integers (u1, u2, u4, u8) in both little and big endian
  * - Signed integers (s1, s2, s4, s8) in both little and big endian
@@ -19,13 +19,13 @@ import { decodeString } from '../utils/encoding'
  * - Byte arrays (fixed length, until terminator, or all remaining)
  * - Strings with various encodings
  * - Bit-level data
- * 
+ *
  * @class KaitaiStream
  * @example
  * ```typescript
  * const buffer = new Uint8Array([0x01, 0x02, 0x03, 0x04])
  * const stream = new KaitaiStream(buffer)
- * 
+ *
  * const byte = stream.readU1()           // Read 1 byte
  * const word = stream.readU2le()         // Read 2 bytes little-endian
  * const str = stream.readStr(5, 'UTF-8') // Read 5-byte string
@@ -48,7 +48,11 @@ export class KaitaiStream {
       this.view = new DataView(buffer)
     } else {
       this.buffer = buffer
-      this.view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength)
+      this.view = new DataView(
+        buffer.buffer,
+        buffer.byteOffset,
+        buffer.byteLength
+      )
     }
   }
 
@@ -418,7 +422,8 @@ export class KaitaiStream {
       const mask = (1 << bitsToRead) - 1
       const shift = this._bitsLeft - bitsToRead
 
-      result = (result << BigInt(bitsToRead)) | BigInt((this._bits >> shift) & mask)
+      result =
+        (result << BigInt(bitsToRead)) | BigInt((this._bits >> shift) & mask)
 
       this._bitsLeft -= bitsToRead
       bitsNeeded -= bitsToRead

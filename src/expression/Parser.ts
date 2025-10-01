@@ -330,22 +330,18 @@ export class ExpressionParser {
         if (expr.kind === 'MemberAccess') {
           this.advance() // consume (
           const args: ASTNode[] = []
-          
+
           if (this.current().type !== TokenType.RPAREN) {
             args.push(this.parseTernary())
             while (this.match(TokenType.COMMA)) {
               args.push(this.parseTernary())
             }
           }
-          
+
           this.expect(TokenType.RPAREN, 'Expected ) after arguments')
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const memberExpr = expr as any
-          expr = createMethodCall(
-            memberExpr.object,
-            memberExpr.property,
-            args
-          )
+          expr = createMethodCall(memberExpr.object, memberExpr.property, args)
         } else {
           break
         }
@@ -371,7 +367,7 @@ export class ExpressionParser {
     // Identifiers and enum access
     if (this.match(TokenType.IDENTIFIER)) {
       const name = this.tokens[this.position - 1].value as string
-      
+
       // Check for enum access (EnumName::value)
       if (this.match(TokenType.DOUBLE_COLON)) {
         const value = this.expect(
@@ -380,7 +376,7 @@ export class ExpressionParser {
         )
         return createEnumAccess(name, value.value as string)
       }
-      
+
       return createIdentifier(name)
     }
 

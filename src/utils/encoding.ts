@@ -50,8 +50,10 @@ export function decodeString(bytes: Uint8Array, encoding: string): string {
 
     default:
       // Try using TextDecoder if available (browser/modern Node.js)
+      // eslint-disable-next-line no-undef
       if (typeof TextDecoder !== 'undefined') {
         try {
+          // eslint-disable-next-line no-undef
           return new TextDecoder(encoding).decode(bytes)
         } catch {
           throw new Error(`Unsupported encoding: ${encoding}`)
@@ -70,7 +72,9 @@ export function decodeString(bytes: Uint8Array, encoding: string): string {
  * @private
  */
 function decodeUtf8(bytes: Uint8Array): string {
+  // eslint-disable-next-line no-undef
   if (typeof TextDecoder !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return new TextDecoder('utf-8').decode(bytes)
   }
 
@@ -157,7 +161,9 @@ function decodeLatin1(bytes: Uint8Array): string {
  * @private
  */
 function decodeUtf16Le(bytes: Uint8Array): string {
+  // eslint-disable-next-line no-undef
   if (typeof TextDecoder !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return new TextDecoder('utf-16le').decode(bytes)
   }
 
@@ -178,7 +184,9 @@ function decodeUtf16Le(bytes: Uint8Array): string {
  * @private
  */
 function decodeUtf16Be(bytes: Uint8Array): string {
+  // eslint-disable-next-line no-undef
   if (typeof TextDecoder !== 'undefined') {
+    // eslint-disable-next-line no-undef
     return new TextDecoder('utf-16be').decode(bytes)
   }
 

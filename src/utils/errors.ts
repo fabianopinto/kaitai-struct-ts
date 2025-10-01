@@ -8,7 +8,7 @@
 /**
  * Base error class for all Kaitai Struct errors.
  * All custom errors in this library extend from this class.
- * 
+ *
  * @class KaitaiError
  * @extends Error
  * @example
@@ -30,7 +30,7 @@ export class KaitaiError extends Error {
 /**
  * Error thrown when validation fails.
  * Used when parsed data doesn't match expected constraints.
- * 
+ *
  * @class ValidationError
  * @extends KaitaiError
  * @example
@@ -49,7 +49,7 @@ export class ValidationError extends KaitaiError {
 /**
  * Error thrown when parsing fails.
  * Used for general parsing errors that don't fit other categories.
- * 
+ *
  * @class ParseError
  * @extends KaitaiError
  * @example
@@ -68,7 +68,7 @@ export class ParseError extends KaitaiError {
 /**
  * Error thrown when end of stream is reached unexpectedly.
  * Indicates an attempt to read beyond available data.
- * 
+ *
  * @class EOFError
  * @extends KaitaiError
  * @example
@@ -87,7 +87,7 @@ export class EOFError extends KaitaiError {
 /**
  * Error thrown when a required feature is not yet implemented.
  * Used during development to mark incomplete functionality.
- * 
+ *
  * @class NotImplementedError
  * @extends KaitaiError
  * @example

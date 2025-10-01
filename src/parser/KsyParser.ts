@@ -6,7 +6,10 @@
  */
 
 import { parse as parseYaml } from 'yaml'
-import { ParseError, ValidationError as KaitaiValidationError } from '../utils/errors'
+import {
+  ParseError,
+  ValidationError as KaitaiValidationError,
+} from '../utils/errors'
 import type {
   KsySchema,
   ValidationResult,
@@ -35,10 +38,7 @@ export class KsyParser {
    * @throws {ParseError} If YAML parsing fails
    * @throws {ValidationError} If schema validation fails
    */
-  parse(
-    yaml: string,
-    options: ParseOptions = {}
-  ): KsySchema {
+  parse(yaml: string, options: ParseOptions = {}): KsySchema {
     const { validate = true, strict = false } = options
 
     // Parse YAML
@@ -70,7 +70,7 @@ export class KsyParser {
 
       // Log warnings if any
       if (result.warnings.length > 0 && !strict) {
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-undef
         console.warn(
           'Schema validation warnings:',
           result.warnings.map((w) => w.message)
@@ -119,8 +119,7 @@ export class KsyParser {
         })
       } else if (!/^[a-z][a-z0-9_]*$/.test(schema.meta.id)) {
         warnings.push({
-          message:
-            '"meta.id" should follow snake_case naming convention',
+          message: '"meta.id" should follow snake_case naming convention',
           path: ['meta', 'id'],
           code: 'META_ID_NAMING',
         })
@@ -152,7 +151,13 @@ export class KsyParser {
         })
       } else {
         schema.seq.forEach((attr, index) => {
-          this.validateAttribute(attr as Record<string, unknown>, ['seq', String(index)], errors, warnings, strict)
+          this.validateAttribute(
+            attr as Record<string, unknown>,
+            ['seq', String(index)],
+            errors,
+            warnings,
+            strict
+          )
         })
       }
     }
@@ -167,7 +172,13 @@ export class KsyParser {
         })
       } else {
         Object.entries(schema.instances).forEach(([key, instance]) => {
-          this.validateAttribute(instance as Record<string, unknown>, ['instances', key], errors, warnings, strict)
+          this.validateAttribute(
+            instance as Record<string, unknown>,
+            ['instances', key],
+            errors,
+            warnings,
+            strict
+          )
         })
       }
     }
@@ -289,10 +300,7 @@ export class KsyParser {
 
     // Validate contents
     if (attr.contents) {
-      if (
-        !Array.isArray(attr.contents) &&
-        typeof attr.contents !== 'string'
-      ) {
+      if (!Array.isArray(attr.contents) && typeof attr.contents !== 'string') {
         errors.push({
           message: '"contents" must be an array or string',
           path: [...path, 'contents'],

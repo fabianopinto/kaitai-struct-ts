@@ -16,46 +16,46 @@ export enum TokenType {
   IDENTIFIER = 'IDENTIFIER',
 
   // Operators
-  PLUS = 'PLUS',           // +
-  MINUS = 'MINUS',         // -
-  STAR = 'STAR',           // *
-  SLASH = 'SLASH',         // /
-  PERCENT = 'PERCENT',     // %
+  PLUS = 'PLUS', // +
+  MINUS = 'MINUS', // -
+  STAR = 'STAR', // *
+  SLASH = 'SLASH', // /
+  PERCENT = 'PERCENT', // %
 
   // Comparison
-  LT = 'LT',               // <
-  LE = 'LE',               // <=
-  GT = 'GT',               // >
-  GE = 'GE',               // >=
-  EQ = 'EQ',               // ==
-  NE = 'NE',               // !=
+  LT = 'LT', // <
+  LE = 'LE', // <=
+  GT = 'GT', // >
+  GE = 'GE', // >=
+  EQ = 'EQ', // ==
+  NE = 'NE', // !=
 
   // Bitwise
-  LSHIFT = 'LSHIFT',       // <<
-  RSHIFT = 'RSHIFT',       // >>
+  LSHIFT = 'LSHIFT', // <<
+  RSHIFT = 'RSHIFT', // >>
   AMPERSAND = 'AMPERSAND', // &
-  PIPE = 'PIPE',           // |
-  CARET = 'CARET',         // ^
+  PIPE = 'PIPE', // |
+  CARET = 'CARET', // ^
 
   // Logical
-  AND = 'AND',             // and
-  OR = 'OR',               // or
-  NOT = 'NOT',             // not
+  AND = 'AND', // and
+  OR = 'OR', // or
+  NOT = 'NOT', // not
 
   // Ternary
-  QUESTION = 'QUESTION',   // ?
-  COLON = 'COLON',         // :
+  QUESTION = 'QUESTION', // ?
+  COLON = 'COLON', // :
 
   // Grouping
-  LPAREN = 'LPAREN',       // (
-  RPAREN = 'RPAREN',       // )
-  LBRACKET = 'LBRACKET',   // [
-  RBRACKET = 'RBRACKET',   // ]
+  LPAREN = 'LPAREN', // (
+  RPAREN = 'RPAREN', // )
+  LBRACKET = 'LBRACKET', // [
+  RBRACKET = 'RBRACKET', // ]
 
   // Access
-  DOT = 'DOT',             // .
+  DOT = 'DOT', // .
   DOUBLE_COLON = 'DOUBLE_COLON', // ::
-  COMMA = 'COMMA',         // ,
+  COMMA = 'COMMA', // ,
 
   // Special
   EOF = 'EOF',
