@@ -70,7 +70,7 @@ export interface MetaSpec {
   'file-extension'?: string | string[]
 
   /** MIME type(s) for this format */
-  'xref'?: Record<string, string | string[]>
+  xref?: Record<string, string | string[]>
 
   /** License for the format specification */
   license?: string

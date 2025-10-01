@@ -4,15 +4,15 @@
  * @author Fabiano Pinto
  * @license MIT
  * @version 0.2.0
- * 
+ *
  * @description
  * A runtime interpreter for Kaitai Struct binary format definitions in TypeScript.
  * Parse any binary data format by providing a .ksy (Kaitai Struct YAML) definition file.
- * 
+ *
  * @example
  * ```typescript
  * import { parse } from 'kaitai-struct-ts'
- * 
+ *
  * const ksyDefinition = `
  * meta:
  *   id: my_format
@@ -23,7 +23,7 @@
  *   - id: version
  *     type: u2
  * `
- * 
+ *
  * const buffer = new Uint8Array([0x4D, 0x5A, 0x01, 0x00])
  * const result = parse(ksyDefinition, buffer)
  * console.log(result.version) // 1
@@ -75,7 +75,7 @@ export * from './utils/errors'
 /**
  * Parse binary data using a Kaitai Struct definition.
  * This is the main convenience function for parsing.
- * 
+ *
  * @param ksyYaml - YAML string containing the .ksy definition
  * @param buffer - Binary data to parse (ArrayBuffer or Uint8Array)
  * @param options - Parsing options
@@ -83,7 +83,7 @@ export * from './utils/errors'
  * @throws {ParseError} If YAML parsing fails
  * @throws {ValidationError} If schema validation fails
  * @throws {EOFError} If unexpected end of stream is reached
- * 
+ *
  * @example
  * ```typescript
  * const result = parse(ksyYaml, binaryData)
@@ -111,7 +111,7 @@ export function parse(
 
 /**
  * Options for the parse function.
- * 
+ *
  * @interface ParseOptions
  */
 export interface ParseOptions {

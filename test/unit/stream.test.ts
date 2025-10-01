@@ -90,13 +90,17 @@ describe('KaitaiStream', () => {
     })
 
     it('should read u8le (little-endian)', () => {
-      const buffer = new Uint8Array([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
+      const buffer = new Uint8Array([
+        0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      ])
       const stream = new KaitaiStream(buffer)
       expect(stream.readU8le()).toBe(1n)
     })
 
     it('should read u8be (big-endian)', () => {
-      const buffer = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01])
+      const buffer = new Uint8Array([
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+      ])
       const stream = new KaitaiStream(buffer)
       expect(stream.readU8be()).toBe(1n)
     })
@@ -139,13 +143,17 @@ describe('KaitaiStream', () => {
     })
 
     it('should read s8le (little-endian)', () => {
-      const buffer = new Uint8Array([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
+      const buffer = new Uint8Array([
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+      ])
       const stream = new KaitaiStream(buffer)
       expect(stream.readS8le()).toBe(-1n)
     })
 
     it('should read s8be (big-endian)', () => {
-      const buffer = new Uint8Array([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
+      const buffer = new Uint8Array([
+        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
+      ])
       const stream = new KaitaiStream(buffer)
       expect(stream.readS8be()).toBe(-1n)
     })
@@ -165,13 +173,17 @@ describe('KaitaiStream', () => {
     })
 
     it('should read f8le (little-endian)', () => {
-      const buffer = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x3f]) // 1.0
+      const buffer = new Uint8Array([
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x3f,
+      ]) // 1.0
       const stream = new KaitaiStream(buffer)
       expect(stream.readF8le()).toBeCloseTo(1.0)
     })
 
     it('should read f8be (big-endian)', () => {
-      const buffer = new Uint8Array([0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) // 1.0
+      const buffer = new Uint8Array([
+        0x3f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      ]) // 1.0
       const stream = new KaitaiStream(buffer)
       expect(stream.readF8be()).toBeCloseTo(1.0)
     })

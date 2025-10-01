@@ -6,12 +6,12 @@
  */
 
 import { KaitaiStream } from '../stream'
-import { ParseError, ValidationError, NotImplementedError } from '../utils/errors'
-import type {
-  KsySchema,
-  AttributeSpec,
-  Endianness,
-} from '../parser/schema'
+import {
+  ParseError,
+  ValidationError,
+  NotImplementedError,
+} from '../utils/errors'
+import type { KsySchema, AttributeSpec, Endianness } from '../parser/schema'
 import {
   isBuiltinType,
   getTypeEndianness,
@@ -44,7 +44,11 @@ export class TypeInterpreter {
    */
   constructor(
     private schema: KsySchema,
-    private parentMeta?: { id: string; endian?: Endianness | object; encoding?: string }
+    private parentMeta?: {
+      id: string
+      endian?: Endianness | object
+      encoding?: string
+    }
   ) {
     // For root schemas, meta.id is required
     // For nested types, we can inherit from parent
@@ -135,10 +139,7 @@ export class TypeInterpreter {
    * @returns Array of parsed values
    * @private
    */
-  private parseRepeated(
-    attr: AttributeSpec,
-    context: Context
-  ): unknown[] {
+  private parseRepeated(attr: AttributeSpec, context: Context): unknown[] {
     const result: unknown[] = []
     const stream = context.io
 
@@ -146,9 +147,7 @@ export class TypeInterpreter {
       case 'expr': {
         // Fixed number of repetitions
         const count =
-          typeof attr['repeat-expr'] === 'number'
-            ? attr['repeat-expr']
-            : 0 // TODO: Evaluate expression
+          typeof attr['repeat-expr'] === 'number' ? attr['repeat-expr'] : 0 // TODO: Evaluate expression
         for (let i = 0; i < count; i++) {
           // Set _index for expressions
           context.set('_index', i)
@@ -330,7 +329,8 @@ export class TypeInterpreter {
     const meta = this.schema.meta || this.parentMeta
     const metaEndian = meta?.endian
     // Handle expression-based endianness (not yet implemented)
-    const endian: Endianness = typeEndian || (typeof metaEndian === 'string' ? metaEndian : 'le')
+    const endian: Endianness =
+      typeEndian || (typeof metaEndian === 'string' ? metaEndian : 'le')
 
     // Integer types
     if (isIntegerType(type)) {
@@ -344,9 +344,7 @@ export class TypeInterpreter {
 
     // String types
     if (isStringType(type)) {
-      throw new ParseError(
-        'String types require size, size-eos, or terminator'
-      )
+      throw new ParseError('String types require size, size-eos, or terminator')
     }
 
     throw new ParseError(`Unknown built-in type: ${type}`)

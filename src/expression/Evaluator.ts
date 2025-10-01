@@ -61,6 +61,7 @@ export class Evaluator {
         return this.evaluateEnumAccess(n.enumName, n.value, context)
 
       default:
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         throw new ParseError(`Unknown AST node kind: ${(node as any).kind}`)
     }
   }
@@ -185,7 +186,9 @@ export class Evaluator {
     const obj = this.evaluate(object, context)
 
     if (obj === null || obj === undefined) {
-      throw new ParseError(`Cannot access property ${property} of null/undefined`)
+      throw new ParseError(
+        `Cannot access property ${property} of null/undefined`
+      )
     }
 
     if (typeof obj === 'object') {
