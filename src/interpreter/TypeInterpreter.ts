@@ -21,7 +21,7 @@ import {
   isStringType,
 } from '../parser/schema'
 import { Context } from './Context'
-// import { evaluateExpression } from '../expression' // TODO: Integrate expression evaluation
+import { evaluateExpression } from '../expression'
 
 /**
  * Interprets Kaitai Struct schemas and parses binary data.
@@ -101,15 +101,23 @@ export class TypeInterpreter {
 
     // Handle conditional parsing
     if (attr.if) {
-      // TODO: Evaluate condition
-      // For now, we'll skip conditional parsing
-      throw new NotImplementedError('Conditional parsing (if)')
+      const condition = this.evaluateValue(attr.if, context)
+      // If condition is false or falsy, skip this attribute
+      if (!condition) {
+        return undefined
+      }
     }
 
     // Handle absolute positioning
     if (attr.pos !== undefined) {
-      const pos = typeof attr.pos === 'number' ? attr.pos : 0 // TODO: Evaluate expression
-      stream.seek(pos)
+      const pos = this.evaluateValue(attr.pos, context)
+      if (typeof pos === 'number') {
+        stream.seek(pos)
+      } else if (typeof pos === 'bigint') {
+        stream.seek(Number(pos))
+      } else {
+        throw new ParseError(`pos must evaluate to a number, got ${typeof pos}`)
+      }
     }
 
     // Handle custom I/O
@@ -140,18 +148,32 @@ export class TypeInterpreter {
    * @private
    */
   private parseRepeated(attr: AttributeSpec, context: Context): unknown[] {
-    const result: unknown[] = []
     const stream = context.io
+    const result: unknown[] = []
 
     switch (attr.repeat) {
       case 'expr': {
         // Fixed number of repetitions
+        const countValue = this.evaluateValue(attr['repeat-expr'], context)
         const count =
-          typeof attr['repeat-expr'] === 'number' ? attr['repeat-expr'] : 0 // TODO: Evaluate expression
+          typeof countValue === 'number'
+            ? countValue
+            : typeof countValue === 'bigint'
+              ? Number(countValue)
+              : 0
+
+        if (count < 0) {
+          throw new ParseError(`repeat-expr must be non-negative, got ${count}`)
+        }
+
         for (let i = 0; i < count; i++) {
           // Set _index for expressions
           context.set('_index', i)
-          result.push(this.parseValue(attr, context))
+          const value = this.parseAttribute(
+            { ...attr, repeat: undefined, 'repeat-expr': undefined },
+            context
+          )
+          result.push(value)
         }
         break
       }
@@ -170,8 +192,38 @@ export class TypeInterpreter {
         if (!attr['repeat-until']) {
           throw new ParseError('repeat-until expression is required')
         }
-        // TODO: Evaluate condition
-        throw new NotImplementedError('repeat-until')
+
+        let index = 0
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          context.set('_index', index)
+
+          // Parse the value first
+          const value = this.parseAttribute(
+            { ...attr, repeat: undefined, 'repeat-until': undefined },
+            context
+          )
+          result.push(value)
+
+          // Set _ to the last parsed value for the condition
+          context.set('_', value)
+
+          // Evaluate the condition
+          const condition = this.evaluateValue(attr['repeat-until'], context)
+
+          // Break if condition is true
+          if (condition) {
+            break
+          }
+
+          // Check for EOF to prevent infinite loops
+          if (stream.isEof()) {
+            break
+          }
+
+          index++
+        }
+        break
       }
 
       default:
@@ -236,7 +288,17 @@ export class TypeInterpreter {
 
     // Handle sized reads
     if (attr.size !== undefined) {
-      const size = typeof attr.size === 'number' ? attr.size : 0 // TODO: Evaluate expression
+      const sizeValue = this.evaluateValue(attr.size, context)
+      const size =
+        typeof sizeValue === 'number'
+          ? sizeValue
+          : typeof sizeValue === 'bigint'
+            ? Number(sizeValue)
+            : 0
+
+      if (size < 0) {
+        throw new ParseError(`size must be non-negative, got ${size}`)
+      }
 
       if (type === 'str' || !type) {
         // String or raw bytes
@@ -408,5 +470,42 @@ export class TypeInterpreter {
       default:
         throw new ParseError(`Unknown float type: ${type}`)
     }
+  }
+
+  /**
+   * Evaluate an expression or return a literal value.
+   * If the value is a string, it's treated as an expression.
+   * If it's a number or boolean, it's returned as-is.
+   *
+   * @param value - Expression string or literal value
+   * @param context - Execution context
+   * @returns Evaluated result
+   * @private
+   */
+  private evaluateValue(
+    value: string | number | boolean | undefined,
+    context: Context
+  ): unknown {
+    if (value === undefined) {
+      return undefined
+    }
+
+    // If it's a number or boolean, return as-is
+    if (typeof value === 'number' || typeof value === 'boolean') {
+      return value
+    }
+
+    // If it's a string, evaluate as expression
+    if (typeof value === 'string') {
+      try {
+        return evaluateExpression(value, context)
+      } catch (error) {
+        throw new ParseError(
+          `Failed to evaluate expression "${value}": ${error instanceof Error ? error.message : String(error)}`
+        )
+      }
+    }
+
+    return value
   }
 }
