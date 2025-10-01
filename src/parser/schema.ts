@@ -131,6 +131,9 @@ export interface AttributeSpec {
   /** Data type to read */
   type?: string | SwitchType
 
+  /** Arguments for parametric types */
+  'type-args'?: Array<string | number | boolean>
+
   /** Size of the field (in bytes or expression) */
   size?: number | string
 
