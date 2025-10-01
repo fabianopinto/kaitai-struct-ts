@@ -138,10 +138,9 @@ export class TypeInterpreter {
     // Parse single value
     const value = this.parseValue(attr, context)
 
-    // Apply enum mapping if specified
-    if (attr.enum && this.schema.enums) {
-      return this.applyEnum(value, attr.enum)
-    }
+    // Note: We don't apply enum mapping here to keep values as integers
+    // This allows enum comparisons in expressions to work correctly
+    // Enum mapping should be done at the presentation layer if needed
 
     return value
   }
@@ -371,6 +370,12 @@ export class TypeInterpreter {
       const typeSchema = this.schema.types[type]
       // Pass parent meta for nested types
       const meta = this.schema.meta || this.parentMeta
+      
+      // Inherit parent enums if nested type doesn't have its own
+      if (this.schema.enums && !typeSchema.enums) {
+        typeSchema.enums = this.schema.enums
+      }
+      
       const interpreter = new TypeInterpreter(typeSchema, meta)
       return interpreter.parse(stream, context.current)
     }
@@ -516,41 +521,4 @@ export class TypeInterpreter {
     return value
   }
 
-  /**
-   * Apply enum mapping to a value.
-   * Converts integer values to their enum names.
-   *
-   * @param value - Integer value to map
-   * @param enumName - Name of the enum
-   * @returns Enum name or original value if not found
-   * @private
-   */
-  private applyEnum(value: unknown, enumName: string): unknown {
-    if (!this.schema.enums || !this.schema.enums[enumName]) {
-      throw new ParseError(`Enum "${enumName}" not found in schema`)
-    }
-
-    const enumDef = this.schema.enums[enumName]
-
-    // Convert value to number for lookup
-    const numValue =
-      typeof value === 'number'
-        ? value
-        : typeof value === 'bigint'
-          ? Number(value)
-          : null
-
-    if (numValue === null) {
-      return value
-    }
-
-    // Look up the enum name for this value
-    const enumKey = enumDef[numValue]
-    if (enumKey !== undefined) {
-      return enumKey
-    }
-
-    // Return original value if no mapping found
-    return value
-  }
 }
