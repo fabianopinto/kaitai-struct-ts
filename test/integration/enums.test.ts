@@ -98,11 +98,11 @@ seq:
     type: u4
     if: type == file_type::binary
 `
-      const buffer = new Uint8Array([1, 0x0A, 0x0B, 0x0C, 0x0D])
+      const buffer = new Uint8Array([1, 0x0a, 0x0b, 0x0c, 0x0d])
       const result = parse(ksy, buffer)
 
       expect(result.type).toBe(1)
-      expect(result.text_data).toBe(0x0D0C0B0A)
+      expect(result.text_data).toBe(0x0d0c0b0a)
       expect(result.binary_data).toBeUndefined()
     })
 
