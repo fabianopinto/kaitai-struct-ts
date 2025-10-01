@@ -357,7 +357,7 @@ export class TypeInterpreter {
   ): unknown {
     // Handle switch types
     if (typeof type === 'object') {
-      throw new NotImplementedError('Switch types')
+      return this.parseSwitchType(type as Record<string, unknown>, stream, context)
     }
 
     // Handle built-in types
@@ -376,11 +376,66 @@ export class TypeInterpreter {
         typeSchema.enums = this.schema.enums
       }
       
+      // Inherit parent types if nested type doesn't have its own
+      if (this.schema.types && !typeSchema.types) {
+        typeSchema.types = this.schema.types
+      }
+      
       const interpreter = new TypeInterpreter(typeSchema, meta)
       return interpreter.parse(stream, context.current)
     }
 
     throw new ParseError(`Unknown type: ${type}`)
+  }
+
+  /**
+   * Parse a switch type (type selection based on expression).
+   *
+   * @param switchType - Switch type specification
+   * @param stream - Stream to read from
+   * @param context - Execution context
+   * @returns Parsed value
+   * @private
+   */
+  private parseSwitchType(
+    switchType: Record<string, unknown>,
+    stream: KaitaiStream,
+    context: Context
+  ): unknown {
+    const switchOn = switchType['switch-on']
+    const cases = switchType['cases'] as Record<string, string> | undefined
+    const defaultType = switchType['default'] as string | undefined
+
+    if (!switchOn || typeof switchOn !== 'string') {
+      throw new ParseError('switch-on expression is required for switch types')
+    }
+
+    if (!cases) {
+      throw new ParseError('cases are required for switch types')
+    }
+
+    // Evaluate the switch expression
+    const switchValue = this.evaluateValue(switchOn, context)
+
+    // Convert switch value to string for case matching
+    const switchKey = String(switchValue)
+
+    // Find matching case
+    let selectedType: string | undefined = cases[switchKey]
+
+    // Use default if no case matches
+    if (selectedType === undefined && defaultType) {
+      selectedType = defaultType
+    }
+
+    if (selectedType === undefined) {
+      throw new ParseError(
+        `No matching case for switch value "${switchKey}" and no default type specified`
+      )
+    }
+
+    // Parse using the selected type
+    return this.parseType(selectedType, stream, context)
   }
 
   /**
