@@ -22,11 +22,11 @@ seq:
     type: u4
     if: flag != 1
 `
-      const buffer = new Uint8Array([1, 0x0A, 0x0B, 0x0C, 0x0D])
+      const buffer = new Uint8Array([1, 0x0a, 0x0b, 0x0c, 0x0d])
       const result = parse(ksy, buffer)
 
       expect(result.flag).toBe(1)
-      expect(result.optional_value).toBe(0x0D0C0B0A)
+      expect(result.optional_value).toBe(0x0d0c0b0a)
       expect(result.another_value).toBeUndefined()
     })
 
@@ -42,7 +42,7 @@ seq:
     type: u4
     if: flag == 1
 `
-      const buffer = new Uint8Array([0, 0x0A, 0x0B, 0x0C, 0x0D])
+      const buffer = new Uint8Array([0, 0x0a, 0x0b, 0x0c, 0x0d])
       const result = parse(ksy, buffer)
 
       expect(result.flag).toBe(0)
@@ -140,11 +140,11 @@ seq:
   - id: data
     size: data_size
 `
-      const buffer = new Uint8Array([4, 0x0A, 0x0B, 0x0C, 0x0D, 0xFF])
+      const buffer = new Uint8Array([4, 0x0a, 0x0b, 0x0c, 0x0d, 0xff])
       const result = parse(ksy, buffer)
 
       expect(result.data_size).toBe(4)
-      expect(result.data).toEqual(new Uint8Array([0x0A, 0x0B, 0x0C, 0x0D]))
+      expect(result.data).toEqual(new Uint8Array([0x0a, 0x0b, 0x0c, 0x0d]))
     })
 
     it('should support calculated sizes with expressions', () => {
@@ -179,11 +179,11 @@ seq:
     type: u4
     pos: offset
 `
-      const buffer = new Uint8Array([5, 0, 0, 0, 0, 0x0A, 0x0B, 0x0C, 0x0D])
+      const buffer = new Uint8Array([5, 0, 0, 0, 0, 0x0a, 0x0b, 0x0c, 0x0d])
       const result = parse(ksy, buffer)
 
       expect(result.offset).toBe(5)
-      expect(result.value).toBe(0x0D0C0B0A)
+      expect(result.value).toBe(0x0d0c0b0a)
     })
 
     it('should support expressions in pos', () => {
@@ -198,11 +198,11 @@ seq:
     type: u2
     pos: base + 2
 `
-      const buffer = new Uint8Array([2, 0, 0, 0, 0x0A, 0x0B])
+      const buffer = new Uint8Array([2, 0, 0, 0, 0x0a, 0x0b])
       const result = parse(ksy, buffer)
 
       expect(result.base).toBe(2)
-      expect(result.value).toBe(0x0B0A)
+      expect(result.value).toBe(0x0b0a)
     })
   })
 

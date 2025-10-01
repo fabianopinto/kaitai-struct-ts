@@ -21,7 +21,7 @@ instances:
   area:
     value: width * height
 `
-      const buffer = new Uint8Array([0x0A, 0x00, 0x14, 0x00])
+      const buffer = new Uint8Array([0x0a, 0x00, 0x14, 0x00])
       const result = parse(ksy, buffer)
 
       expect(result.width).toBe(10)
@@ -77,12 +77,12 @@ instances:
     pos: 10
     type: u2
 `
-      const buffer = new Uint8Array([4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xAB, 0xCD])
+      const buffer = new Uint8Array([4, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xab, 0xcd])
       const result = parse(ksy, buffer)
 
       expect(result.header_size).toBe(4)
       expect(result.data_offset).toBe(8)
-      expect(result.footer).toBe(0xCDAB)
+      expect(result.footer).toBe(0xcdab)
     })
 
     it('should use expression for pos', () => {
@@ -120,12 +120,12 @@ instances:
     pos: 5
     type: u1
 `
-      const buffer = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0xFF])
+      const buffer = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0xff])
       const result = parse(ksy, buffer)
 
       expect(result.first).toBe(0x01)
       expect(result.second).toBe(0x02)
-      expect(result.at_position_5).toBe(0xFF)
+      expect(result.at_position_5).toBe(0xff)
     })
   })
 
@@ -148,10 +148,10 @@ instances:
       const result = parse(ksy, buffer)
 
       expect(result.value).toBe(10)
-      
+
       // Access doubled
       expect(result.doubled).toBe(20)
-      
+
       // Access tripled
       expect(result.tripled).toBe(30)
     })
@@ -174,7 +174,7 @@ instances:
       // First access
       const first = result.calculated
       expect(first).toBe(500)
-      
+
       // Second access should return cached value
       const second = result.calculated
       expect(second).toBe(500)
@@ -203,12 +203,12 @@ types:
       - id: version
         type: u1
 `
-      const buffer = new Uint8Array([5, 0, 0, 0, 0, 0x4D, 0x5A, 0x01])
+      const buffer = new Uint8Array([5, 0, 0, 0, 0, 0x4d, 0x5a, 0x01])
       const result = parse(ksy, buffer)
 
       expect(result.header_offset).toBe(5)
       expect(result.header).toHaveProperty('magic')
-      expect((result.header as any).magic).toBe(0x5A4D)
+      expect((result.header as any).magic).toBe(0x5a4d)
       expect((result.header as any).version).toBe(0x01)
     })
   })
@@ -227,11 +227,11 @@ instances:
     pos: 5
     size: data_size
 `
-      const buffer = new Uint8Array([3, 0, 0, 0, 0, 0xAA, 0xBB, 0xCC, 0xDD])
+      const buffer = new Uint8Array([3, 0, 0, 0, 0, 0xaa, 0xbb, 0xcc, 0xdd])
       const result = parse(ksy, buffer)
 
       expect(result.data_size).toBe(3)
-      expect(result.data).toEqual(new Uint8Array([0xAA, 0xBB, 0xCC]))
+      expect(result.data).toEqual(new Uint8Array([0xaa, 0xbb, 0xcc]))
     })
   })
 
@@ -250,11 +250,11 @@ instances:
     type: u2
     if: has_footer == 1
 `
-      const buffer1 = new Uint8Array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xAB, 0xCD])
+      const buffer1 = new Uint8Array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xab, 0xcd])
       const result1 = parse(ksy, buffer1)
-      expect(result1.footer).toBe(0xCDAB)
+      expect(result1.footer).toBe(0xcdab)
 
-      const buffer2 = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xAB, 0xCD])
+      const buffer2 = new Uint8Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xab, 0xcd])
       const result2 = parse(ksy, buffer2)
       expect(result2.footer).toBeUndefined()
     })
@@ -280,14 +280,14 @@ instances:
     pos: 10
     type: u1
 `
-      const buffer = new Uint8Array([5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF])
+      const buffer = new Uint8Array([5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff])
       const result = parse(ksy, buffer)
 
       expect(result.base).toBe(5)
       expect(result.double).toBe(10)
       expect(result.triple).toBe(15)
       expect(result.quadruple).toBe(20)
-      expect(result.at_pos_10).toBe(0xFF)
+      expect(result.at_pos_10).toBe(0xff)
     })
   })
 })
