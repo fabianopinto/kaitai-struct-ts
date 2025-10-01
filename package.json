@@ -1,0 +1,78 @@
+{
+  "name": "kaitai-struct-ts",
+  "version": "0.1.0",
+  "description": "Runtime interpreter for Kaitai Struct binary format definitions in TypeScript",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "prepublishOnly": "pnpm run build && pnpm run test && pnpm run lint"
+  },
+  "keywords": [
+    "kaitai",
+    "kaitai-struct",
+    "binary",
+    "parser",
+    "binary-parser",
+    "binary-format",
+    "serialization",
+    "deserialization",
+    "typescript"
+  ],
+  "author": "Fabiano Pinto",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fabianopinto/kaitai-struct-ts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fabianopinto/kaitai-struct-ts/issues"
+  },
+  "homepage": "https://github.com/fabianopinto/kaitai-struct-ts#readme",
+  "packageManager": "pnpm@10.16.1",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@types/node": "^24.6.1",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1"
+  }
+}
