@@ -7,6 +7,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-10-01
+
+### 🎉 Phase 2 Complete - Expression Integration & Enums
+
+Major update completing Phase 2 with full expression support and enum implementation.
+
+### Added
+
+#### Expression Integration
+- ✅ **if conditions** - Conditional field parsing based on expressions
+- ✅ **repeat-expr** - Dynamic repetition counts from expressions
+- ✅ **repeat-until** - Loop until condition is true with `_` variable
+- ✅ **size attribute** - Calculated sizes for reads
+- ✅ **pos attribute** - Absolute positioning with calculated values
+- ✅ Expression evaluation helper in TypeInterpreter
+- ✅ Support for all expression operators (arithmetic, comparison, logical)
+
+#### Enum Support
+- ✅ Enum definitions in schema
+- ✅ Enum access in expressions (`EnumName::value`)
+- ✅ Context support for enum lookups
+- ✅ Enum inheritance through nested types
+- ✅ Reverse lookup (name → integer value)
+- ✅ Values kept as integers for expression compatibility
+
+#### Testing
+- ✅ 13 expression integration tests
+- ✅ 9 enum integration tests
+- ✅ **80 total tests passing** (up from 58)
+- ✅ Comprehensive coverage of all Phase 2 features
+
+#### Documentation
+- ✅ Added professional logo to README
+- ✅ Improved README layout with centered header
+- ✅ Moved assets to proper folder structure
+- ✅ Updated PROGRESS.md with Phase 2 completion
+
+#### GitHub Infrastructure
+- ✅ Full CI/CD with GitHub Actions
+- ✅ Automated testing on Node 18, 20, 22 (Ubuntu, Windows, macOS)
+- ✅ Automated npm publishing workflow
+- ✅ Issue templates and PR template
+- ✅ Branch protection with required CI checks
+
+### Changed
+- Enum values now kept as integers internally for expression compatibility
+- Context now supports enum definitions and lookups
+- TypeInterpreter evaluates expressions for all dynamic attributes
+
+### Fixed
+- Removed unused `applyEnum` method causing TypeScript errors
+- Fixed enum inheritance through nested types
+- Proper type coercion for expressions (number/bigint)
+
+### Notes
+- Phase 2 (Core Features) is now 100% complete
+- Overall progress: ~80% to v1.0.0
+- Ready to start Phase 3 (Advanced Features)
+
 ## [0.2.0] - 2025-10-01
 
 ### 🎉 Phase 2 Core Implementation
@@ -119,5 +178,7 @@ This release completes Phase 1 (MVP) of the project roadmap. The KaitaiStream im
 - Phase 2: KSY parser, type interpreter, expression evaluator
 - Phase 3: Advanced features, full Kaitai Struct spec compliance
 
-[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/fabianopinto/kaitai-struct-ts/releases/tag/v0.1.0
