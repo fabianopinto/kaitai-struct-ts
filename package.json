@@ -1,5 +1,9 @@
 {
-  "name": "kaitai-struct-ts",
+  "name": "@k67/kaitai-struct-ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "version": "0.2.0",
   "description": "Runtime interpreter for Kaitai Struct binary format definitions in TypeScript",
   "main": "./dist/index.js",
