@@ -176,7 +176,19 @@ export class Context {
     if (!enumDef) {
       return undefined
     }
-    return enumDef[valueName]
+    
+    // Enum definitions map integer values to string names
+    // e.g., { 0: "unknown", 1: "text" }
+    // We need to reverse-lookup: given "text", return 1
+    for (const [key, value] of Object.entries(enumDef)) {
+      if (value === valueName) {
+        // Convert key to number
+        const numKey = Number(key)
+        return isNaN(numKey) ? key : numKey
+      }
+    }
+    
+    return undefined
   }
 
   /**
