@@ -7,6 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-10-02
+
+### 🎉 Phase 3 Continued - Processing, Parametric Types & Performance
+
+Continued Phase 3 implementation with processing framework, parametric types, and performance optimizations.
+
+### Added
+
+#### Processing & Substreams Framework
+- ✅ Processing attribute framework for data transformations
+- ✅ applyProcessing() method for future zlib/encryption support
+- ✅ Substream creation for processed data
+- ✅ Error handling for unsupported processors
+- ✅ Foundation ready for external processing libraries
+
+#### Parametric Types Infrastructure
+- ✅ Type parameters (params) in type definitions
+- ✅ Type arguments (type-args) when instantiating types
+- ✅ Parameter passing through execution context
+- ✅ Expression evaluation in type arguments
+- ✅ Full infrastructure (awaiting parser support for syntax)
+
+### Changed
+- Optimized substream creation for better performance
+- Improved memory management for sized reads
+- Streamlined type parsing flow
+- Direct Uint8Array passing to reduce buffer copies
+
+### Performance
+- Reduced buffer copies in data processing
+- Optimized substream creation
+- Better memory management
+
+### Notes
+- Phase 3: 40% complete
+- Overall progress: 87% to v1.0.0
+- Processing framework ready for zlib/crypto libraries
+- Parametric types infrastructure complete
+
 ## [0.4.0] - 2025-10-02
 
 ### 🎉 Phase 3 Advanced Features - Switch/Case & Instances
@@ -220,7 +259,8 @@ This release completes Phase 1 (MVP) of the project roadmap. The KaitaiStream im
 - Phase 2: KSY parser, type interpreter, expression evaluator
 - Phase 3: Advanced features, full Kaitai Struct spec compliance
 
-[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.1.0...v0.2.0
