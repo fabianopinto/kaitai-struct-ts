@@ -82,10 +82,93 @@ export class TypeInterpreter {
       }
     }
 
-    // Note: Instances are lazy-evaluated, so we don't parse them here
-    // They will be accessed via getters when needed
+    // Set up lazy-evaluated instances
+    if (this.schema.instances) {
+      this.setupInstances(result, stream, context)
+    }
 
     return result
+  }
+
+  /**
+   * Set up lazy-evaluated instance getters.
+   * Instances are computed on first access and cached.
+   *
+   * @param result - Result object to add getters to
+   * @param stream - Stream for parsing
+   * @param context - Execution context
+   * @private
+   */
+  private setupInstances(
+    result: Record<string, unknown>,
+    stream: KaitaiStream,
+    context: Context
+  ): void {
+    if (!this.schema.instances) return
+
+    for (const [name, instance] of Object.entries(this.schema.instances)) {
+      // Cache for lazy evaluation
+      let cached: unknown = undefined
+      let evaluated = false
+
+      Object.defineProperty(result, name, {
+        get: () => {
+          if (!evaluated) {
+            cached = this.parseInstance(instance as Record<string, unknown>, stream, context)
+            evaluated = true
+          }
+          return cached
+        },
+        enumerable: true,
+        configurable: true,
+      })
+    }
+  }
+
+  /**
+   * Parse an instance (lazy-evaluated field).
+   *
+   * @param instance - Instance specification
+   * @param stream - Stream to read from
+   * @param context - Execution context
+   * @returns Parsed or calculated value
+   * @private
+   */
+  private parseInstance(
+    instance: Record<string, unknown>,
+    stream: KaitaiStream,
+    context: Context
+  ): unknown {
+    // Handle value instances (calculated fields)
+    if ('value' in instance) {
+      return this.evaluateValue(instance.value as string | number | boolean | undefined, context)
+    }
+
+    // Save current position
+    const savedPos = stream.pos
+
+    try {
+      // Handle pos attribute for positioned reads
+      if (instance.pos !== undefined) {
+        const pos = this.evaluateValue(instance.pos as string | number | boolean | undefined, context)
+        if (typeof pos === 'number') {
+          stream.seek(pos)
+        } else if (typeof pos === 'bigint') {
+          stream.seek(Number(pos))
+        } else {
+          throw new ParseError(`pos must evaluate to a number, got ${typeof pos}`)
+        }
+      }
+
+      // Parse as a regular attribute
+      const value = this.parseAttribute(instance as any, context)
+      return value
+    } finally {
+      // Restore position if pos was used
+      if (instance.pos !== undefined) {
+        stream.seek(savedPos)
+      }
+    }
   }
 
   /**
