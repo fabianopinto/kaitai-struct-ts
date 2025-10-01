@@ -1,8 +1,8 @@
 # Project Progress
 
-**Last Updated:** 2025-10-01  
-**Current Phase:** Phase 2 - Core Features (Complete) → Phase 3 - Advanced Features  
-**Overall Completion:** ~80%
+**Last Updated:** 2025-10-02  
+**Current Phase:** Phase 3 - Advanced Features (In Progress)  
+**Overall Completion:** ~85%
 
 ## Summary
 
@@ -208,30 +208,68 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
   - ✅ All expression features covered
   - ✅ 80 total tests passing
 
+### ✅ Phase 3 - Advanced Features (In Progress - 30% Complete)
+
+- [x] **Switch/Case Type Selection**
+  - ✅ Switch-on expression evaluation
+  - ✅ Case-based type selection
+  - ✅ Default type fallback
+  - ✅ Complex expressions in switch-on
+  - ✅ Enum values in switch
+  - ✅ Nested switch types
+  - ✅ Built-in types in cases
+  - ✅ 7 comprehensive tests
+
+- [x] **Instances (Lazy-Evaluated Fields)**
+  - ✅ Value instances (calculated fields)
+  - ✅ Pos instances (positioned reads)
+  - ✅ Lazy evaluation with caching
+  - ✅ Position restoration
+  - ✅ Complex types in instances
+  - ✅ Sized reads in instances
+  - ✅ Conditionals in instances
+  - ✅ 11 comprehensive tests
+
 ## Current Work
 
-### 🔄 Phase 3 - Advanced Features (Starting)
+### 🔄 Phase 3 - Remaining Features
 
-**Priority:** Implement switch/case type selection and instances
+**Priority:** Complete advanced features for v1.0.0
 
 **Next Steps:**
-1. Implement switch-on attribute for type selection
-2. Add instances with lazy evaluation
-3. Support value instances (calculated fields)
-4. Add pos attribute for instances
-5. Implement substreams and processing
-6. Add comprehensive tests
+1. Implement substreams and processing attribute
+2. Add parametric types (types with parameters)
+3. Implement bit-sized integer support
+4. Add type imports
+5. Performance optimizations
+6. Prepare v0.4.0 release
 
 ## Pending Work
 
-### 📋 Phase 3 - Advanced Features
+### 📋 Phase 3 - Advanced Features (Remaining)
 
-- [ ] Substreams and processing
-- [ ] Bit-sized integers (advanced)
-- [ ] Parametric types
-- [ ] Type casting
-- [ ] Imports
-- [ ] Performance optimizations
+- [ ] **Substreams and Processing**
+  - process attribute for transformations
+  - zlib compression/decompression
+  - Custom processing functions
+
+- [ ] **Parametric Types**
+  - Types with parameters
+  - Parameter passing
+  - Type instantiation
+
+- [ ] **Bit-Sized Integers**
+  - Advanced bit manipulation
+  - Bit-level type reading
+
+- [ ] **Type Imports**
+  - Import types from other schemas
+  - Cross-schema references
+
+- [ ] **Performance Optimizations**
+  - Stream buffering
+  - Parse caching
+  - Memory optimization
 
 ### 📋 Publishing & Deployment
 
@@ -247,10 +285,10 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
 
 ```
 Source Files:        15 files
-Test Files:          4 files
-Total Lines:         ~6,000+
-Test Cases:          80 passing
-Build Size:          ~67 KB (CJS), ~66 KB (ESM)
+Test Files:          6 files
+Total Lines:         ~7,000+
+Test Cases:          98 passing
+Build Size:          ~70 KB (CJS), ~68 KB (ESM)
 Type Definitions:    Complete
 ```
 
@@ -261,13 +299,13 @@ src/
 ├── stream/          2 files   ~450 lines  ✅ Complete
 ├── utils/           3 files   ~300 lines  ✅ Complete
 ├── parser/          3 files   ~850 lines  ✅ Complete
-├── interpreter/     3 files   ~650 lines  ✅ Complete
+├── interpreter/     3 files   ~750 lines  ✅ Complete
 ├── expression/      6 files   ~1,500 lines ✅ Complete
 └── index.ts         1 file    ~100 lines  ✅ Complete
 
 test/
 ├── unit/            1 file    ~350 lines  ✅ Complete
-└── integration/     3 files   ~850 lines  ✅ Complete
+└── integration/     5 files   ~1,500 lines ✅ Complete
 ```
 
 ### Phase Completion
@@ -288,29 +326,29 @@ Phase 2 (Core Features):     ✅ 100% Complete
   - Conditionals (if):       ✅ Done
   - Advanced Repetitions:    ✅ Done
 
-Phase 3 (Advanced):          🔄 0% Complete (Starting)
-  - Switch/case:             ⏳ Next
-  - Instances:               ⏳ Pending
+Phase 3 (Advanced):          🔄 30% Complete
+  - Switch/case:             ✅ Done
+  - Instances:               ✅ Done
   - Substreams/processing:   ⏳ Pending
   - Bit-sized integers:      ⏳ Pending
   - Parametric types:        ⏳ Pending
   - Imports:                 ⏳ Pending
   - Performance:             ⏳ Pending
 
-Overall Progress:            ~80% to v1.0.0
+Overall Progress:            ~85% to v1.0.0
 ```
 
 ### Quality Metrics
 
 ```
 ✅ TypeScript Strict Mode:   Enabled
-✅ Test Coverage:            High (80 tests, all passing)
+✅ Test Coverage:            High (98 tests, all passing)
 ✅ Linting:                  Clean (0 errors, 0 warnings)
 ✅ Type Safety:              100%
 ✅ Documentation:            Complete JSDoc
 ✅ Build Status:             Passing
 ✅ CI/CD:                    Fully operational
-✅ NPM Published:            @k67/kaitai-struct-ts@0.2.0
+✅ NPM Published:            @k67/kaitai-struct-ts@0.3.0
 ```
 
 ### Recent Milestones
@@ -321,13 +359,14 @@ Overall Progress:            ~80% to v1.0.0
 - **Expression Integration** (2025-10-01) - Full integration with TypeInterpreter
 - **Enum Support** (2025-10-01) - Complete enum implementation
 - **GitHub Infrastructure** (2025-10-01) - CI/CD, automated publishing
-- **Comprehensive Tests** (2025-10-01) - 80 tests covering all Phase 2 features
+- **v0.3.0** (2025-10-01) - Phase 2 complete, comprehensive tests (80 tests)
+- **Switch/Case** (2025-10-02) - Type selection based on expressions (7 tests)
+- **Instances** (2025-10-02) - Lazy-evaluated fields (11 tests)
 
 ### Next Milestones
 
-- **v0.3.0** (Today) - Phase 2 complete, starting Phase 3
-- **v0.4.0** (Target: ~2 weeks) - Switch/case, instances
-- **v1.0.0** (Target: ~4 weeks) - Full Kaitai Struct spec compliance
+- **v0.4.0** (Target: ~1 week) - Substreams, parametric types, remaining Phase 3
+- **v1.0.0** (Target: ~2 weeks) - Full Kaitai Struct spec compliance, performance optimization
 
 ## Timeline
 
@@ -345,39 +384,49 @@ Overall Progress:            ~80% to v1.0.0
 
 ```
 ✅ Week 1:     Expression integration, enums, tests (COMPLETE)
-⏳ Week 2:     Switch/case, instances (v0.4.0)
-⏳ Week 3-4:   Substreams, processing, parametric types
-⏳ Week 5:     Performance optimizations and polish (v1.0.0)
+✅ Week 2:     Switch/case, instances (COMPLETE - 30% of Phase 3)
+⏳ Week 3:     Substreams, parametric types (v0.4.0)
+⏳ Week 4:     Performance optimizations and polish (v1.0.0)
 ```
 
 ---
 
 ## Summary
 
-The kaitai-struct-ts project has reached **~80% completion** toward v1.0.0! 
+The kaitai-struct-ts project has reached **~85% completion** toward v1.0.0! 
 
-**Phase 1 (Foundation)** and **Phase 2 (Core Features)** are both 100% complete, featuring:
+**Phase 1 (Foundation)** and **Phase 2 (Core Features)** are both 100% complete. **Phase 3 (Advanced Features)** is 30% complete with:
+
+**Completed Features:**
 - Complete binary stream parsing
 - Full KSY schema parsing
 - Expression evaluation with all operators
 - Expression integration (if, repeat-expr, repeat-until, size, pos)
 - Enum support with expression access
-- 80 comprehensive tests
+- Switch/case type selection
+- Instances (lazy-evaluated fields)
+- 98 comprehensive tests
 
-**Phase 3 (Advanced Features)** is starting, focusing on switch/case type selection, instances, and advanced processing features.
+**Phase 3 In Progress:**
+- Switch/case type selection ✅
+- Instances (value and pos) ✅
+- Substreams and processing ⏳
+- Parametric types ⏳
+- Performance optimizations ⏳
 
 ## Notes
 
 - ✅ All source files have complete JSDoc documentation
 - ✅ Using Mermaid diagrams for all architecture documentation
 - ✅ Following strict TypeScript best practices
-- ✅ High test coverage maintained (80 tests passing)
+- ✅ High test coverage maintained (98 tests passing)
 - ✅ Using changesets for version management
 - ✅ Clean linting (0 errors, 0 warnings)
 - ✅ Build passing (ESM + CJS + Type definitions)
 - ✅ GitHub repository with full CI/CD
-- ✅ Published to npm: @k67/kaitai-struct-ts@0.2.0
+- ✅ Published to npm: @k67/kaitai-struct-ts@0.3.0
 - ✅ Professional documentation with logo
+- ✅ 69% test increase in this session (58 → 98)
 
 ## Resources
 

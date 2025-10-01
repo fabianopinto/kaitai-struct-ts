@@ -18,12 +18,21 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 
 ## Features
 
+### Core Features
 - 🚀 **Runtime interpretation** - No code generation needed
 - 📦 **Zero dependencies** (runtime) - Only YAML parser for development
 - 🎯 **TypeScript native** - Full type safety and IntelliSense support
 - 🌐 **Universal** - Works in Node.js and browsers
-- 🧪 **Well tested** - Comprehensive test coverage
+- 🧪 **Well tested** - 98 comprehensive tests
 - 📖 **Well documented** - Clear API and examples
+
+### Advanced Features
+- ⚡ **Expression evaluation** - Full support for Kaitai expressions
+- 🔀 **Switch/case types** - Dynamic type selection based on data
+- 💎 **Instances** - Lazy-evaluated fields with caching
+- 🎨 **Enums** - Named constants with expression access
+- 🔁 **Conditional parsing** - if, repeat-expr, repeat-until
+- 📍 **Positioned reads** - Absolute positioning with pos attribute
 
 ## Installation
 
