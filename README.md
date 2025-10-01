@@ -1,7 +1,10 @@
 # kaitai-struct-ts
 
-[![npm version](https://badge.fury.io/js/kaitai-struct-ts.svg)](https://www.npmjs.com/package/kaitai-struct-ts)
+[![npm version](https://badge.fury.io/js/%40k67%2Fkaitai-struct-ts.svg)](https://www.npmjs.com/package/@k67/kaitai-struct-ts)
+[![CI](https://github.com/fabianopinto/kaitai-struct-ts/workflows/CI/badge.svg)](https://github.com/fabianopinto/kaitai-struct-ts/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
 A **runtime interpreter** for [Kaitai Struct](https://kaitai.io/) binary format definitions in TypeScript.
 
@@ -19,17 +22,17 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 ## Installation
 
 ```bash
-npm install kaitai-struct-ts
+npm install @k67/kaitai-struct-ts
 # or
-pnpm add kaitai-struct-ts
+pnpm add @k67/kaitai-struct-ts
 # or
-yarn add kaitai-struct-ts
+yarn add @k67/kaitai-struct-ts
 ```
 
 ## Quick Start
 
 ```typescript
-import { parse, KaitaiStream } from 'kaitai-struct-ts'
+import { parse, KaitaiStream } from '@k67/kaitai-struct-ts'
 import { readFileSync } from 'fs'
 
 // Load your .ksy definition
