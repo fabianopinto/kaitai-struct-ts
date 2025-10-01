@@ -21,6 +21,7 @@ import {
   isStringType,
 } from '../parser/schema'
 import { Context } from './Context'
+// import { evaluateExpression } from '../expression' // TODO: Integrate expression evaluation
 
 /**
  * Interprets Kaitai Struct schemas and parses binary data.
