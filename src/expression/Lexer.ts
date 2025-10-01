@@ -242,28 +242,21 @@ export class Lexer {
           throw new ParseError('Unterminated string', start)
         }
         // Handle escape sequences
-        const escaped = this.current
-        switch (escaped) {
-          case 'n':
-            value += '\n'
-            break
-          case 't':
-            value += '\t'
-            break
-          case 'r':
-            value += '\r'
-            break
-          case '\\':
-            value += '\\'
-            break
-          case '"':
-            value += '"'
-            break
-          case "'":
-            value += "'"
-            break
-          default:
-            value += escaped
+        const ch = this.current as string
+        if (ch === 'n') {
+          value += '\n'
+        } else if (ch === 't') {
+          value += '\t'
+        } else if (ch === 'r') {
+          value += '\r'
+        } else if (ch === '\\') {
+          value += '\\'
+        } else if (ch === '"') {
+          value += '"'
+        } else if (ch === "'") {
+          value += "'"
+        } else {
+          value += ch
         }
       } else {
         value += this.current
