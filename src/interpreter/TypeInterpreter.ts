@@ -65,12 +65,30 @@ export class TypeInterpreter {
    *
    * @param stream - Binary stream to parse
    * @param parent - Parent object (for nested types)
+   * @param typeArgs - Arguments for parametric types
    * @returns Parsed object
    */
-  parse(stream: KaitaiStream, parent?: unknown): Record<string, unknown> {
+  parse(
+    stream: KaitaiStream,
+    parent?: unknown,
+    typeArgs?: Array<string | number | boolean>
+  ): Record<string, unknown> {
     const result: Record<string, unknown> = {}
     const context = new Context(stream, result, parent, this.schema.enums)
     context.current = result
+
+    // Set parameters in context if this is a parametric type
+    if (typeArgs && this.schema.params) {
+      for (let i = 0; i < this.schema.params.length && i < typeArgs.length; i++) {
+        const param = this.schema.params[i]
+        const argValue = typeArgs[i]
+        // Evaluate the argument if it's a string expression
+        const evaluatedArg = typeof argValue === 'string' 
+          ? this.evaluateValue(argValue, context)
+          : argValue
+        context.set(param.id, evaluatedArg)
+      }
+    }
 
     // Parse sequential fields
     if (this.schema.seq) {
@@ -400,7 +418,7 @@ export class TypeInterpreter {
       } else {
         // Sized substream for complex type
         const substream = stream.substream(size)
-        return this.parseType(type, substream, context)
+        return this.parseType(type, substream, context, attr['type-args'])
       }
     }
 
@@ -421,7 +439,7 @@ export class TypeInterpreter {
       throw new ParseError('Attribute must have either type, size, or contents')
     }
 
-    return this.parseType(type, stream, context)
+    return this.parseType(type, stream, context, attr['type-args'])
   }
 
   /**
@@ -430,13 +448,15 @@ export class TypeInterpreter {
    * @param type - Type name or switch specification
    * @param stream - Stream to read from
    * @param context - Execution context
+   * @param typeArgs - Arguments for parametric types
    * @returns Parsed value
    * @private
    */
   private parseType(
     type: string | object,
     stream: KaitaiStream,
-    context: Context
+    context: Context,
+    typeArgs?: Array<string | number | boolean>
   ): unknown {
     // Handle switch types
     if (typeof type === 'object') {
@@ -465,7 +485,7 @@ export class TypeInterpreter {
       }
       
       const interpreter = new TypeInterpreter(typeSchema, meta)
-      return interpreter.parse(stream, context.current)
+      return interpreter.parse(stream, context.current, typeArgs)
     }
 
     throw new ParseError(`Unknown type: ${type}`)
