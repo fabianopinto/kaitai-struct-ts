@@ -65,12 +65,30 @@ export class TypeInterpreter {
    *
    * @param stream - Binary stream to parse
    * @param parent - Parent object (for nested types)
+   * @param typeArgs - Arguments for parametric types
    * @returns Parsed object
    */
-  parse(stream: KaitaiStream, parent?: unknown): Record<string, unknown> {
+  parse(
+    stream: KaitaiStream,
+    parent?: unknown,
+    typeArgs?: Array<string | number | boolean>
+  ): Record<string, unknown> {
     const result: Record<string, unknown> = {}
     const context = new Context(stream, result, parent, this.schema.enums)
     context.current = result
+
+    // Set parameters in context if this is a parametric type
+    if (typeArgs && this.schema.params) {
+      for (let i = 0; i < this.schema.params.length && i < typeArgs.length; i++) {
+        const param = this.schema.params[i]
+        const argValue = typeArgs[i]
+        // Evaluate the argument if it's a string expression
+        const evaluatedArg = typeof argValue === 'string' 
+          ? this.evaluateValue(argValue, context)
+          : argValue
+        context.set(param.id, evaluatedArg)
+      }
+    }
 
     // Parse sequential fields
     if (this.schema.seq) {
@@ -82,10 +100,93 @@ export class TypeInterpreter {
       }
     }
 
-    // Note: Instances are lazy-evaluated, so we don't parse them here
-    // They will be accessed via getters when needed
+    // Set up lazy-evaluated instances
+    if (this.schema.instances) {
+      this.setupInstances(result, stream, context)
+    }
 
     return result
+  }
+
+  /**
+   * Set up lazy-evaluated instance getters.
+   * Instances are computed on first access and cached.
+   *
+   * @param result - Result object to add getters to
+   * @param stream - Stream for parsing
+   * @param context - Execution context
+   * @private
+   */
+  private setupInstances(
+    result: Record<string, unknown>,
+    stream: KaitaiStream,
+    context: Context
+  ): void {
+    if (!this.schema.instances) return
+
+    for (const [name, instance] of Object.entries(this.schema.instances)) {
+      // Cache for lazy evaluation
+      let cached: unknown = undefined
+      let evaluated = false
+
+      Object.defineProperty(result, name, {
+        get: () => {
+          if (!evaluated) {
+            cached = this.parseInstance(instance as Record<string, unknown>, stream, context)
+            evaluated = true
+          }
+          return cached
+        },
+        enumerable: true,
+        configurable: true,
+      })
+    }
+  }
+
+  /**
+   * Parse an instance (lazy-evaluated field).
+   *
+   * @param instance - Instance specification
+   * @param stream - Stream to read from
+   * @param context - Execution context
+   * @returns Parsed or calculated value
+   * @private
+   */
+  private parseInstance(
+    instance: Record<string, unknown>,
+    stream: KaitaiStream,
+    context: Context
+  ): unknown {
+    // Handle value instances (calculated fields)
+    if ('value' in instance) {
+      return this.evaluateValue(instance.value as string | number | boolean | undefined, context)
+    }
+
+    // Save current position
+    const savedPos = stream.pos
+
+    try {
+      // Handle pos attribute for positioned reads
+      if (instance.pos !== undefined) {
+        const pos = this.evaluateValue(instance.pos as string | number | boolean | undefined, context)
+        if (typeof pos === 'number') {
+          stream.seek(pos)
+        } else if (typeof pos === 'bigint') {
+          stream.seek(Number(pos))
+        } else {
+          throw new ParseError(`pos must evaluate to a number, got ${typeof pos}`)
+        }
+      }
+
+      // Parse as a regular attribute
+      const value = this.parseAttribute(instance as any, context)
+      return value
+    } finally {
+      // Restore position if pos was used
+      if (instance.pos !== undefined) {
+        stream.seek(savedPos)
+      }
+    }
   }
 
   /**
@@ -317,7 +418,7 @@ export class TypeInterpreter {
       } else {
         // Sized substream for complex type
         const substream = stream.substream(size)
-        return this.parseType(type, substream, context)
+        return this.parseType(type, substream, context, attr['type-args'])
       }
     }
 
@@ -338,7 +439,7 @@ export class TypeInterpreter {
       throw new ParseError('Attribute must have either type, size, or contents')
     }
 
-    return this.parseType(type, stream, context)
+    return this.parseType(type, stream, context, attr['type-args'])
   }
 
   /**
@@ -347,17 +448,19 @@ export class TypeInterpreter {
    * @param type - Type name or switch specification
    * @param stream - Stream to read from
    * @param context - Execution context
+   * @param typeArgs - Arguments for parametric types
    * @returns Parsed value
    * @private
    */
   private parseType(
     type: string | object,
     stream: KaitaiStream,
-    context: Context
+    context: Context,
+    typeArgs?: Array<string | number | boolean>
   ): unknown {
     // Handle switch types
     if (typeof type === 'object') {
-      throw new NotImplementedError('Switch types')
+      return this.parseSwitchType(type as Record<string, unknown>, stream, context)
     }
 
     // Handle built-in types
@@ -376,11 +479,66 @@ export class TypeInterpreter {
         typeSchema.enums = this.schema.enums
       }
       
+      // Inherit parent types if nested type doesn't have its own
+      if (this.schema.types && !typeSchema.types) {
+        typeSchema.types = this.schema.types
+      }
+      
       const interpreter = new TypeInterpreter(typeSchema, meta)
-      return interpreter.parse(stream, context.current)
+      return interpreter.parse(stream, context.current, typeArgs)
     }
 
     throw new ParseError(`Unknown type: ${type}`)
+  }
+
+  /**
+   * Parse a switch type (type selection based on expression).
+   *
+   * @param switchType - Switch type specification
+   * @param stream - Stream to read from
+   * @param context - Execution context
+   * @returns Parsed value
+   * @private
+   */
+  private parseSwitchType(
+    switchType: Record<string, unknown>,
+    stream: KaitaiStream,
+    context: Context
+  ): unknown {
+    const switchOn = switchType['switch-on']
+    const cases = switchType['cases'] as Record<string, string> | undefined
+    const defaultType = switchType['default'] as string | undefined
+
+    if (!switchOn || typeof switchOn !== 'string') {
+      throw new ParseError('switch-on expression is required for switch types')
+    }
+
+    if (!cases) {
+      throw new ParseError('cases are required for switch types')
+    }
+
+    // Evaluate the switch expression
+    const switchValue = this.evaluateValue(switchOn, context)
+
+    // Convert switch value to string for case matching
+    const switchKey = String(switchValue)
+
+    // Find matching case
+    let selectedType: string | undefined = cases[switchKey]
+
+    // Use default if no case matches
+    if (selectedType === undefined && defaultType) {
+      selectedType = defaultType
+    }
+
+    if (selectedType === undefined) {
+      throw new ParseError(
+        `No matching case for switch value "${switchKey}" and no default type specified`
+      )
+    }
+
+    // Parse using the selected type
+    return this.parseType(selectedType, stream, context)
   }
 
   /**

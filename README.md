@@ -18,12 +18,21 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 
 ## Features
 
+### Core Features
 - 🚀 **Runtime interpretation** - No code generation needed
 - 📦 **Zero dependencies** (runtime) - Only YAML parser for development
 - 🎯 **TypeScript native** - Full type safety and IntelliSense support
 - 🌐 **Universal** - Works in Node.js and browsers
-- 🧪 **Well tested** - Comprehensive test coverage
+- 🧪 **Well tested** - 98 comprehensive tests
 - 📖 **Well documented** - Clear API and examples
+
+### Advanced Features
+- ⚡ **Expression evaluation** - Full support for Kaitai expressions
+- 🔀 **Switch/case types** - Dynamic type selection based on data
+- 💎 **Instances** - Lazy-evaluated fields with caching
+- 🎨 **Enums** - Named constants with expression access
+- 🔁 **Conditional parsing** - if, repeat-expr, repeat-until
+- 📍 **Positioned reads** - Absolute positioning with pos attribute
 
 ## Installation
 
@@ -158,22 +167,30 @@ pnpm format
 
 ## Roadmap
 
-### Phase 1: Foundation (MVP) - Current
-- Basic parsing capability
-- Fixed-size structures
-- Primitive types
+### Phase 1: Foundation (MVP) - ✅ Complete
+- ✅ Basic parsing capability
+- ✅ Fixed-size structures
+- ✅ Primitive types (u1-u8, s1-s8, f4, f8)
+- ✅ String encoding support
+- ✅ Byte arrays and positioning
 
-### Phase 2: Core Features
-- Expression evaluator
-- Conditionals and enums
-- Repetitions
-- Instances
+### Phase 2: Core Features - ✅ Complete
+- ✅ Expression evaluator (full Kaitai expression language)
+- ✅ Conditionals (if attribute)
+- ✅ Enums with expression access
+- ✅ Repetitions (repeat-expr, repeat-until, repeat-eos)
+- ✅ Calculated sizes and positions
 
-### Phase 3: Advanced Features
-- Substreams and processing
-- Bit-sized integers
-- Imports
-- Full spec compliance
+### Phase 3: Advanced Features - 🔄 In Progress (30% Complete)
+- ✅ Switch/case type selection
+- ✅ Instances (lazy-evaluated fields)
+- ⏳ Substreams and processing
+- ⏳ Parametric types
+- ⏳ Bit-sized integers
+- ⏳ Type imports
+- ⏳ Performance optimizations
+
+**Current Status:** ~85% complete toward v1.0.0
 
 ## Contributing
 
