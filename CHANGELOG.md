@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-10-01
+
+### 🎉 Phase 2 Core Implementation
+
+Major update adding KSY parser and type interpreter for parsing binary data.
+
+### Added
+
+#### KSY Parser (`src/parser/`)
+- Complete YAML parser for .ksy format definitions
+- Schema validation with detailed error messages
+- Support for nested types in `types` section
+- Validation options (strict mode)
+- Type definitions for all schema elements
+
+#### Type Interpreter (`src/interpreter/`)
+- Execute schemas against binary streams
+- All primitive types (u1-u8, s1-s8, f4, f8)
+- Both endianness (le, be)
+- Nested user-defined types
+- Repetitions (repeat: expr, repeat: eos)
+- Contents validation
+- Absolute positioning (pos)
+- Sized substreams
+
+#### Main API
+- `parse()` function for convenient parsing
+- Full TypeScript type exports
+- Options support (validate, strict)
+
+#### Testing
+- 58 tests passing (42 unit + 16 integration)
+- Integration tests for real-world scenarios
+- Error handling tests
+
+### Changed
+- Updated vitest commands to use `run` mode by default
+- Added `test:watch` command for watch mode
+- Version bumped to 0.2.0
+
+### Fixed
+- Nested type validation (no longer requires meta section)
+- Parent meta inheritance for nested types
+- Proper endianness handling in nested types
+
 ## [0.1.0] - 2025-10-01
 
 ### 🎉 Phase 1 Foundation Release
