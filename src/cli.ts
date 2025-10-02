@@ -8,7 +8,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 import { parseArgs } from 'util'
 import { parse } from './index'
 import type { ParseOptions } from './index'
@@ -25,7 +25,19 @@ interface CliOptions {
   version?: boolean
 }
 
-const VERSION = '0.7.1'
+// Read version from package.json
+function getVersion(): string {
+  try {
+    // In CommonJS, __dirname is available
+    const packageJsonPath = join(__dirname, '..', 'package.json')
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+    return packageJson.version
+  } catch {
+    return 'unknown'
+  }
+}
+
+const VERSION = getVersion()
 
 const HELP_TEXT = `
 kaitai - Parse binary files using Kaitai Struct definitions
