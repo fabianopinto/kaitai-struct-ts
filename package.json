@@ -4,11 +4,14 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Runtime interpreter for Kaitai Struct binary format definitions in TypeScript",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "kaitai": "./dist/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
