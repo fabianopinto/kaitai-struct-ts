@@ -46,6 +46,33 @@ yarn add @k67/kaitai-struct-ts
 
 ## Quick Start
 
+### CLI Usage
+
+Parse binary files directly from the command line:
+
+```bash
+# Using npx (no installation needed)
+npx @k67/kaitai-struct-ts format.ksy data.bin
+
+# Or with pnpm
+pnpx @k67/kaitai-struct-ts format.ksy data.bin
+
+# After installing globally
+npm install -g @k67/kaitai-struct-ts
+kaitai format.ksy data.bin
+
+# Save output to file
+kaitai format.ksy data.bin -o output.json
+
+# Extract specific field
+kaitai format.ksy data.bin --field header.version
+
+# Get help
+kaitai --help
+```
+
+### Library Usage
+
 ```typescript
 import { parse, KaitaiStream } from '@k67/kaitai-struct-ts'
 import { readFileSync } from 'fs'
@@ -70,7 +97,7 @@ seq:
 const binaryData = readFileSync('data.bin')
 
 // Parse!
-const result = await parse(ksyDefinition, binaryData)
+const result = parse(ksyDefinition, binaryData)
 
 console.log(result.version) // Access parsed fields
 console.log(result.name)
@@ -78,26 +105,26 @@ console.log(result.name)
 
 ## Current Status
 
-**Phase 2 (Core Features) - In Progress**
+**Version:** 0.7.0  
+**Status:** Production Ready 🚀  
+**Completion:** ~95% toward v1.0.0
 
-### Completed
-- [x] Project setup and configuration
-- [x] KaitaiStream implementation (all primitive types)
-- [x] KSY parser with validation
-- [x] Type interpreter (basic parsing)
-- [x] Support for fixed-size structures
-- [x] Nested user-defined types
-- [x] Repetitions (expr, eos)
-- [x] Contents validation
-- [x] Comprehensive tests (58 tests passing)
+### ✅ Fully Implemented
+- **Core Runtime** - Complete binary stream reader with all primitive types
+- **KSY Parser** - Full YAML parser with schema validation
+- **Type Interpreter** - Execute schemas against binary data
+- **Expression Evaluator** - Complete Kaitai expression language support
+- **Advanced Features** - Conditionals, enums, repetitions, instances, switch/case
+- **CLI Tool** - Command-line utility for parsing binary files
+- **Testing** - 100+ comprehensive tests, all passing
+- **Documentation** - Complete user and developer documentation
 
-### In Progress
-- [ ] Expression evaluator
-- [ ] Conditionals (if)
-- [ ] Enums
-- [ ] repeat-until
+### 🔄 Remaining for v1.0.0
+- Substream processing (zlib, encryption)
+- Type imports across files
+- Additional performance optimizations
 
-See [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for detailed roadmap and [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
+See [docs/development/PROGRESS.md](./docs/development/PROGRESS.md) for detailed progress tracking and [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
 
 ## API Documentation
 
@@ -130,6 +157,30 @@ const value = stream.readU4le() // Read 4-byte unsigned little-endian integer
 ```
 
 See [API Documentation](./docs/api.md) for complete reference (coming soon).
+
+## CLI Reference
+
+The `kaitai` command-line tool allows you to parse binary files without writing code.
+
+```bash
+# Basic usage
+kaitai <ksy-file> <binary-file> [options]
+
+# Examples
+kaitai format.ksy data.bin                    # Parse and display
+kaitai format.ksy data.bin -o result.json     # Save to file
+kaitai format.ksy data.bin --field version    # Extract field
+kaitai format.ksy data.bin --quiet            # Quiet mode
+```
+
+**📖 Full CLI Documentation:** [docs/CLI.md](./docs/CLI.md)
+
+**Quick Reference:**
+- `-o, --output <file>` - Write to file
+- `--field <path>` - Extract specific field
+- `-q, --quiet` - Suppress progress messages
+- `-h, --help` - Show help
+- See [docs/CLI.md](./docs/CLI.md) for all options and examples
 
 ## Examples
 
@@ -167,30 +218,42 @@ pnpm format
 
 ## Roadmap
 
-### Phase 1: Foundation (MVP) - ✅ Complete
-- ✅ Basic parsing capability
-- ✅ Fixed-size structures
-- ✅ Primitive types (u1-u8, s1-s8, f4, f8)
-- ✅ String encoding support
+### ✅ Phase 1: Foundation (v0.1.0) - Complete
+- ✅ Binary stream reader (KaitaiStream)
+- ✅ All primitive types (u1-u8, s1-s8, f4, f8)
+- ✅ String encoding (UTF-8, ASCII, Latin-1, UTF-16)
 - ✅ Byte arrays and positioning
+- ✅ Error handling system
 
-### Phase 2: Core Features - ✅ Complete
+### ✅ Phase 2: Core Features (v0.2.0-v0.4.0) - Complete
+- ✅ KSY parser with validation
+- ✅ Type interpreter
 - ✅ Expression evaluator (full Kaitai expression language)
 - ✅ Conditionals (if attribute)
 - ✅ Enums with expression access
 - ✅ Repetitions (repeat-expr, repeat-until, repeat-eos)
-- ✅ Calculated sizes and positions
+- ✅ Nested user-defined types
 
-### Phase 3: Advanced Features - 🔄 In Progress (30% Complete)
+### ✅ Phase 3: Advanced Features (v0.5.0-v0.6.0) - Complete
 - ✅ Switch/case type selection
-- ✅ Instances (lazy-evaluated fields)
-- ⏳ Substreams and processing
-- ⏳ Parametric types
-- ⏳ Bit-sized integers
-- ⏳ Type imports
-- ⏳ Performance optimizations
+- ✅ Instances (lazy-evaluated fields with caching)
+- ✅ Parametric types
+- ✅ Positioned reads (pos attribute)
+- ✅ Sized substreams
+- ✅ Processing framework (ready for zlib/encryption)
 
-**Current Status:** ~85% complete toward v1.0.0
+### ✅ Phase 4: CLI & Polish (v0.7.0) - Complete
+- ✅ Command-line interface
+- ✅ Documentation reorganization
+- ✅ Production-ready release
+
+### 🔄 Phase 5: v1.0.0 - Final Polish (In Progress)
+- ⏳ Processing implementations (zlib, encryption)
+- ⏳ Type imports across files
+- ⏳ Additional performance optimizations
+- ⏳ Extended format testing
+
+**Current Status:** Production-ready, ~95% complete toward v1.0.0
 
 ## Contributing
 
