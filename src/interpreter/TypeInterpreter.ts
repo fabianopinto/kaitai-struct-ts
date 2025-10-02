@@ -693,7 +693,8 @@ export class TypeInterpreter {
     data: Uint8Array,
     process: string | Record<string, unknown>
   ): Uint8Array {
-    const processType = typeof process === 'string' ? process : process.algorithm
+    const processType =
+      typeof process === 'string' ? process : process.algorithm
 
     // For now, return data as-is with a note that processing isn't fully implemented
     // Full implementation would require zlib, encryption libraries, etc.

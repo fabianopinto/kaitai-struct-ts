@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-10-02
+
+### 🎉 Documentation & Examples - Final Polish
+
+Final documentation improvements completing the project to 100%.
+
+### Added
+
+- ✅ **EXAMPLES.md** - Comprehensive examples documentation
+  - Quick start guide
+  - Real-world format examples (PNG, ZIP, ELF, GIF)
+  - Links to 100+ official format definitions
+  - Links to sample binary files
+  - Advanced feature examples
+  - Resource links
+
+### Changed
+
+- ✅ **README.md** - Reorganized for better flow
+  - Removed outdated sections
+  - Consolidated duplicate content
+  - Better logical structure
+  - Added link to PROGRESS.md
+
+### Notes
+- Phase 3: 100% complete
+- Overall progress: 100% - Production ready!
+- All major features implemented and documented
+
 ## [0.5.0] - 2025-10-02
 
 ### 🎉 Phase 3 Continued - Processing, Parametric Types & Performance
@@ -259,7 +288,8 @@ This release completes Phase 1 (MVP) of the project roadmap. The KaitaiStream im
 - Phase 2: KSY parser, type interpreter, expression evaluator
 - Phase 3: Advanced features, full Kaitai Struct spec compliance
 
-[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/fabianopinto/kaitai-struct-ts/compare/v0.2.0...v0.3.0
