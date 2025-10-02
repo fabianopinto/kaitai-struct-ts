@@ -29,20 +29,25 @@ pnpm format
 
 ```
 src/
-├── stream/          ✅ Binary stream reader (DONE)
-├── parser/          ⏳ KSY YAML parser (NEXT)
-├── interpreter/     ⏳ Type interpreter
-├── expression/      ⏳ Expression evaluator
-├── types/           ⏳ Type definitions
-└── utils/           ✅ Errors & encoding (DONE)
+├── stream/          ✅ Binary stream reader
+├── parser/          ✅ KSY YAML parser
+├── interpreter/     ✅ Type interpreter
+├── expression/      ✅ Expression evaluator
+├── cli.ts           ✅ CLI utility
+└── utils/           ✅ Errors & encoding
 
 test/
-├── unit/            🔄 Unit tests (IN PROGRESS)
-├── integration/     ⏳ Integration tests
-└── fixtures/        ⏳ Test data
+├── unit/            ✅ Unit tests (100+ tests)
+├── integration/     ✅ Integration tests
+├── cli.test.ts      ✅ CLI tests (15 tests)
+└── fixtures/        ✅ Test data
 
 docs/
-└── ARCHITECTURE.md  ✅ Architecture diagrams (DONE)
+├── ARCHITECTURE.md  ✅ Architecture diagrams
+├── CLI.md           ✅ CLI documentation
+├── README.md        ✅ Documentation index
+├── cli/             ✅ CLI-specific docs
+└── development/     ✅ Development docs
 ```
 
 ## 🔧 Available Commands
@@ -68,31 +73,36 @@ docs/
 | File | Purpose |
 |------|---------|
 | `README.md` | Project overview and quick start |
-| `PROJECT_DESIGN.md` | Complete design specification |
-| `ARCHITECTURE.md` | Architecture with Mermaid diagrams |
+| `CHANGELOG.md` | Version history and release notes |
 | `CONTRIBUTING.md` | Development guidelines |
-| `PROGRESS.md` | Detailed progress tracking |
-| `SUMMARY.md` | Project summary |
+| `EXAMPLES.md` | Format examples and usage patterns |
 | `QUICKREF.md` | This file - quick reference |
-| `CHANGELOG.md` | Version history |
+| `docs/CLI.md` | Complete CLI documentation |
+| `docs/ARCHITECTURE.md` | Architecture with Mermaid diagrams |
+| `docs/development/PROJECT_DESIGN.md` | Complete design specification |
+| `docs/development/PROGRESS.md` | Detailed progress tracking |
+| `docs/README.md` | Documentation index |
 
 ## 🎯 Current Status
 
-**Phase:** 1 (MVP) - In Progress
-**Completion:** ~25%
+**Version:** 0.7.0  
+**Status:** Production Ready 🚀  
+**Completion:** ~95% toward v1.0.0
 
 ### ✅ Completed
-- Project setup
-- KaitaiStream implementation
-- Error handling
-- String encoding
-- Unit tests for stream
-- Complete documentation
+- ✅ Core Runtime (KaitaiStream, all primitive types)
+- ✅ KSY Parser (full YAML parser with validation)
+- ✅ Type Interpreter (execute schemas)
+- ✅ Expression Evaluator (complete Kaitai expression language)
+- ✅ Advanced Features (conditionals, enums, repetitions, instances, switch/case)
+- ✅ CLI Tool (command-line utility)
+- ✅ Testing (100+ comprehensive tests)
+- ✅ Documentation (complete user and developer docs)
 
-### ⏳ Next Up
-- KSY parser implementation
-- Type interpreter
-- Integration tests
+### ⏳ Remaining for v1.0.0
+- Processing implementations (zlib, encryption)
+- Type imports across files
+- Additional performance optimizations
 
 ## 🔑 Key Classes
 
@@ -397,29 +407,76 @@ pnpm test:coverage
    - Update diagrams when changing architecture
    - Update PROGRESS.md when completing tasks
 
-## 🎯 Phase 1 Checklist
+## 🎯 Release Checklist
 
-- [x] Project setup
+### Phase 1-4 (v0.1.0 - v0.7.0) ✅ Complete
+- [x] Project setup and infrastructure
 - [x] KaitaiStream implementation
-- [x] Error classes
-- [x] String encoding
-- [x] Unit tests for stream
-- [x] Documentation
-- [ ] KSY parser
-- [ ] Type interpreter
-- [ ] Integration tests
-- [ ] Examples
-- [ ] v0.1.0 release
+- [x] Error classes and string encoding
+- [x] KSY parser with validation
+- [x] Type interpreter
+- [x] Expression evaluator
+- [x] Advanced features (enums, conditionals, instances, switch/case)
+- [x] CLI utility
+- [x] Comprehensive testing (100+ tests)
+- [x] Complete documentation
+
+### Phase 5 (v1.0.0) 🔄 In Progress
+- [ ] Processing implementations (zlib, encryption)
+- [ ] Type imports across files
+- [ ] Extended format testing
+- [ ] Performance optimizations
+- [ ] v1.0.0 release
 
 ## 📞 Need Help?
 
-1. Check `PROJECT_DESIGN.md` for architecture details
-2. Check `ARCHITECTURE.md` for diagrams
-3. Check `CONTRIBUTING.md` for development guidelines
-4. Check existing tests for examples
-5. Open an issue on GitHub (when repository is created)
+1. Check `README.md` for project overview
+2. Check `docs/CLI.md` for CLI usage
+3. Check `docs/ARCHITECTURE.md` for architecture diagrams
+4. Check `docs/development/PROJECT_DESIGN.md` for design details
+5. Check `CONTRIBUTING.md` for development guidelines
+6. Check `EXAMPLES.md` for format examples
+7. Check existing tests for code examples
+8. Open an issue on [GitHub](https://github.com/fabianopinto/kaitai-struct-ts/issues)
+
+## 🚀 Quick Start
+
+### Library Usage
+```typescript
+import { parse } from '@k67/kaitai-struct-ts'
+
+const ksyDefinition = `
+meta:
+  id: my_format
+  endian: le
+seq:
+  - id: magic
+    type: u4
+  - id: version
+    type: u2
+`
+
+const binaryData = new Uint8Array([0x4D, 0x59, 0x46, 0x4D, 0x01, 0x00])
+const result = parse(ksyDefinition, binaryData)
+console.log(result.version) // 1
+```
+
+### CLI Usage
+```bash
+# Parse binary file
+kaitai format.ksy data.bin
+
+# Save to file
+kaitai format.ksy data.bin -o output.json
+
+# Extract field
+kaitai format.ksy data.bin --field version --quiet
+
+# Get help
+kaitai --help
+```
 
 ---
 
-**Last Updated:** 2025-10-01
-**Version:** 0.1.0-dev
+**Last Updated:** 2025-10-02  
+**Version:** 0.7.0

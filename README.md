@@ -105,26 +105,26 @@ console.log(result.name)
 
 ## Current Status
 
-**Phase 2 (Core Features) - In Progress**
+**Version:** 0.7.0  
+**Status:** Production Ready 🚀  
+**Completion:** ~95% toward v1.0.0
 
-### Completed
-- [x] Project setup and configuration
-- [x] KaitaiStream implementation (all primitive types)
-- [x] KSY parser with validation
-- [x] Type interpreter (basic parsing)
-- [x] Support for fixed-size structures
-- [x] Nested user-defined types
-- [x] Repetitions (expr, eos)
-- [x] Contents validation
-- [x] Comprehensive tests (58 tests passing)
+### ✅ Fully Implemented
+- **Core Runtime** - Complete binary stream reader with all primitive types
+- **KSY Parser** - Full YAML parser with schema validation
+- **Type Interpreter** - Execute schemas against binary data
+- **Expression Evaluator** - Complete Kaitai expression language support
+- **Advanced Features** - Conditionals, enums, repetitions, instances, switch/case
+- **CLI Tool** - Command-line utility for parsing binary files
+- **Testing** - 100+ comprehensive tests, all passing
+- **Documentation** - Complete user and developer documentation
 
-### In Progress
-- [ ] Expression evaluator
-- [ ] Conditionals (if)
-- [ ] Enums
-- [ ] repeat-until
+### 🔄 Remaining for v1.0.0
+- Substream processing (zlib, encryption)
+- Type imports across files
+- Additional performance optimizations
 
-See [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) for detailed roadmap and [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
+See [docs/development/PROGRESS.md](./docs/development/PROGRESS.md) for detailed progress tracking and [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
 
 ## API Documentation
 
@@ -218,30 +218,42 @@ pnpm format
 
 ## Roadmap
 
-### Phase 1: Foundation (MVP) - ✅ Complete
-- ✅ Basic parsing capability
-- ✅ Fixed-size structures
-- ✅ Primitive types (u1-u8, s1-s8, f4, f8)
-- ✅ String encoding support
+### ✅ Phase 1: Foundation (v0.1.0) - Complete
+- ✅ Binary stream reader (KaitaiStream)
+- ✅ All primitive types (u1-u8, s1-s8, f4, f8)
+- ✅ String encoding (UTF-8, ASCII, Latin-1, UTF-16)
 - ✅ Byte arrays and positioning
+- ✅ Error handling system
 
-### Phase 2: Core Features - ✅ Complete
+### ✅ Phase 2: Core Features (v0.2.0-v0.4.0) - Complete
+- ✅ KSY parser with validation
+- ✅ Type interpreter
 - ✅ Expression evaluator (full Kaitai expression language)
 - ✅ Conditionals (if attribute)
 - ✅ Enums with expression access
 - ✅ Repetitions (repeat-expr, repeat-until, repeat-eos)
-- ✅ Calculated sizes and positions
+- ✅ Nested user-defined types
 
-### Phase 3: Advanced Features - 🔄 In Progress (30% Complete)
+### ✅ Phase 3: Advanced Features (v0.5.0-v0.6.0) - Complete
 - ✅ Switch/case type selection
-- ✅ Instances (lazy-evaluated fields)
-- ⏳ Substreams and processing
-- ⏳ Parametric types
-- ⏳ Bit-sized integers
-- ⏳ Type imports
-- ⏳ Performance optimizations
+- ✅ Instances (lazy-evaluated fields with caching)
+- ✅ Parametric types
+- ✅ Positioned reads (pos attribute)
+- ✅ Sized substreams
+- ✅ Processing framework (ready for zlib/encryption)
 
-**Current Status:** ~85% complete toward v1.0.0
+### ✅ Phase 4: CLI & Polish (v0.7.0) - Complete
+- ✅ Command-line interface
+- ✅ Documentation reorganization
+- ✅ Production-ready release
+
+### 🔄 Phase 5: v1.0.0 - Final Polish (In Progress)
+- ⏳ Processing implementations (zlib, encryption)
+- ⏳ Type imports across files
+- ⏳ Additional performance optimizations
+- ⏳ Extended format testing
+
+**Current Status:** Production-ready, ~95% complete toward v1.0.0
 
 ## Contributing
 
