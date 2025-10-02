@@ -46,6 +46,33 @@ yarn add @k67/kaitai-struct-ts
 
 ## Quick Start
 
+### CLI Usage
+
+Parse binary files directly from the command line:
+
+```bash
+# Using npx (no installation needed)
+npx @k67/kaitai-struct-ts format.ksy data.bin
+
+# Or with pnpm
+pnpx @k67/kaitai-struct-ts format.ksy data.bin
+
+# After installing globally
+npm install -g @k67/kaitai-struct-ts
+kaitai format.ksy data.bin
+
+# Save output to file
+kaitai format.ksy data.bin -o output.json
+
+# Extract specific field
+kaitai format.ksy data.bin --field header.version
+
+# Get help
+kaitai --help
+```
+
+### Library Usage
+
 ```typescript
 import { parse, KaitaiStream } from '@k67/kaitai-struct-ts'
 import { readFileSync } from 'fs'
@@ -70,7 +97,7 @@ seq:
 const binaryData = readFileSync('data.bin')
 
 // Parse!
-const result = await parse(ksyDefinition, binaryData)
+const result = parse(ksyDefinition, binaryData)
 
 console.log(result.version) // Access parsed fields
 console.log(result.name)
@@ -97,7 +124,7 @@ console.log(result.name)
 - [ ] Enums
 - [ ] repeat-until
 
-See [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for detailed roadmap and [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
+See [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) for detailed roadmap and [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
 
 ## API Documentation
 
@@ -130,6 +157,30 @@ const value = stream.readU4le() // Read 4-byte unsigned little-endian integer
 ```
 
 See [API Documentation](./docs/api.md) for complete reference (coming soon).
+
+## CLI Reference
+
+The `kaitai` command-line tool allows you to parse binary files without writing code.
+
+```bash
+# Basic usage
+kaitai <ksy-file> <binary-file> [options]
+
+# Examples
+kaitai format.ksy data.bin                    # Parse and display
+kaitai format.ksy data.bin -o result.json     # Save to file
+kaitai format.ksy data.bin --field version    # Extract field
+kaitai format.ksy data.bin --quiet            # Quiet mode
+```
+
+**📖 Full CLI Documentation:** [docs/CLI.md](./docs/CLI.md)
+
+**Quick Reference:**
+- `-o, --output <file>` - Write to file
+- `--field <path>` - Extract specific field
+- `-q, --quiet` - Suppress progress messages
+- `-h, --help` - Show help
+- See [docs/CLI.md](./docs/CLI.md) for all options and examples
 
 ## Examples
 

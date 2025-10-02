@@ -7,6 +7,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2025-10-02
+
+### 🎉 CLI Utility - Command-Line Interface
+
+Added a complete command-line interface for parsing binary files without writing code.
+
+### Added
+
+#### CLI Executable
+- ✅ **`kaitai` command** - Parse binary files from command line
+- ✅ Available via `npx @k67/kaitai-struct-ts` or global install
+- ✅ Full argument parsing using Node.js built-in `util.parseArgs`
+- ✅ Zero external dependencies for CLI
+
+#### CLI Features
+- ✅ Parse binary files with .ksy definitions
+- ✅ Output as JSON or YAML
+- ✅ Pretty-print or compact JSON output
+- ✅ Extract specific fields with dot notation (`--field header.version`)
+- ✅ Write output to file (`-o output.json`)
+- ✅ Quiet mode for scripting (`--quiet`)
+- ✅ Schema validation options (`--strict`, `--no-validate`)
+- ✅ Comprehensive help (`--help`) and version (`--version`)
+
+#### CLI Options
+- `-o, --output <file>` - Write to file instead of stdout
+- `-p, --pretty` - Pretty-print JSON (default for stdout)
+- `--no-pretty` - Compact JSON output
+- `-f, --format <format>` - Output format: json or yaml
+- `--field <path>` - Extract specific field using dot notation
+- `--no-validate` - Skip schema validation
+- `--strict` - Treat schema warnings as errors
+- `-q, --quiet` - Suppress progress messages
+- `-h, --help` - Show help message
+- `-v, --version` - Show version number
+
+#### Exit Codes
+- `0` - Success
+- `1` - General error (file not found, parse error)
+- `2` - Invalid arguments or usage
+- `3` - Schema validation error
+
+#### Testing
+- ✅ 15 comprehensive CLI integration tests
+- ✅ All tests passing
+- ✅ Tests cover: basic functionality, output options, field extraction, error handling, validation, quiet mode
+
+#### Documentation
+- ✅ Updated README.md with CLI usage section
+- ✅ CLI examples and use cases
+- ✅ Complete CLI reference documentation
+
+### Changed
+
+#### Build Configuration
+- Updated `tsup.config.ts` to build CLI separately
+- CLI built as CommonJS only (no ESM needed)
+- Shebang preserved in CLI executable
+
+#### Package Configuration
+- Added `bin` field in `package.json` mapping `kaitai` to `dist/cli.js`
+- Updated ESLint config to support Node.js globals (console, process, Buffer)
+
+### Technical Details
+- Uses Node.js 18+ built-in APIs (no external CLI framework)
+- Follows Unix conventions (stderr for messages, stdout for data)
+- Proper error handling with appropriate exit codes
+- No breaking changes to library API
+
 ## [0.6.0] - 2025-10-02
 
 ### 🎉 Documentation & Examples - Final Polish
