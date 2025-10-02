@@ -25,7 +25,7 @@ interface CliOptions {
   version?: boolean
 }
 
-const VERSION = '0.6.0'
+const VERSION = '0.7.0'
 
 const HELP_TEXT = `
 kaitai - Parse binary files using Kaitai Struct definitions
