@@ -1,5 +1,5 @@
 ---
-'kaitai-struct-ts': minor
+'@k67/kaitai-struct-ts': minor
 ---
 
 # v0.2.0 - Phase 2 Core Implementation

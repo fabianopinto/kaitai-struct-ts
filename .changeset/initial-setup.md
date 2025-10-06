@@ -1,5 +1,5 @@
 ---
-'kaitai-struct-ts': minor
+'@k67/kaitai-struct-ts': minor
 ---
 
 # v0.1.0 - Phase 1 Foundation Release
