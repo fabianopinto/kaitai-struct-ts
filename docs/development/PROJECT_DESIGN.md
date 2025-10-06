@@ -12,13 +12,16 @@
 ## 1. Project Goals
 
 ### Primary Goal
+
 Create a **runtime interpreter** for Kaitai Struct definitions in TypeScript that can:
+
 - Parse `.ksy` (YAML) format definitions at runtime
 - Interpret binary data according to those definitions
 - Return structured JavaScript/TypeScript objects
 - Work in both Node.js and browser environments
 
 ### Secondary Goals
+
 - Provide excellent TypeScript type definitions
 - Maintain high code quality and test coverage
 - Follow modern TypeScript best practices
@@ -33,6 +36,7 @@ Create a **runtime interpreter** for Kaitai Struct definitions in TypeScript tha
 ### Functional Requirements
 
 #### Phase 1 - MVP (Minimum Viable Product)
+
 1. **KaitaiStream** - Binary data reader
    - Read bytes, integers (signed/unsigned, various sizes)
    - Support big-endian and little-endian
@@ -58,13 +62,14 @@ Create a **runtime interpreter** for Kaitai Struct definitions in TypeScript tha
    - Meta information (id, endian)
 
 #### Phase 2 - Core Features
+
 1. **Expression Evaluator**
-   - Arithmetic operators (+, -, *, /, %)
+   - Arithmetic operators (+, -, \*, /, %)
    - Relational operators (<, <=, >, >=, ==, !=)
    - Bitwise operators (<<, >>, &, |, ^)
    - Logical operators (and, or, not)
    - Ternary operator (? :)
-   - Field references (_root, _parent, _io)
+   - Field references (\_root, \_parent, \_io)
 
 2. **Conditionals and Control Flow**
    - if conditions
@@ -82,6 +87,7 @@ Create a **runtime interpreter** for Kaitai Struct definitions in TypeScript tha
    - value instances (calculated fields)
 
 #### Phase 3 - Advanced Features
+
 1. **Substreams and Processing**
    - size limits
    - io (custom streams)
@@ -161,8 +167,10 @@ Create a **runtime interpreter** for Kaitai Struct definitions in TypeScript tha
 ### Core Components
 
 #### 1. KaitaiStream
+
 **Purpose:** Low-level binary data reading
 **Responsibilities:**
+
 - Manage buffer and position
 - Read primitive types (integers, floats, bytes)
 - Handle endianness
@@ -170,6 +178,7 @@ Create a **runtime interpreter** for Kaitai Struct definitions in TypeScript tha
 - Alignment and padding
 
 **Key Methods:**
+
 ```typescript
 class KaitaiStream {
   constructor(buffer: ArrayBuffer | Uint8Array)
@@ -203,21 +212,35 @@ class KaitaiStream {
   // Reading complex types
   readBytes(length: number): Uint8Array
   readBytesFull(): Uint8Array
-  readBytesterm(term: number, include: boolean, consume: boolean, eosError: boolean): Uint8Array
+  readBytesterm(
+    term: number,
+    include: boolean,
+    consume: boolean,
+    eosError: boolean
+  ): Uint8Array
   readStr(length: number, encoding: string): string
-  readStrz(encoding: string, term: number, include: boolean, consume: boolean, eosError: boolean): string
+  readStrz(
+    encoding: string,
+    term: number,
+    include: boolean,
+    consume: boolean,
+    eosError: boolean
+  ): string
 }
 ```
 
 #### 2. KSY Parser
+
 **Purpose:** Parse YAML .ksy files into internal schema representation
 **Responsibilities:**
+
 - Load and parse YAML
 - Validate schema structure
 - Build typed AST
 - Resolve references
 
 **Schema AST Structure:**
+
 ```typescript
 interface KsySchema {
   meta: {
@@ -251,32 +274,42 @@ interface AttributeSpec {
 ```
 
 #### 3. Type Interpreter
+
 **Purpose:** Execute schema against binary data
 **Responsibilities:**
+
 - Traverse schema definition
 - Read data using KaitaiStream
 - Handle conditionals and repetitions
 - Build result objects
-- Manage context (_root, _parent, _io)
+- Manage context (\_root, \_parent, \_io)
 
 **Key Methods:**
+
 ```typescript
 class TypeInterpreter {
   parse(schema: KsySchema, stream: KaitaiStream, root?: any, parent?: any): any
-  parseAttribute(attr: AttributeSpec, stream: KaitaiStream, context: Context): any
+  parseAttribute(
+    attr: AttributeSpec,
+    stream: KaitaiStream,
+    context: Context
+  ): any
   parseType(typeName: string, stream: KaitaiStream, context: Context): any
 }
 ```
 
 #### 4. Expression Evaluator
+
 **Purpose:** Evaluate Kaitai Struct expressions
 **Responsibilities:**
+
 - Parse expression strings
 - Evaluate with context
 - Support all operators
 - Handle field references
 
 **Expression Grammar:**
+
 ```
 expression := ternary
 ternary := logical ('?' expression ':' expression)?
@@ -294,10 +327,12 @@ primary := literal | identifier | '(' expression ')' | methodCall
 ## 4. Technology Stack
 
 ### Core Dependencies
+
 - **yaml** - YAML parsing for .ksy files
 - **text-encoding** or **iconv-lite** - String encoding support
 
 ### Development Dependencies
+
 - **TypeScript** 5.x - Language
 - **tsup** - Build tool (fast, simple)
 - **vitest** - Testing framework
@@ -308,6 +343,7 @@ primary := literal | identifier | '(' expression ')' | methodCall
 ### Build Configuration
 
 #### tsup.config.ts
+
 ```typescript
 import { defineConfig } from 'tsup'
 
@@ -325,6 +361,7 @@ export default defineConfig({
 ```
 
 #### TypeScript Configuration
+
 - Target: ES2020
 - Module: ESNext
 - Strict mode enabled
@@ -402,9 +439,11 @@ kaitai-struct-ts/
 ## 6. Development Phases
 
 ### Phase 1: Foundation (MVP)
+
 **Goal:** Basic parsing capability
 **Duration:** ~2-3 weeks
 **Deliverables:**
+
 - [x] Project setup and configuration
 - [ ] KaitaiStream implementation
 - [ ] KSY parser (basic)
@@ -414,15 +453,18 @@ kaitai-struct-ts/
 - [ ] Initial documentation
 
 **Success Criteria:**
+
 - Can parse simple .ksy files
 - Can read fixed-size binary structures
 - 70%+ test coverage
 - Documentation exists
 
 ### Phase 2: Core Features
+
 **Goal:** Full expression support and control flow
 **Duration:** ~3-4 weeks
 **Deliverables:**
+
 - [ ] Expression evaluator
 - [ ] Conditionals (if)
 - [ ] Enums
@@ -432,15 +474,18 @@ kaitai-struct-ts/
 - [ ] Examples
 
 **Success Criteria:**
+
 - Can parse complex formats (GIF, PNG, etc.)
 - Expression language fully functional
 - 80%+ test coverage
 - Multiple working examples
 
 ### Phase 3: Advanced Features
+
 **Goal:** Complete spec compliance
 **Duration:** ~4-5 weeks
 **Deliverables:**
+
 - [ ] Substreams
 - [ ] Processing (compression, etc.)
 - [ ] Bit-sized integers
@@ -449,15 +494,18 @@ kaitai-struct-ts/
 - [ ] Full documentation
 
 **Success Criteria:**
+
 - Can parse any standard .ksy format
 - Performance acceptable for typical use cases
 - 85%+ test coverage
 - Complete API documentation
 
 ### Phase 4: Publishing and Maintenance
+
 **Goal:** Public release
 **Duration:** Ongoing
 **Deliverables:**
+
 - [ ] GitHub repository setup
 - [ ] NPM package publishing
 - [ ] CI/CD pipeline
@@ -469,17 +517,20 @@ kaitai-struct-ts/
 ## 7. Testing Strategy
 
 ### Unit Tests
+
 - Each component tested in isolation
 - Mock dependencies
 - Cover edge cases
 - Fast execution
 
 ### Integration Tests
+
 - Test with real .ksy files from Kaitai format gallery
 - Test with real binary data
 - Verify output correctness
 
 ### Test Formats (Priority Order)
+
 1. Simple fixed structures (custom)
 2. GIF (image format)
 3. ZIP (archive format)
@@ -487,6 +538,7 @@ kaitai-struct-ts/
 5. PNG (image format)
 
 ### Coverage Goals
+
 - Phase 1: 70%+
 - Phase 2: 80%+
 - Phase 3: 85%+
@@ -526,6 +578,7 @@ class EOFError extends KaitaiError {}
 ## 9. Documentation Plan
 
 ### README.md
+
 - Project overview
 - Quick start
 - Installation
@@ -533,11 +586,13 @@ class EOFError extends KaitaiError {}
 - Links to detailed docs
 
 ### API Documentation
+
 - Generated from JSDoc comments
 - All public classes and methods
 - Examples for each major feature
 
 ### Guides
+
 - Getting Started
 - Advanced Usage
 - Expression Language Reference
@@ -545,6 +600,7 @@ class EOFError extends KaitaiError {}
 - Performance Tips
 
 ### Examples
+
 - Basic struct parsing
 - Working with enums
 - Conditional parsing
@@ -556,12 +612,15 @@ class EOFError extends KaitaiError {}
 ## 10. Release Strategy
 
 ### Versioning
+
 Follow Semantic Versioning (semver):
+
 - 0.1.0 - Phase 1 complete (MVP)
 - 0.2.0 - Phase 2 complete (Core features)
 - 1.0.0 - Phase 3 complete (Full spec)
 
 ### NPM Publishing
+
 - Package name: `kaitai-struct-ts` or `@fabianopinto/kaitai-struct-ts`
 - Public package
 - MIT license
@@ -569,6 +628,7 @@ Follow Semantic Versioning (semver):
 - Exclude: src/, test/, examples/
 
 ### GitHub Repository
+
 - Repository: github.com/fabianopinto/kaitai-struct-ts
 - Branch strategy: main + develop
 - PR reviews required
@@ -581,6 +641,7 @@ Follow Semantic Versioning (semver):
 ## 11. Performance Considerations
 
 ### Optimization Strategies
+
 1. **Lazy Evaluation**
    - Only parse instances when accessed
    - Cache computed values
@@ -599,6 +660,7 @@ Follow Semantic Versioning (semver):
    - Batch reads where possible
 
 ### Performance Targets
+
 - Parse 1MB file in < 100ms (simple format)
 - Parse 10MB file in < 1s (complex format)
 - Memory overhead < 2x file size
@@ -608,6 +670,7 @@ Follow Semantic Versioning (semver):
 ## 12. Future Enhancements
 
 ### Post-1.0 Features
+
 - Code generation (compile .ksy to TypeScript)
 - CLI tool
 - Browser-optimized bundle
@@ -622,12 +685,14 @@ Follow Semantic Versioning (semver):
 ## 13. References
 
 ### Kaitai Struct Resources
+
 - Official Website: https://kaitai.io/
 - User Guide: https://doc.kaitai.io/user_guide.html
 - Format Gallery: https://formats.kaitai.io/
 - GitHub: https://github.com/kaitai-io/kaitai_struct
 
 ### Similar Projects
+
 - kaitai-struct-compiler (Java) - Official compiler
 - kaitai-struct (JavaScript) - Official runtime
 - kaitai-struct-python-runtime (Python) - Official runtime
@@ -637,11 +702,13 @@ Follow Semantic Versioning (semver):
 ## 14. Decision Log
 
 ### 2025-10-01: Initial Design
+
 - **Decision:** Build runtime interpreter instead of code generator
 - **Rationale:** Matches project goal of "interpret any definition"
 - **Trade-offs:** Slower than compiled, but more flexible
 
 ### 2025-10-01: Technology Choices
+
 - **Decision:** Use tsup for building
 - **Rationale:** Fast, simple, good DX
 - **Alternatives:** tsc, rollup, esbuild
@@ -651,6 +718,7 @@ Follow Semantic Versioning (semver):
 - **Alternatives:** jest, mocha
 
 ### 2025-10-01: Architecture
+
 - **Decision:** Separate parser, interpreter, and evaluator
 - **Rationale:** Clear separation of concerns, testable
 - **Trade-offs:** More complex, but maintainable

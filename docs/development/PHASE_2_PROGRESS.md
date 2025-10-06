@@ -9,6 +9,7 @@
 ## ✅ Completed
 
 ### 1. KSY Schema Type Definitions (`src/parser/schema.ts`)
+
 - ✅ Complete TypeScript interfaces for .ksy structure
 - ✅ `KsySchema` - Root schema interface
 - ✅ `MetaSpec` - Metadata section
@@ -22,6 +23,7 @@
 - ✅ Complete JSDoc documentation
 
 ### 2. KSY Parser (`src/parser/KsyParser.ts`)
+
 - ✅ YAML parsing using `yaml` library
 - ✅ Schema validation with detailed error messages
 - ✅ Validation of meta section (id, endian, encoding)
@@ -36,8 +38,9 @@
 - ✅ Complete JSDoc documentation
 
 ### 3. Execution Context (`src/interpreter/Context.ts`)
+
 - ✅ Context class for managing parse state
-- ✅ Access to _io (stream), _root, _parent
+- ✅ Access to \_io (stream), \_root, \_parent
 - ✅ Current object tracking
 - ✅ Parent stack for nested types
 - ✅ Field resolution (resolve method)
@@ -46,6 +49,7 @@
 - ✅ Complete JSDoc documentation
 
 ### 4. Type Interpreter (`src/interpreter/TypeInterpreter.ts`)
+
 - ✅ Main interpreter class
 - ✅ Parse method for executing schemas
 - ✅ Attribute parsing with context
@@ -67,6 +71,7 @@
 - ✅ Complete JSDoc documentation
 
 ### 5. Main API (`src/index.ts`)
+
 - ✅ Convenient `parse()` function
 - ✅ Export all main classes
 - ✅ Export type definitions
@@ -75,6 +80,7 @@
 - ✅ Complete JSDoc documentation
 
 ### 6. Integration Tests (`test/integration/basic-parsing.test.ts`)
+
 - ✅ Simple fixed-size structures
 - ✅ Big-endian and little-endian
 - ✅ Signed and unsigned integers
@@ -93,27 +99,30 @@
 ## ⏳ Pending (Remaining Phase 2 Work)
 
 ### Expression Evaluator
+
 - [ ] Lexer for tokenizing expressions
 - [ ] Parser for building expression AST
 - [ ] Evaluator for executing expressions
 - [ ] Support for all operators:
-  - [ ] Arithmetic (+, -, *, /, %)
+  - [ ] Arithmetic (+, -, \*, /, %)
   - [ ] Relational (<, <=, >, >=, ==, !=)
   - [ ] Bitwise (<<, >>, &, |, ^)
   - [ ] Logical (and, or, not)
   - [ ] Ternary (? :)
-- [ ] Field references (_root, _parent, _io, field names)
+- [ ] Field references (\_root, \_parent, \_io, field names)
 - [ ] Method calls (e.g., .length, .to_i)
 
 ### Conditionals and Enums
+
 - [ ] if conditions (conditional parsing)
 - [ ] Enum support (named integer constants)
 - [ ] Switch/case type selection
 - [ ] Expression-based endianness
 
 ### Advanced Repetitions
+
 - [ ] repeat-until with expression evaluation
-- [ ] _index support in expressions
+- [ ] \_index support in expressions
 
 ---
 
@@ -128,6 +137,7 @@ Lint Status:           ✅ Clean
 ```
 
 ### File Breakdown
+
 ```
 src/parser/
 ├── schema.ts          ~400 lines (types + helpers)
@@ -150,6 +160,7 @@ test/integration/
 ## 🎯 What Works Now
 
 ### Fully Functional
+
 1. **Parse simple .ksy files** - YAML to schema objects
 2. **Validate schemas** - Comprehensive validation with errors/warnings
 3. **Parse binary data** - Execute schemas against streams
@@ -162,6 +173,7 @@ test/integration/
 10. **Sized reads** - Fixed size and size-eos
 
 ### Example Usage
+
 ```typescript
 import { parse } from 'kaitai-struct-ts'
 
@@ -183,16 +195,23 @@ seq:
 `
 
 const buffer = new Uint8Array([
-  0x4D, 0x5A,           // magic
-  0x01, 0x00,           // version = 1
-  0x03, 0x00, 0x00, 0x00, // count = 3
-  0x0A, 0x0B, 0x0C      // values = [10, 11, 12]
+  0x4d,
+  0x5a, // magic
+  0x01,
+  0x00, // version = 1
+  0x03,
+  0x00,
+  0x00,
+  0x00, // count = 3
+  0x0a,
+  0x0b,
+  0x0c, // values = [10, 11, 12]
 ])
 
 const result = parse(ksy, buffer)
-console.log(result.version)  // 1
-console.log(result.count)    // 3
-console.log(result.values)   // [10, 11, 12]
+console.log(result.version) // 1
+console.log(result.count) // 3
+console.log(result.values) // [10, 11, 12]
 ```
 
 ---
@@ -200,6 +219,7 @@ console.log(result.values)   // [10, 11, 12]
 ## 🚧 Known Limitations
 
 ### Not Yet Implemented
+
 1. **Expression evaluation** - All expressions are placeholders
    - if conditions
    - repeat-until
@@ -228,6 +248,7 @@ console.log(result.values)   // [10, 11, 12]
 ## 🎨 Architecture
 
 ### Data Flow
+
 ```
 User Code
     ↓
@@ -251,6 +272,7 @@ Return parsed object
 ```
 
 ### Component Interaction
+
 ```
 ┌─────────────┐
 │  parse()    │ Main API
@@ -283,6 +305,7 @@ Return parsed object
 ## 📝 Next Steps
 
 ### Immediate (Complete Phase 2)
+
 1. **Implement Expression Evaluator**
    - Create Lexer class
    - Create expression Parser class
@@ -303,12 +326,14 @@ Return parsed object
    - Add tests
 
 ### Testing
+
 1. Run all integration tests
 2. Add more complex test cases
 3. Test with real-world .ksy files
 4. Verify error messages
 
 ### Documentation
+
 1. Update README with new features
 2. Add usage examples
 3. Document limitations
@@ -319,6 +344,7 @@ Return parsed object
 ## 🏆 Achievements
 
 ### Technical
+
 - ✅ **Complete parser** - Full YAML to schema conversion
 - ✅ **Robust validation** - Detailed error reporting
 - ✅ **Working interpreter** - Can parse real binary data
@@ -327,6 +353,7 @@ Return parsed object
 - ✅ **Clean build** - No errors or warnings
 
 ### Code Quality
+
 - ✅ **Complete JSDoc** - All public APIs documented
 - ✅ **Consistent style** - Follows project conventions
 - ✅ **Error handling** - Proper error types with context

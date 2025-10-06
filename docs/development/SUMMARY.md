@@ -36,7 +36,9 @@
 ### 2. Core Implementation ✅
 
 #### KaitaiStream Class
+
 Complete binary stream reader with:
+
 - All integer types (u1-u8, s1-s8, both endianness)
 - Floating point (f4, f8, both endianness)
 - Byte arrays (fixed, terminated, full)
@@ -46,6 +48,7 @@ Complete binary stream reader with:
 - Substreams
 
 #### Error Handling
+
 - `KaitaiError` - Base class
 - `EOFError` - End of stream
 - `ParseError` - Parsing failures
@@ -53,6 +56,7 @@ Complete binary stream reader with:
 - `NotImplementedError` - Incomplete features
 
 #### String Encoding
+
 - UTF-8 with fallback implementation
 - ASCII, Latin-1
 - UTF-16 LE/BE
@@ -68,6 +72,7 @@ Complete binary stream reader with:
 ### 4. Documentation ✅
 
 #### Core Documents
+
 - **README.md** - Quick start and overview
 - **PROJECT_DESIGN.md** - Complete design specification
 - **ARCHITECTURE.md** - Mermaid diagrams and architecture
@@ -77,6 +82,7 @@ Complete binary stream reader with:
 - **CHANGELOG.md** - Version history
 
 #### Code Documentation
+
 - File headers on all source files
 - Complete JSDoc for all public APIs
 - Examples for all methods
@@ -191,12 +197,14 @@ Schema AST     Binary Reader       Context
 ## 📈 Development Phases
 
 ### Phase 1: Foundation (MVP) - Current
+
 - ✅ KaitaiStream
 - ⏳ KSY Parser (next)
 - ⏳ Basic Type Interpreter
 - Target: v0.1.0
 
 ### Phase 2: Core Features
+
 - Expression evaluator
 - Conditionals (if, enums, switch)
 - Repetitions (expr, eos, until)
@@ -204,6 +212,7 @@ Schema AST     Binary Reader       Context
 - Target: v0.2.0
 
 ### Phase 3: Advanced Features
+
 - Substreams and processing
 - Bit-sized integers (advanced)
 - Imports and modularity
@@ -215,26 +224,31 @@ Schema AST     Binary Reader       Context
 ## 🛠️ Technology Stack
 
 ### Core
+
 - **TypeScript 5.9.3** - Language
 - **Node.js 18+** - Runtime
 - **pnpm 10.16.1** - Package manager
 
 ### Build & Dev
+
 - **tsup 8.5.0** - Build tool (fast, simple)
 - **vitest 3.2.4** - Testing framework
 - **@vitest/coverage-v8** - Coverage reporting
 - **@vitest/ui** - Test visualization
 
 ### Code Quality
+
 - **eslint 9.36.0** - Linting
 - **@typescript-eslint** - TypeScript rules
 - **prettier 3.6.2** - Code formatting
 - **eslint-config-prettier** - Integration
 
 ### Version Management
+
 - **@changesets/cli 2.29.7** - Version and changelog
 
 ### Runtime Dependencies
+
 - **yaml 2.8.1** - YAML parsing (only dependency)
 
 ---
@@ -242,6 +256,7 @@ Schema AST     Binary Reader       Context
 ## 📝 Code Quality Standards
 
 ### Documentation Requirements
+
 - ✅ File headers on all source files
 - ✅ Complete JSDoc for all public APIs
 - ✅ Examples in JSDoc
@@ -249,6 +264,7 @@ Schema AST     Binary Reader       Context
 - ✅ Mermaid diagrams for architecture
 
 ### TypeScript Standards
+
 - ✅ Strict mode enabled
 - ✅ No `any` types (use `unknown`)
 - ✅ Explicit return types
@@ -256,6 +272,7 @@ Schema AST     Binary Reader       Context
 - ✅ Comprehensive type definitions
 
 ### Testing Standards
+
 - Target: 80%+ coverage
 - Unit tests for all components
 - Integration tests for workflows
@@ -267,6 +284,7 @@ Schema AST     Binary Reader       Context
 ## 📚 Documentation Assets
 
 ### Mermaid Diagrams Created
+
 1. High-level architecture
 2. Component relationships (class diagram)
 3. Data flow (sequence diagram)
@@ -281,6 +299,7 @@ Schema AST     Binary Reader       Context
 12. Pull request process
 
 ### Markdown Files
+
 - 8 major documentation files
 - Complete API reference (in code)
 - Contributing guidelines
@@ -292,6 +311,7 @@ Schema AST     Binary Reader       Context
 ## 🎯 Success Criteria
 
 ### Phase 1 (MVP)
+
 - [x] KaitaiStream fully implemented
 - [x] Complete test coverage for stream
 - [x] All documentation in place
@@ -301,12 +321,14 @@ Schema AST     Binary Reader       Context
 - [ ] Integration tests passing
 
 ### Phase 2 (Core)
+
 - [ ] Expression language implemented
 - [ ] Conditionals working
 - [ ] Repetitions working
 - [ ] Can parse complex formats (GIF, ZIP)
 
 ### Phase 3 (Advanced)
+
 - [ ] Full Kaitai Struct spec compliance
 - [ ] Performance optimized
 - [ ] Can parse any standard .ksy format
@@ -316,10 +338,12 @@ Schema AST     Binary Reader       Context
 ## 🔗 Resources
 
 ### Project Links
+
 - Repository: `github.com/fabianopinto/kaitai-struct-ts` (to be created)
 - NPM: `kaitai-struct-ts` (to be published)
 
 ### External Resources
+
 - [Kaitai Struct](https://kaitai.io/)
 - [User Guide](https://doc.kaitai.io/user_guide.html)
 - [Format Gallery](https://formats.kaitai.io/)

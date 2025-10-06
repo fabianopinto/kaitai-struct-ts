@@ -41,18 +41,18 @@ kaitai --version
 
 ## All Options
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--output <file>` | `-o` | Write to file |
-| `--pretty` | `-p` | Pretty JSON (default for stdout) |
-| `--no-pretty` | | Compact JSON |
-| `--format <fmt>` | `-f` | Output format: json, yaml |
-| `--field <path>` | | Extract field (dot notation) |
-| `--no-validate` | | Skip schema validation |
-| `--strict` | | Warnings as errors |
-| `--quiet` | `-q` | No progress messages |
-| `--help` | `-h` | Show help |
-| `--version` | `-v` | Show version |
+| Option            | Short | Description                      |
+| ----------------- | ----- | -------------------------------- |
+| `--output <file>` | `-o`  | Write to file                    |
+| `--pretty`        | `-p`  | Pretty JSON (default for stdout) |
+| `--no-pretty`     |       | Compact JSON                     |
+| `--format <fmt>`  | `-f`  | Output format: json, yaml        |
+| `--field <path>`  |       | Extract field (dot notation)     |
+| `--no-validate`   |       | Skip schema validation           |
+| `--strict`        |       | Warnings as errors               |
+| `--quiet`         | `-q`  | No progress messages             |
+| `--help`          | `-h`  | Show help                        |
+| `--version`       | `-v`  | Show version                     |
 
 ## Exit Codes
 
@@ -64,6 +64,7 @@ kaitai --version
 ## Examples
 
 ### Quick Inspection
+
 ```bash
 kaitai gif.ksy image.gif
 kaitai elf.ksy binary
@@ -71,6 +72,7 @@ kaitai png.ksy photo.png
 ```
 
 ### Field Extraction
+
 ```bash
 # Single field
 kaitai format.ksy data.bin --field version
@@ -80,6 +82,7 @@ kaitai format.ksy data.bin --field header.magic
 ```
 
 ### File Output
+
 ```bash
 # Pretty JSON to file
 kaitai format.ksy data.bin -o result.json
@@ -89,6 +92,7 @@ kaitai format.ksy data.bin --no-pretty -o compact.json
 ```
 
 ### Scripting
+
 ```bash
 # Quiet mode
 kaitai format.ksy data.bin --quiet > output.json
@@ -102,6 +106,7 @@ fi
 ```
 
 ### Batch Processing
+
 ```bash
 # Process multiple files
 for file in *.bin; do
@@ -119,6 +124,7 @@ done
 ```
 
 ### CI/CD
+
 ```bash
 # Validate binary format
 kaitai format.ksy data.bin --strict --quiet || exit 1

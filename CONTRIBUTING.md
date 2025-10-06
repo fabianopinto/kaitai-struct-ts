@@ -27,12 +27,14 @@ This project follows a standard code of conduct. Please be respectful and constr
 
 1. Fork the repository
 2. Clone your fork:
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/kaitai-struct-ts.git
    cd kaitai-struct-ts
    ```
 
 3. Install dependencies:
+
    ```bash
    pnpm install
    ```
@@ -98,6 +100,7 @@ pnpm changeset        # Create a changeset
 
 2. **File Headers**
    All source files must include a header:
+
    ```typescript
    /**
     * @fileoverview Brief description of the file
@@ -109,7 +112,8 @@ pnpm changeset        # Create a changeset
 
 3. **JSDoc Comments**
    All public APIs must have complete JSDoc:
-   ```typescript
+
+   ````typescript
    /**
     * Brief description of the function.
     * More detailed explanation if needed.
@@ -125,7 +129,7 @@ pnpm changeset        # Create a changeset
    export function myFunction(paramName: number): string {
      // implementation
    }
-   ```
+   ````
 
 4. **Naming Conventions**
    - Classes: `PascalCase`
@@ -256,7 +260,7 @@ graph TD
 
 ### Example Documentation Structure
 
-~~~markdown
+````markdown
 # Feature Name
 
 ## Overview
@@ -282,15 +286,17 @@ graph LR
 Description...
 
 **Parameters:**
+
 - `param1` - Description
 
 **Returns:** Description
 
 **Example:**
+
 ```typescript
 const result = functionName(param1)
 ```
-~~~
+````
 
 ## Submitting Changes
 
@@ -307,6 +313,7 @@ footer
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -316,6 +323,7 @@ footer
 - `chore`: Maintenance tasks
 
 **Examples:**
+
 ```
 feat(stream): add support for bit-level reading
 
@@ -341,6 +349,7 @@ pnpm changeset
 ```
 
 Follow the prompts to:
+
 1. Select the type of change (major, minor, patch)
 2. Provide a summary of changes
 
@@ -387,29 +396,34 @@ sequenceDiagram
    - Include screenshots/examples if applicable
 
 2. **PR Template**
-   ~~~markdown
+
+   ```markdown
    ## Description
+
    Brief description of changes
 
    ## Type of Change
+
    - [ ] Bug fix
    - [ ] New feature
    - [ ] Breaking change
    - [ ] Documentation update
 
    ## Testing
+
    - [ ] Unit tests added/updated
    - [ ] Integration tests added/updated
    - [ ] All tests passing
 
    ## Checklist
+
    - [ ] Code follows style guidelines
    - [ ] Self-review completed
    - [ ] Comments added for complex code
    - [ ] Documentation updated
    - [ ] Changeset created
    - [ ] No breaking changes (or documented)
-   ~~~
+   ```
 
 3. **Review Process**
    - Address all review comments

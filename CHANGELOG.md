@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.1] - 2025-10-02
 
 ### Fixed
+
 - CLI executable now properly included in published npm package
 - Previous v0.7.0 was published from tag before CLI was fully merged
 
@@ -22,12 +23,14 @@ Added a complete command-line interface for parsing binary files without writing
 ### Added
 
 #### CLI Executable
+
 - ✅ **`kaitai` command** - Parse binary files from command line
 - ✅ Available via `npx @k67/kaitai-struct-ts` or global install
 - ✅ Full argument parsing using Node.js built-in `util.parseArgs`
 - ✅ Zero external dependencies for CLI
 
 #### CLI Features
+
 - ✅ Parse binary files with .ksy definitions
 - ✅ Output as JSON or YAML
 - ✅ Pretty-print or compact JSON output
@@ -38,6 +41,7 @@ Added a complete command-line interface for parsing binary files without writing
 - ✅ Comprehensive help (`--help`) and version (`--version`)
 
 #### CLI Options
+
 - `-o, --output <file>` - Write to file instead of stdout
 - `-p, --pretty` - Pretty-print JSON (default for stdout)
 - `--no-pretty` - Compact JSON output
@@ -50,17 +54,20 @@ Added a complete command-line interface for parsing binary files without writing
 - `-v, --version` - Show version number
 
 #### Exit Codes
+
 - `0` - Success
 - `1` - General error (file not found, parse error)
 - `2` - Invalid arguments or usage
 - `3` - Schema validation error
 
 #### Testing
+
 - ✅ 15 comprehensive CLI integration tests
 - ✅ All tests passing
 - ✅ Tests cover: basic functionality, output options, field extraction, error handling, validation, quiet mode
 
 #### Documentation
+
 - ✅ Updated README.md with CLI usage section
 - ✅ CLI examples and use cases
 - ✅ Complete CLI reference documentation
@@ -68,15 +75,18 @@ Added a complete command-line interface for parsing binary files without writing
 ### Changed
 
 #### Build Configuration
+
 - Updated `tsup.config.ts` to build CLI separately
 - CLI built as CommonJS only (no ESM needed)
 - Shebang preserved in CLI executable
 
 #### Package Configuration
+
 - Added `bin` field in `package.json` mapping `kaitai` to `dist/cli.js`
 - Updated ESLint config to support Node.js globals (console, process, Buffer)
 
 ### Technical Details
+
 - Uses Node.js 18+ built-in APIs (no external CLI framework)
 - Follows Unix conventions (stderr for messages, stdout for data)
 - Proper error handling with appropriate exit codes
@@ -107,6 +117,7 @@ Final documentation improvements completing the project to 100%.
   - Added link to PROGRESS.md
 
 ### Notes
+
 - Phase 3: 100% complete
 - Overall progress: 100% - Production ready!
 - All major features implemented and documented
@@ -120,6 +131,7 @@ Continued Phase 3 implementation with processing framework, parametric types, an
 ### Added
 
 #### Processing & Substreams Framework
+
 - ✅ Processing attribute framework for data transformations
 - ✅ applyProcessing() method for future zlib/encryption support
 - ✅ Substream creation for processed data
@@ -127,6 +139,7 @@ Continued Phase 3 implementation with processing framework, parametric types, an
 - ✅ Foundation ready for external processing libraries
 
 #### Parametric Types Infrastructure
+
 - ✅ Type parameters (params) in type definitions
 - ✅ Type arguments (type-args) when instantiating types
 - ✅ Parameter passing through execution context
@@ -134,17 +147,20 @@ Continued Phase 3 implementation with processing framework, parametric types, an
 - ✅ Full infrastructure (awaiting parser support for syntax)
 
 ### Changed
+
 - Optimized substream creation for better performance
 - Improved memory management for sized reads
 - Streamlined type parsing flow
 - Direct Uint8Array passing to reduce buffer copies
 
 ### Performance
+
 - Reduced buffer copies in data processing
 - Optimized substream creation
 - Better memory management
 
 ### Notes
+
 - Phase 3: 40% complete
 - Overall progress: 87% to v1.0.0
 - Processing framework ready for zlib/crypto libraries
@@ -159,6 +175,7 @@ Major update with advanced Phase 3 features bringing the project to 83% completi
 ### Added
 
 #### Switch/Case Type Selection (7 tests)
+
 - ✅ Expression-based type selection with switch-on
 - ✅ Case matching with default fallback
 - ✅ Complex expressions in switch-on
@@ -168,6 +185,7 @@ Major update with advanced Phase 3 features bringing the project to 83% completi
 - ✅ Full integration with type system
 
 #### Instances - Lazy-Evaluated Fields (11 tests)
+
 - ✅ Value instances (calculated fields)
 - ✅ Pos instances (positioned reads with seek)
 - ✅ Lazy evaluation with caching
@@ -178,16 +196,19 @@ Major update with advanced Phase 3 features bringing the project to 83% completi
 - ✅ Multiple instances per schema
 
 ### Changed
+
 - Type inheritance now includes both enums and types through nested schemas
 - Context properly handles nested type parsing
 - Improved error messages for type resolution
 
 ### Fixed
+
 - Type inheritance for nested schemas
 - Enum inheritance through nested types
 - Position restoration after pos instances
 
 ### Notes
+
 - Phase 3: 30% complete
 - Overall progress: 83% to v1.0.0
 - 98 tests passing (69% increase from v0.3.0)
@@ -201,6 +222,7 @@ Major update completing Phase 2 with full expression support and enum implementa
 ### Added
 
 #### Expression Integration
+
 - ✅ **if conditions** - Conditional field parsing based on expressions
 - ✅ **repeat-expr** - Dynamic repetition counts from expressions
 - ✅ **repeat-until** - Loop until condition is true with `_` variable
@@ -210,6 +232,7 @@ Major update completing Phase 2 with full expression support and enum implementa
 - ✅ Support for all expression operators (arithmetic, comparison, logical)
 
 #### Enum Support
+
 - ✅ Enum definitions in schema
 - ✅ Enum access in expressions (`EnumName::value`)
 - ✅ Context support for enum lookups
@@ -218,18 +241,21 @@ Major update completing Phase 2 with full expression support and enum implementa
 - ✅ Values kept as integers for expression compatibility
 
 #### Testing
+
 - ✅ 13 expression integration tests
 - ✅ 9 enum integration tests
 - ✅ **80 total tests passing** (up from 58)
 - ✅ Comprehensive coverage of all Phase 2 features
 
 #### Documentation
+
 - ✅ Added professional logo to README
 - ✅ Improved README layout with centered header
 - ✅ Moved assets to proper folder structure
 - ✅ Updated PROGRESS.md with Phase 2 completion
 
 #### GitHub Infrastructure
+
 - ✅ Full CI/CD with GitHub Actions
 - ✅ Automated testing on Node 18, 20, 22 (Ubuntu, Windows, macOS)
 - ✅ Automated npm publishing workflow
@@ -237,16 +263,19 @@ Major update completing Phase 2 with full expression support and enum implementa
 - ✅ Branch protection with required CI checks
 
 ### Changed
+
 - Enum values now kept as integers internally for expression compatibility
 - Context now supports enum definitions and lookups
 - TypeInterpreter evaluates expressions for all dynamic attributes
 
 ### Fixed
+
 - Removed unused `applyEnum` method causing TypeScript errors
 - Fixed enum inheritance through nested types
 - Proper type coercion for expressions (number/bigint)
 
 ### Notes
+
 - Phase 2 (Core Features) is now 100% complete
 - Overall progress: ~80% to v1.0.0
 - Ready to start Phase 3 (Advanced Features)
@@ -260,6 +289,7 @@ Major update adding KSY parser and type interpreter for parsing binary data.
 ### Added
 
 #### KSY Parser (`src/parser/`)
+
 - Complete YAML parser for .ksy format definitions
 - Schema validation with detailed error messages
 - Support for nested types in `types` section
@@ -267,6 +297,7 @@ Major update adding KSY parser and type interpreter for parsing binary data.
 - Type definitions for all schema elements
 
 #### Type Interpreter (`src/interpreter/`)
+
 - Execute schemas against binary streams
 - All primitive types (u1-u8, s1-s8, f4, f8)
 - Both endianness (le, be)
@@ -277,21 +308,25 @@ Major update adding KSY parser and type interpreter for parsing binary data.
 - Sized substreams
 
 #### Main API
+
 - `parse()` function for convenient parsing
 - Full TypeScript type exports
 - Options support (validate, strict)
 
 #### Testing
+
 - 58 tests passing (42 unit + 16 integration)
 - Integration tests for real-world scenarios
 - Error handling tests
 
 ### Changed
+
 - Updated vitest commands to use `run` mode by default
 - Added `test:watch` command for watch mode
 - Version bumped to 0.2.0
 
 ### Fixed
+
 - Nested type validation (no longer requires meta section)
 - Parent meta inheritance for nested types
 - Proper endianness handling in nested types
@@ -305,6 +340,7 @@ Initial release establishing the foundation for kaitai-struct-ts - a TypeScript 
 ### Added
 
 #### Core Implementation
+
 - **KaitaiStream** - Complete binary stream reader (`src/stream/KaitaiStream.ts`)
   - Unsigned integers: u1, u2le, u2be, u4le, u4be, u8le, u8be
   - Signed integers: s1, s2le, s2be, s4le, s4be, s8le, s8be
@@ -316,6 +352,7 @@ Initial release establishing the foundation for kaitai-struct-ts - a TypeScript 
   - Substream support for isolated stream views
 
 #### Error Handling (`src/utils/errors.ts`)
+
 - `KaitaiError` - Base error class with position tracking
 - `EOFError` - End of stream errors
 - `ParseError` - Parsing failures
@@ -323,12 +360,14 @@ Initial release establishing the foundation for kaitai-struct-ts - a TypeScript 
 - `NotImplementedError` - Feature placeholders
 
 #### String Encoding (`src/utils/encoding.ts`)
+
 - UTF-8 encoding/decoding with fallback implementation
 - ASCII and Latin-1 (ISO-8859-1) support
 - UTF-16 Little Endian and Big Endian
 - TextDecoder integration for additional encodings
 
 #### Testing
+
 - 100+ test cases for KaitaiStream (`test/unit/stream.test.ts`)
 - Full coverage of all integer types, floats, bytes, strings
 - Bit-level reading tests
@@ -336,6 +375,7 @@ Initial release establishing the foundation for kaitai-struct-ts - a TypeScript 
 - Edge case coverage
 
 #### Documentation
+
 - Complete JSDoc on all public APIs with examples
 - File headers on all source files
 - README.md with quick start guide
@@ -348,6 +388,7 @@ Initial release establishing the foundation for kaitai-struct-ts - a TypeScript 
 - LICENSE (MIT)
 
 #### Infrastructure
+
 - TypeScript 5.9.3 with strict mode configuration
 - Build system: tsup for ESM + CJS output
 - Testing: vitest with coverage reporting and UI
@@ -360,6 +401,7 @@ Initial release establishing the foundation for kaitai-struct-ts - a TypeScript 
 ### Notes
 
 This release completes Phase 1 (MVP) of the project roadmap. The KaitaiStream implementation provides a solid foundation for binary data reading. Future releases will add:
+
 - Phase 2: KSY parser, type interpreter, expression evaluator
 - Phase 3: Advanced features, full Kaitai Struct spec compliance
 

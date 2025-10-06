@@ -70,7 +70,6 @@ export class KsyParser {
 
       // Log warnings if any
       if (result.warnings.length > 0 && !strict) {
-        // eslint-disable-next-line no-undef
         console.warn(
           'Schema validation warnings:',
           result.warnings.map((w) => w.message)
