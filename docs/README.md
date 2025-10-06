@@ -24,13 +24,14 @@ This directory contains comprehensive documentation for kaitai-struct-ts.
 
 ### Release Process
 
-- **[RELEASE_GUIDE.md](./RELEASE_GUIDE.md)** - Step-by-step release instructions
+- **[RELEASE_GUIDE.md](./RELEASE_GUIDE.md)** - Step-by-step release instructions ⭐
 - **[RELEASE_PROCESS_ANALYSIS.md](./RELEASE_PROCESS_ANALYSIS.md)** - Release process analysis and improvements
 
-### Contributing
+### Contributing & Organization
 
 - **[../CONTRIBUTING.md](../CONTRIBUTING.md)** - Contribution guidelines and workflow
 - **[../CHANGELOG.md](../CHANGELOG.md)** - Complete project changelog
+- **[DOCUMENTATION_ORGANIZATION.md](./DOCUMENTATION_ORGANIZATION.md)** - Documentation structure and principles
 
 ## 📖 Development Documentation
 
@@ -66,6 +67,7 @@ docs/
 ├── README.md                    # This file - Documentation index
 ├── ARCHITECTURE.md              # System architecture with diagrams
 ├── CLI.md                       # Complete CLI documentation
+├── DOCUMENTATION_ORGANIZATION.md # Documentation structure guide
 │
 ├── RELEASE_GUIDE.md             # Release instructions (maintainers)
 ├── RELEASE_PROCESS_ANALYSIS.md  # Release process analysis
