@@ -5,8 +5,10 @@ This guide explains how to release a new version of `@k67/kaitai-struct-ts`.
 ## Prerequisites
 
 - Write access to the repository
-- Bypass permission for the `main` branch protection (for pushing version bump commits)
-- Permission to create tags matching `v*` pattern
+- **Bypass permission** for the `main` branch protection (for pushing version bump commits)
+  - Recommended: `Maintain` or `Repository Admin` role
+  - See [Bypass Permission Configuration](#bypass-permission-configuration) below
+- Permission to create tags matching `v*` pattern (tag protection)
 
 ## Release Process
 
@@ -342,6 +344,39 @@ The publish workflow includes automatic validation to ensure tags point to commi
 - Accidental releases from feature branches
 
 If validation fails, the workflow will exit with an error before publishing.
+
+### Bypass Permission Configuration
+
+GitHub branch protection requires bypass permission to push directly to `main` (for version bump commits).
+
+#### Available Bypass Options
+
+1. **Deploy Keys** - For automated CI/CD systems (not needed for manual releases)
+2. **Repository Admin** - Full admin access (most secure, recommended for solo maintainers)
+3. **Maintain** - Manage releases without full admin (recommended for teams)
+4. **Write** - All contributors (too permissive, not recommended)
+
+#### Recommended Setup
+
+**For solo maintainer:** Use `Repository Admin`
+- Maximum security
+- Only you can release
+- Full control over repository
+
+**For team with multiple maintainers:** Use `Maintain`
+- Separate release permissions from admin access
+- Maintainers can release but not delete repo
+- Better role separation
+
+#### Configuration Steps (Admin Only)
+
+1. Go to **Settings → Rules → main ruleset**
+2. Scroll to **"Bypass list"**
+3. Click **"Add bypass"**
+4. Select **"Maintain"** or **"Repository Admin"**
+5. Click **"Save changes"**
+
+**Alternative:** Add specific users to bypass list for granular control.
 
 ---
 
