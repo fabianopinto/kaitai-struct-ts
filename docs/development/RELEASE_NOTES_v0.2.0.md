@@ -15,14 +15,18 @@ This release adds the core parsing functionality to **kaitai-struct-ts**, enabli
 ## 🌟 Highlights
 
 ### Complete KSY Parser
+
 Parse and validate `.ksy` YAML format definitions:
+
 - Full YAML parsing with schema validation
 - Detailed error messages and warnings
 - Support for nested types
 - Strict mode for enhanced validation
 
 ### Working Type Interpreter
+
 Execute schemas against binary data:
+
 - All primitive types (u1-u8, s1-s8, f4, f8)
 - Both little-endian and big-endian
 - Nested user-defined types
@@ -31,6 +35,7 @@ Execute schemas against binary data:
 - Absolute positioning
 
 ### Simple API
+
 ```typescript
 import { parse } from 'kaitai-struct-ts'
 
@@ -45,7 +50,7 @@ seq:
     type: u2
 `
 
-const buffer = new Uint8Array([0x4D, 0x5A, 0x01, 0x00])
+const buffer = new Uint8Array([0x4d, 0x5a, 0x01, 0x00])
 const result = parse(ksy, buffer)
 console.log(result.version) // 1
 ```
@@ -55,14 +60,16 @@ console.log(result.version) // 1
 ### New Modules
 
 #### `src/parser/`
+
 - **schema.ts** - Complete TypeScript type definitions for .ksy format
 - **KsyParser.ts** - YAML parser with validation (~340 lines)
 - Built-in type helpers and validators
 
 #### `src/interpreter/`
+
 - **TypeInterpreter.ts** - Executes schemas against binary data (~400 lines)
 - **Context.ts** - Manages execution state and context (~170 lines)
-- Support for _io, _root, _parent references
+- Support for \_io, \_root, \_parent references
 
 ### Enhanced API
 
@@ -88,6 +95,7 @@ export type AttributeSpec = { ... }
 ## 🧪 Testing
 
 ### Test Coverage
+
 ```
 Test Files:  2 passed (2)
 Tests:       58 passed (58)
@@ -96,6 +104,7 @@ Tests:       58 passed (58)
 ```
 
 ### Test Scenarios
+
 - ✅ Simple fixed-size structures
 - ✅ Big-endian and little-endian
 - ✅ Signed and unsigned integers
@@ -110,17 +119,20 @@ Tests:       58 passed (58)
 ## 🎯 Supported Features
 
 ### Data Types
+
 - **Integers:** u1, u2, u4, u8, s1, s2, s4, s8
 - **Floats:** f4, f8
 - **Strings:** Fixed size with encoding
 - **Bytes:** Fixed size, size-eos
 
 ### Endianness
+
 - Little-endian (le)
 - Big-endian (be)
 - Type-specific endianness (u2le, u4be, etc.)
 
 ### Structure Features
+
 - Sequential fields (seq)
 - Nested types (types section)
 - Repetitions:
@@ -144,6 +156,7 @@ Documentation:     Complete JSDoc on all APIs
 ## 🔄 Changes from v0.1.0
 
 ### Added
+
 - Complete KSY parser implementation
 - Type interpreter for executing schemas
 - Context class for execution state
@@ -151,12 +164,14 @@ Documentation:     Complete JSDoc on all APIs
 - Phase 2 progress documentation
 
 ### Changed
+
 - Updated `parse()` signature with options
 - Version bumped to 0.2.0
 - vitest commands now use `run` mode by default
 - Added `test:watch` command
 
 ### Fixed
+
 - Nested type validation (meta section optional)
 - Parent meta inheritance for nested types
 - Proper endianness handling
@@ -212,16 +227,26 @@ seq:
 // Parse binary data
 const data = new Uint8Array([
   // "MYFORMAT"
-  0x4D, 0x59, 0x46, 0x4F, 0x52, 0x4D, 0x41, 0x54,
-  1,    // version_major
-  0,    // version_minor
-  0x00, 0x10, 0x00, 0x00  // file_size = 4096
+  0x4d,
+  0x59,
+  0x46,
+  0x4f,
+  0x52,
+  0x4d,
+  0x41,
+  0x54,
+  1, // version_major
+  0, // version_minor
+  0x00,
+  0x10,
+  0x00,
+  0x00, // file_size = 4096
 ])
 
 const result = parse(ksy, data)
-console.log(result.version_major)  // 1
-console.log(result.version_minor)  // 0
-console.log(result.file_size)      // 4096
+console.log(result.version_major) // 1
+console.log(result.version_minor) // 0
+console.log(result.file_size) // 4096
 ```
 
 ### Advanced Example with Nested Types
@@ -289,6 +314,7 @@ The next release (v0.3.0) will complete Phase 2 by adding:
 ## 💬 Feedback
 
 We'd love to hear your feedback! Please:
+
 - Open an issue for bugs or feature requests
 - Start a discussion for questions or ideas
 - Submit a PR for contributions

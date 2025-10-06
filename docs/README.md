@@ -5,15 +5,18 @@ This directory contains comprehensive documentation for kaitai-struct-ts.
 ## User Documentation
 
 ### Getting Started
+
 - **[Main README](../README.md)** - Project overview, installation, and quick start
 - **[EXAMPLES.md](../EXAMPLES.md)** - Real-world format examples and usage patterns
 - **[CONTRIBUTING.md](../CONTRIBUTING.md)** - How to contribute to the project
 
 ### API Reference
+
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design
 - **[QUICKREF.md](../QUICKREF.md)** - Quick reference for Kaitai Struct syntax
 
 ### CLI Documentation
+
 - **[CLI.md](./CLI.md)** - Complete CLI documentation and examples
 - **[cli/CLI_QUICKREF.md](./cli/CLI_QUICKREF.md)** - CLI quick reference card
 - **[cli/CLI_GUIDE.md](./cli/CLI_GUIDE.md)** - CLI implementation guide
@@ -22,10 +25,12 @@ This directory contains comprehensive documentation for kaitai-struct-ts.
 ## Development Documentation
 
 ### Project Planning
+
 - **[development/PROJECT_DESIGN.md](./development/PROJECT_DESIGN.md)** - Project design and roadmap
 - **[development/PROGRESS.md](./development/PROGRESS.md)** - Development progress tracking
 
 ### Release History
+
 - **[../CHANGELOG.md](../CHANGELOG.md)** - Complete changelog
 - **[development/PHASE_1_COMPLETE.md](./development/PHASE_1_COMPLETE.md)** - Phase 1 completion report
 - **[development/PHASE_2_PROGRESS.md](./development/PHASE_2_PROGRESS.md)** - Phase 2 progress report
@@ -60,18 +65,21 @@ docs/
 ## Quick Links
 
 ### For Users
+
 - [Installation & Quick Start](../README.md#installation)
 - [CLI Usage](./CLI.md)
 - [Examples](../EXAMPLES.md)
 - [API Reference](../README.md#api-documentation)
 
 ### For Contributors
+
 - [Contributing Guidelines](../CONTRIBUTING.md)
 - [Project Design](./development/PROJECT_DESIGN.md)
 - [Architecture](./ARCHITECTURE.md)
 - [Development Progress](./development/PROGRESS.md)
 
 ### For Maintainers
+
 - [Changelog](../CHANGELOG.md)
 - [Release Process](./development/RELEASE_SUMMARY.md)
 - [Test Results](./cli/CLI_TEST_RESULTS.md)

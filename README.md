@@ -3,13 +3,14 @@
   
   # kaitai-struct-ts
 
-  [![npm version](https://badge.fury.io/js/%40k67%2Fkaitai-struct-ts.svg)](https://www.npmjs.com/package/@k67/kaitai-struct-ts)
-  [![CI](https://github.com/fabianopinto/kaitai-struct-ts/workflows/CI/badge.svg)](https://github.com/fabianopinto/kaitai-struct-ts/actions)
-  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
-  [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
+[![npm version](https://badge.fury.io/js/%40k67%2Fkaitai-struct-ts.svg)](https://www.npmjs.com/package/@k67/kaitai-struct-ts)
+[![CI](https://github.com/fabianopinto/kaitai-struct-ts/workflows/CI/badge.svg)](https://github.com/fabianopinto/kaitai-struct-ts/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 
-  **A runtime interpreter for [Kaitai Struct](https://kaitai.io/) binary format definitions in TypeScript.**
+**A runtime interpreter for [Kaitai Struct](https://kaitai.io/) binary format definitions in TypeScript.**
+
 </div>
 
 ---
@@ -19,6 +20,7 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 ## Features
 
 ### Core Features
+
 - 🚀 **Runtime interpretation** - No code generation needed
 - 📦 **Zero dependencies** (runtime) - Only YAML parser for development
 - 🎯 **TypeScript native** - Full type safety and IntelliSense support
@@ -27,6 +29,7 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 - 📖 **Well documented** - Clear API and examples
 
 ### Advanced Features
+
 - ⚡ **Expression evaluation** - Full support for Kaitai expressions
 - 🔀 **Switch/case types** - Dynamic type selection based on data
 - 💎 **Instances** - Lazy-evaluated fields with caching
@@ -110,6 +113,7 @@ console.log(result.name)
 **Completion:** ~95% toward v1.0.0
 
 ### ✅ Fully Implemented
+
 - **Core Runtime** - Complete binary stream reader with all primitive types
 - **KSY Parser** - Full YAML parser with schema validation
 - **Type Interpreter** - Execute schemas against binary data
@@ -120,6 +124,7 @@ console.log(result.name)
 - **Documentation** - Complete user and developer documentation
 
 ### 🔄 Remaining for v1.0.0
+
 - Substream processing (zlib, encryption)
 - Type imports across files
 - Additional performance optimizations
@@ -133,6 +138,7 @@ See [docs/development/PROGRESS.md](./docs/development/PROGRESS.md) for detailed 
 Parse binary data using a Kaitai Struct definition.
 
 **Parameters:**
+
 - `ksy` - YAML string containing the .ksy definition
 - `buffer` - Binary data to parse
 - `options` - Optional parsing options (validate, strict)
@@ -140,6 +146,7 @@ Parse binary data using a Kaitai Struct definition.
 **Returns:** Parsed object with fields defined in the .ksy file
 
 **Example:**
+
 ```typescript
 import { parse } from 'kaitai-struct-ts'
 
@@ -176,6 +183,7 @@ kaitai format.ksy data.bin --quiet            # Quiet mode
 **📖 Full CLI Documentation:** [docs/CLI.md](./docs/CLI.md)
 
 **Quick Reference:**
+
 - `-o, --output <file>` - Write to file
 - `--field <path>` - Extract specific field
 - `-q, --quiet` - Suppress progress messages
@@ -219,6 +227,7 @@ pnpm format
 ## Roadmap
 
 ### ✅ Phase 1: Foundation (v0.1.0) - Complete
+
 - ✅ Binary stream reader (KaitaiStream)
 - ✅ All primitive types (u1-u8, s1-s8, f4, f8)
 - ✅ String encoding (UTF-8, ASCII, Latin-1, UTF-16)
@@ -226,6 +235,7 @@ pnpm format
 - ✅ Error handling system
 
 ### ✅ Phase 2: Core Features (v0.2.0-v0.4.0) - Complete
+
 - ✅ KSY parser with validation
 - ✅ Type interpreter
 - ✅ Expression evaluator (full Kaitai expression language)
@@ -235,6 +245,7 @@ pnpm format
 - ✅ Nested user-defined types
 
 ### ✅ Phase 3: Advanced Features (v0.5.0-v0.6.0) - Complete
+
 - ✅ Switch/case type selection
 - ✅ Instances (lazy-evaluated fields with caching)
 - ✅ Parametric types
@@ -243,11 +254,13 @@ pnpm format
 - ✅ Processing framework (ready for zlib/encryption)
 
 ### ✅ Phase 4: CLI & Polish (v0.7.0) - Complete
+
 - ✅ Command-line interface
 - ✅ Documentation reorganization
 - ✅ Production-ready release
 
 ### 🔄 Phase 5: v1.0.0 - Final Polish (In Progress)
+
 - ⏳ Processing implementations (zlib, encryption)
 - ⏳ Type imports across files
 - ⏳ Additional performance optimizations

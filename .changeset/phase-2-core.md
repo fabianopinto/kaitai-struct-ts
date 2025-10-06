@@ -1,5 +1,5 @@
 ---
-"kaitai-struct-ts": minor
+'kaitai-struct-ts': minor
 ---
 
 # v0.2.0 - Phase 2 Core Implementation
@@ -9,12 +9,14 @@ Major update adding KSY parser and type interpreter for parsing binary data with
 ## ✨ New Features
 
 ### KSY Parser
+
 - **Complete YAML parser** for .ksy format definitions
 - **Schema validation** with detailed error messages and warnings
 - **Nested type support** - types section with inheritance
 - **Validation options** - strict mode and custom validation
 
 ### Type Interpreter
+
 - **Execute schemas** against binary streams
 - **All primitive types** - integers, floats, strings, bytes
 - **Both endianness** - little-endian and big-endian support
@@ -25,22 +27,26 @@ Major update adding KSY parser and type interpreter for parsing binary data with
 - **Sized substreams** - size attribute for nested parsing
 
 ### Main API
+
 - **`parse()` function** - convenient one-line parsing
 - **Full TypeScript types** - complete type definitions exported
 - **Options support** - validate and strict mode
 
 ## 🧪 Testing
+
 - **58 tests passing** - comprehensive test coverage
 - **Integration tests** - real-world parsing scenarios
 - **Error handling tests** - proper error reporting
 
 ## 📚 Documentation
+
 - Complete JSDoc on all public APIs
 - Updated README with examples
 - Phase 2 progress tracking
 - Architecture documentation
 
 ## 🔧 Improvements
+
 - Fixed vitest commands to use `run` mode
 - Proper nested type validation
 - Parent meta inheritance for nested types
@@ -89,5 +95,6 @@ console.log(result.header.flags)
 - Imports (cross-file references)
 
 ## 🔗 Links
+
 - Repository: https://github.com/fabianopinto/kaitai-struct-ts
 - Documentation: See README.md and docs/

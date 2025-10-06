@@ -81,7 +81,7 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
   - Recursive descent parser for AST generation
   - Expression evaluator with context support
   - All operators:
-    - Arithmetic: +, -, *, /, %
+    - Arithmetic: +, -, \*, /, %
     - Comparison: <, <=, >, >=, ==, !=
     - Bitwise: <<, >>, &, |, ^
     - Logical: and, or, not
@@ -237,6 +237,7 @@ This document tracks the progress of the kaitai-struct-ts project, a runtime int
 **Priority:** Complete advanced features for v1.0.0
 
 **Next Steps:**
+
 1. Implement substreams and processing attribute
 2. Add parametric types (types with parameters)
 3. Implement bit-sized integer support
@@ -393,11 +394,12 @@ Overall Progress:            ~85% to v1.0.0
 
 ## Summary
 
-The kaitai-struct-ts project has reached **~85% completion** toward v1.0.0! 
+The kaitai-struct-ts project has reached **~85% completion** toward v1.0.0!
 
 **Phase 1 (Foundation)** and **Phase 2 (Core Features)** are both 100% complete. **Phase 3 (Advanced Features)** is 30% complete with:
 
 **Completed Features:**
+
 - Complete binary stream parsing
 - Full KSY schema parsing
 - Expression evaluation with all operators
@@ -408,6 +410,7 @@ The kaitai-struct-ts project has reached **~85% completion** toward v1.0.0!
 - 98 comprehensive tests
 
 **Phase 3 In Progress:**
+
 - Switch/case type selection ✅
 - Instances (value and pos) ✅
 - Substreams and processing ⏳

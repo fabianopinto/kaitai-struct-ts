@@ -21,18 +21,18 @@ kaitai <ksy-file> <binary-file> [options]
 
 ## Options
 
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--output <file>` | `-o` | Write output to file instead of stdout |
-| `--pretty` | `-p` | Pretty-print JSON output (default for stdout) |
-| `--no-pretty` | | Disable pretty printing |
-| `--format <format>` | `-f` | Output format: `json` or `yaml` (default: `json`) |
-| `--field <path>` | | Extract specific field using dot notation |
-| `--no-validate` | | Skip schema validation |
-| `--strict` | | Treat schema warnings as errors |
-| `--quiet` | `-q` | Suppress non-error output |
-| `--help` | `-h` | Show help message |
-| `--version` | `-v` | Show version number |
+| Option              | Short | Description                                       |
+| ------------------- | ----- | ------------------------------------------------- |
+| `--output <file>`   | `-o`  | Write output to file instead of stdout            |
+| `--pretty`          | `-p`  | Pretty-print JSON output (default for stdout)     |
+| `--no-pretty`       |       | Disable pretty printing                           |
+| `--format <format>` | `-f`  | Output format: `json` or `yaml` (default: `json`) |
+| `--field <path>`    |       | Extract specific field using dot notation         |
+| `--no-validate`     |       | Skip schema validation                            |
+| `--strict`          |       | Treat schema warnings as errors                   |
+| `--quiet`           | `-q`  | Suppress non-error output                         |
+| `--help`            | `-h`  | Show help message                                 |
+| `--version`         | `-v`  | Show version number                               |
 
 ## Exit Codes
 

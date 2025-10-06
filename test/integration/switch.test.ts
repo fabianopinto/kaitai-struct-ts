@@ -107,7 +107,9 @@ types:
 
       expect(result.type_code).toBe(99)
       expect(result.data).toHaveProperty('value_default')
-      expect((result.data as { value_default: number }).value_default).toBe(0xff)
+      expect((result.data as { value_default: number }).value_default).toBe(
+        0xff
+      )
     })
   })
 

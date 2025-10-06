@@ -18,6 +18,7 @@ The `kaitai` CLI utility has been successfully implemented for parsing binary fi
 ### Features Implemented
 
 #### Core Functionality
+
 - ✅ Parse binary files with .ksy definitions
 - ✅ Output JSON to stdout or file
 - ✅ Pretty-print JSON by default
@@ -26,6 +27,7 @@ The `kaitai` CLI utility has been successfully implemented for parsing binary fi
 - ✅ Help and version commands
 
 #### Options Supported
+
 - `-o, --output <file>` - Write to file
 - `-p, --pretty` - Force pretty printing
 - `--no-pretty` - Disable pretty printing
@@ -38,6 +40,7 @@ The `kaitai` CLI utility has been successfully implemented for parsing binary fi
 - `-v, --version` - Show version
 
 #### Exit Codes
+
 - `0` - Success
 - `1` - General error (file not found, parse error)
 - `2` - Invalid arguments
@@ -54,6 +57,7 @@ npm run build
 ```
 
 This will:
+
 1. Build the library (`dist/index.js`, `dist/index.mjs`, `dist/index.d.ts`)
 2. Build the CLI (`dist/cli.js`) with shebang preserved
 
@@ -89,6 +93,7 @@ npm test -- test/cli.test.ts
 ```
 
 The test suite includes:
+
 - Basic parsing functionality
 - Help and version commands
 - Output options (file, pretty, format)
@@ -122,17 +127,20 @@ pnpx @k67/kaitai-struct-ts format.ksy data.bin
 ### Common Use Cases
 
 #### 1. Quick Binary Inspection
+
 ```bash
 kaitai gif.ksy image.gif
 ```
 
 #### 2. Extract Specific Data
+
 ```bash
 kaitai elf.ksy binary --field header.magic
 kaitai png.ksy image.png --field chunks[0].type
 ```
 
 #### 3. Batch Processing
+
 ```bash
 for file in *.bin; do
   kaitai format.ksy "$file" -o "${file%.bin}.json" --quiet
@@ -140,12 +148,14 @@ done
 ```
 
 #### 4. CI/CD Validation
+
 ```bash
 # Validate binary format in CI
 kaitai format.ksy data.bin --strict --quiet || exit 1
 ```
 
 #### 5. Debugging Format Definitions
+
 ```bash
 # Test .ksy definition
 kaitai test.ksy sample.bin --no-validate
@@ -225,6 +235,7 @@ chmod +x node_modules/.bin/kaitai
 ### Module Not Found
 
 Ensure the package is built:
+
 ```bash
 cd node_modules/@k67/kaitai-struct-ts
 npm run build
@@ -249,6 +260,7 @@ Before publishing:
 The CLI implementation is complete and production-ready. It provides a convenient command-line interface for parsing binary files without writing code, making the library more accessible for quick inspections, debugging, and automation tasks.
 
 The implementation follows best practices:
+
 - Minimal dependencies (uses built-in Node.js APIs)
 - Comprehensive error handling
 - Standard Unix conventions (exit codes, stderr/stdout)
