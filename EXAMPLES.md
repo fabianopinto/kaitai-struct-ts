@@ -27,7 +27,7 @@ seq:
 const buffer = new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x39, 0x61]) // "GIF89a"
 const result = parse(schema, buffer)
 
-console.log(result.header)  // "GIF"
+console.log(result.header) // "GIF"
 console.log(result.version) // "89a"
 ```
 
@@ -36,9 +36,11 @@ console.log(result.version) // "89a"
 The Kaitai Struct project maintains extensive format definitions and sample files:
 
 ### Official Format Definitions
+
 **Repository:** https://github.com/kaitai-io/kaitai_struct_formats
 
 Contains 100+ format definitions including:
+
 - **Archives:** ZIP, TAR, RAR, 7z
 - **Images:** PNG, GIF, JPEG, BMP, ICO
 - **Audio:** MP3, WAV, FLAC, OGG
@@ -50,6 +52,7 @@ Contains 100+ format definitions including:
 - **And many more...**
 
 ### Sample Binary Files
+
 **Repository:** https://codeberg.org/KOLANICH-datasets/kaitai_struct_samples
 
 Contains sample binary files for testing and development.

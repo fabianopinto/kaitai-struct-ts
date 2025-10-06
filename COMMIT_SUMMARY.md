@@ -11,11 +11,13 @@
 ### 1. CLI Implementation (Complete)
 
 #### New Command-Line Tool
+
 - **Executable:** `kaitai` command for parsing binary files
 - **Usage:** `kaitai <ksy-file> <binary-file> [options]`
 - **Installation:** Available via `npx @k67/kaitai-struct-ts` or global install
 
 #### Features Implemented
+
 - ✅ Parse binary files with .ksy definitions
 - ✅ JSON/YAML output formats
 - ✅ Pretty-print or compact JSON
@@ -27,11 +29,13 @@
 - ✅ Proper exit codes (0, 1, 2, 3)
 
 #### Testing
+
 - ✅ 15 comprehensive integration tests
 - ✅ All tests passing
 - ✅ Coverage: basic functionality, output options, field extraction, error handling, validation, quiet mode
 
 #### Technical Implementation
+
 - **File:** `src/cli.ts` (311 lines)
 - **Tests:** `test/cli.test.ts` (228 lines)
 - **Dependencies:** Zero external dependencies (uses Node.js built-in `util.parseArgs`)
@@ -41,6 +45,7 @@
 ### 2. Documentation Reorganization
 
 #### New Structure
+
 ```
 Root Level (User-Facing)
 ├── README.md              # Main documentation
@@ -73,6 +78,7 @@ docs/
 #### Changes Made
 
 **Moved to docs/development/:**
+
 - PHASE_1_COMPLETE.md
 - PHASE_2_PROGRESS.md
 - PROGRESS.md
@@ -83,34 +89,41 @@ docs/
 - SUMMARY.md
 
 **Moved to docs/cli/:**
+
 - CLI_GUIDE.md
 - CLI_QUICKREF.md
 - CLI_IMPLEMENTATION_SUMMARY.md
 - CLI_TEST_RESULTS.md
 
 **Created:**
+
 - docs/CLI.md - Complete CLI documentation
 - docs/README.md - Documentation index
 
 **Removed:**
+
 - CHANGELOG_CLI.md (merged into CHANGELOG.md)
 
 **Updated:**
+
 - README.md - Simplified, added CLI section with references
 - CHANGELOG.md - Added v0.7.0 with complete CLI changelog
 
 ### 3. Build Configuration Updates
 
 #### tsup.config.ts
+
 - Separated CLI build configuration
 - CLI built as CommonJS only
 - Shebang preserved from source file
 
 #### package.json
+
 - Added `bin` field: `"kaitai": "./dist/cli.js"`
 - No new dependencies added
 
 #### eslint.config.mjs
+
 - Added Node.js globals (console, process, Buffer)
 - Supports CLI Node.js-specific code
 
@@ -119,16 +132,19 @@ docs/
 ## 📊 Statistics
 
 ### Code Added
+
 - **CLI Implementation:** 311 lines (src/cli.ts)
 - **CLI Tests:** 228 lines (test/cli.test.ts)
 - **Total New Code:** 539 lines
 
 ### Documentation
+
 - **New Documentation:** ~2,000 lines
 - **Files Reorganized:** 15 files
 - **New Structure:** 3-tier organization (root, docs, docs/subdirs)
 
 ### Testing
+
 - **New Tests:** 15 integration tests
 - **Test Coverage:** 100% of CLI functionality
 - **Test Duration:** ~880ms
@@ -138,6 +154,7 @@ docs/
 ## 🎯 Benefits
 
 ### For Users
+
 1. **Command-line access** - Parse binary files without writing code
 2. **Quick inspection** - Rapidly examine binary file contents
 3. **Scripting support** - Integrate into shell scripts and CI/CD
@@ -145,6 +162,7 @@ docs/
 5. **Multiple formats** - JSON and YAML output
 
 ### For the Project
+
 1. **Feature parity** - Matches official Kaitai Struct tools
 2. **Better discoverability** - CLI tools are more discoverable
 3. **Professional polish** - Complete solution for binary parsing
@@ -152,6 +170,7 @@ docs/
 5. **Maintainability** - Clear separation of user vs development docs
 
 ### For Development
+
 1. **Zero dependencies** - No external CLI framework needed
 2. **Well-tested** - Comprehensive test coverage
 3. **Clean structure** - Organized documentation

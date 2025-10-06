@@ -13,7 +13,9 @@ This is the initial release of **kaitai-struct-ts**, a TypeScript runtime interp
 ## 🌟 Highlights
 
 ### Complete Binary Stream Reader
+
 The `KaitaiStream` class provides everything needed to read binary data:
+
 - **All integer types** with both endianness
 - **IEEE 754 floating point** numbers
 - **Flexible byte reading** (fixed, terminated, full)
@@ -22,6 +24,7 @@ The `KaitaiStream` class provides everything needed to read binary data:
 - **Position management** for complex formats
 
 ### Production-Ready Infrastructure
+
 - **TypeScript 5.9.3** with strict mode for maximum type safety
 - **Modern build system** (tsup) generating ESM + CJS
 - **Comprehensive testing** with vitest (100+ test cases)
@@ -29,6 +32,7 @@ The `KaitaiStream` class provides everything needed to read binary data:
 - **Version management** with changesets
 
 ### Exceptional Documentation
+
 - **Complete JSDoc** on all public APIs with examples
 - **12 Mermaid diagrams** visualizing architecture
 - **Multiple documentation levels** (quick start, detailed design, reference)
@@ -39,6 +43,7 @@ The `KaitaiStream` class provides everything needed to read binary data:
 ### Core Classes
 
 #### KaitaiStream
+
 ```typescript
 import { KaitaiStream } from 'kaitai-struct-ts'
 
@@ -53,6 +58,7 @@ const str = stream.readStr(10, 'UTF-8')
 ```
 
 #### Error Classes
+
 ```typescript
 import { EOFError, ParseError, ValidationError } from 'kaitai-struct-ts'
 
@@ -79,6 +85,7 @@ Lines of Code: ~2,500+
 ## 🎯 Phase 1 Completion
 
 ### ✅ Completed Goals
+
 - [x] Project infrastructure setup
 - [x] KaitaiStream implementation
 - [x] Error handling system
@@ -88,6 +95,7 @@ Lines of Code: ~2,500+
 - [x] Build and development tooling
 
 ### 📈 Quality Metrics
+
 - **Type Safety:** 100% (strict TypeScript)
 - **Test Coverage:** High (all KaitaiStream functionality)
 - **Documentation:** Complete (JSDoc + guides)
@@ -112,35 +120,41 @@ import { KaitaiStream } from 'kaitai-struct-ts'
 
 // Create a stream from binary data
 const data = new Uint8Array([
-  0x4D, 0x5A,           // Magic bytes "MZ"
-  0x90, 0x00,           // Bytes on last page
-  0x03, 0x00, 0x00, 0x00 // Pages in file
+  0x4d,
+  0x5a, // Magic bytes "MZ"
+  0x90,
+  0x00, // Bytes on last page
+  0x03,
+  0x00,
+  0x00,
+  0x00, // Pages in file
 ])
 
 const stream = new KaitaiStream(data)
 
 // Read the data
-const magic = stream.readBytes(2)     // [0x4D, 0x5A]
-const lastPage = stream.readU2le()    // 144
-const pages = stream.readU4le()       // 3
+const magic = stream.readBytes(2) // [0x4D, 0x5A]
+const lastPage = stream.readU2le() // 144
+const pages = stream.readU4le() // 3
 ```
 
 ## 📚 Documentation
 
-| Document | Description |
-|----------|-------------|
-| [README.md](./README.md) | Quick start and overview |
-| [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) | Complete design specification |
+| Document                                  | Description                        |
+| ----------------------------------------- | ---------------------------------- |
+| [README.md](./README.md)                  | Quick start and overview           |
+| [PROJECT_DESIGN.md](./PROJECT_DESIGN.md)  | Complete design specification      |
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Architecture with Mermaid diagrams |
-| [CONTRIBUTING.md](./CONTRIBUTING.md) | Development guidelines |
-| [QUICKREF.md](./QUICKREF.md) | Quick reference guide |
-| [API Docs](./src/) | JSDoc in source files |
+| [CONTRIBUTING.md](./CONTRIBUTING.md)      | Development guidelines             |
+| [QUICKREF.md](./QUICKREF.md)              | Quick reference guide              |
+| [API Docs](./src/)                        | JSDoc in source files              |
 
 ## 🔮 What's Next - Phase 2
 
 The next release (v0.2.0) will add core parsing functionality:
 
 ### Planned Features
+
 - **KSY Parser** - Parse YAML .ksy format definitions
 - **Type Interpreter** - Execute schemas against binary data
 - **Expression Evaluator** - Support Kaitai Struct expression language
@@ -149,21 +163,26 @@ The next release (v0.2.0) will add core parsing functionality:
 - **Instances** - Lazy evaluation and calculated fields
 
 ### Timeline
+
 Expected release: ~4-6 weeks from v0.1.0
 
 ## 🛠️ Technical Details
 
 ### Supported Platforms
+
 - **Node.js:** 18.0.0 or higher
 - **Browsers:** Modern browsers with ES2020 support
 - **Package Formats:** ESM and CommonJS
 
 ### Dependencies
+
 - **Runtime:** `yaml` (for future KSY parsing)
 - **Development:** TypeScript, tsup, vitest, eslint, prettier, changesets
 
 ### TypeScript Support
+
 Full TypeScript support with:
+
 - Complete type definitions (.d.ts files)
 - Strict mode compliance
 - IntelliSense support in IDEs
@@ -171,6 +190,7 @@ Full TypeScript support with:
 ## 🤝 Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for:
+
 - Development setup
 - Coding standards
 - Testing guidelines
@@ -202,6 +222,7 @@ None at this time. Please report any issues on GitHub.
 ## 💬 Feedback
 
 We'd love to hear your feedback! Please:
+
 - Open an issue for bugs or feature requests
 - Start a discussion for questions or ideas
 - Submit a PR for contributions

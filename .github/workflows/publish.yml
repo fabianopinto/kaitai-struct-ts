@@ -71,9 +71,9 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             ## Changes in ${{ github.ref }}
-            
+
             See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
-            
+
             ### Installation
             ```bash
             npm install @k67/kaitai-struct-ts@${{ steps.version.outputs.VERSION }}

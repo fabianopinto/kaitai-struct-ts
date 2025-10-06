@@ -8,7 +8,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 import { parseArgs } from 'util'
 import { parse } from './index'
 import type { ParseOptions } from './index'
@@ -25,7 +25,19 @@ interface CliOptions {
   version?: boolean
 }
 
-const VERSION = '0.7.0'
+// Read version from package.json
+function getVersion(): string {
+  try {
+    // In CommonJS, __dirname is available
+    const packageJsonPath = join(__dirname, '..', 'package.json')
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+    return packageJson.version
+  } catch {
+    return 'unknown'
+  }
+}
+
+const VERSION = getVersion()
 
 const HELP_TEXT = `
 kaitai - Parse binary files using Kaitai Struct definitions
@@ -173,6 +185,20 @@ function extractField(obj: Record<string, unknown>, path: string): unknown {
   return current
 }
 
+/**
+ * Custom JSON replacer to handle BigInt values
+ */
+function jsonReplacer(_key: string, value: unknown): unknown {
+  if (typeof value === 'bigint') {
+    // Convert BigInt to string to make it JSON-serializable
+    return value.toString()
+  }
+  return value
+}
+
+/**
+ * Format output data
+ */
 function formatOutput(
   data: unknown,
   format: 'json' | 'yaml',
@@ -180,7 +206,7 @@ function formatOutput(
 ): string {
   if (format === 'yaml') {
     // Simple YAML output (could use yaml library for complex cases)
-    return JSON.stringify(data, null, 2)
+    return JSON.stringify(data, jsonReplacer, 2)
       .replace(/^{$/gm, '')
       .replace(/^}$/gm, '')
       .replace(/^\s*"([^"]+)":\s*/gm, '$1: ')
@@ -188,13 +214,13 @@ function formatOutput(
   }
 
   // JSON format
-  return pretty ? JSON.stringify(data, null, 2) : JSON.stringify(data)
+  return pretty
+    ? JSON.stringify(data, jsonReplacer, 2)
+    : JSON.stringify(data, jsonReplacer)
 }
 
 function main(): void {
   const { options, positional } = parseCliArgs()
-
-  // Handle --help
   if (options.help) {
     showHelp()
     process.exit(0)

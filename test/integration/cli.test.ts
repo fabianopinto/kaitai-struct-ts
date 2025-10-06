@@ -4,12 +4,12 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { execSync, spawn } from 'child_process'
+import { execSync } from 'child_process'
 import { writeFileSync, mkdirSync, rmSync, readFileSync, existsSync } from 'fs'
 import { join } from 'path'
 
 const TEST_DIR = join(__dirname, '.cli-test-tmp')
-const CLI_PATH = join(__dirname, '..', 'dist', 'cli.js')
+const CLI_PATH = join(__dirname, '..', '..', 'dist', 'cli.js')
 
 // Simple test format
 const TEST_KSY = `
@@ -54,7 +54,7 @@ describe('CLI', () => {
     try {
       if (!existsSync(CLI_PATH)) {
         console.log('Building CLI...')
-        execSync('pnpm build', { cwd: join(__dirname, '..'), stdio: 'inherit' })
+        execSync('pnpm build', { cwd: join(__dirname, '..', '..'), stdio: 'inherit' })
       }
     } catch (error) {
       console.error('Failed to build CLI:', error)

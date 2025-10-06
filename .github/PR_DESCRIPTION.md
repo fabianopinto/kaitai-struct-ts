@@ -7,11 +7,13 @@ This release adds a complete command-line interface for parsing binary files and
 ## ✨ New Features
 
 ### CLI Utility
+
 - **Command-line executable** `kaitai` for parsing binary files without writing code
 - Available via `npx @k67/kaitai-struct-ts` or global install
 - Zero external dependencies (uses Node.js built-in APIs)
 
 ### CLI Features
+
 - Parse binary files with .ksy definitions
 - Output as JSON or YAML
 - Pretty-print or compact JSON output
@@ -25,6 +27,7 @@ This release adds a complete command-line interface for parsing binary files and
 ## 📚 Documentation Improvements
 
 ### Reorganization
+
 - Moved development docs to `docs/development/`
 - Moved CLI docs to `docs/cli/`
 - Created `docs/CLI.md` with complete CLI documentation
@@ -32,6 +35,7 @@ This release adds a complete command-line interface for parsing binary files and
 - Updated all cross-references
 
 ### Updates
+
 - Updated README.md status to v0.7.0 (95% complete, production ready)
 - Updated QUICKREF.md to reflect all completed features
 - Updated CHANGELOG.md with comprehensive v0.7.0 entry
@@ -46,12 +50,14 @@ This release adds a complete command-line interface for parsing binary files and
 ## 🔧 Technical Details
 
 ### Implementation
+
 - **File:** `src/cli.ts` (311 lines)
 - **Tests:** `test/cli.test.ts` (228 lines)
 - **Build:** Separate CLI build in `tsup.config.ts`
 - **Package:** `bin` field added to `package.json`
 
 ### Configuration Updates
+
 - Updated `tsup.config.ts` to build CLI separately
 - Added `bin` field in `package.json`
 - Updated ESLint config for Node.js globals
@@ -59,6 +65,7 @@ This release adds a complete command-line interface for parsing binary files and
 ## 📦 Usage Examples
 
 ### CLI
+
 ```bash
 # Parse binary file
 kaitai format.ksy data.bin
@@ -76,6 +83,7 @@ done
 ```
 
 ### Library (unchanged)
+
 ```typescript
 import { parse } from '@k67/kaitai-struct-ts'
 

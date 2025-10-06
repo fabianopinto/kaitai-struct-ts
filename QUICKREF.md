@@ -52,36 +52,36 @@ docs/
 
 ## 🔧 Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm build` | Build for production |
-| `pnpm dev` | Build in watch mode |
-| `pnpm test` | Run tests |
-| `pnpm test:ui` | Run tests with UI |
-| `pnpm test:coverage` | Generate coverage report |
-| `pnpm lint` | Lint code |
-| `pnpm lint:fix` | Lint and auto-fix |
-| `pnpm format` | Format code |
-| `pnpm format:check` | Check formatting |
-| `pnpm typecheck` | Type check without building |
-| `pnpm changeset` | Create a changeset |
-| `pnpm changeset:version` | Update versions |
-| `pnpm changeset:publish` | Publish to npm |
+| Command                  | Description                 |
+| ------------------------ | --------------------------- |
+| `pnpm build`             | Build for production        |
+| `pnpm dev`               | Build in watch mode         |
+| `pnpm test`              | Run tests                   |
+| `pnpm test:ui`           | Run tests with UI           |
+| `pnpm test:coverage`     | Generate coverage report    |
+| `pnpm lint`              | Lint code                   |
+| `pnpm lint:fix`          | Lint and auto-fix           |
+| `pnpm format`            | Format code                 |
+| `pnpm format:check`      | Check formatting            |
+| `pnpm typecheck`         | Type check without building |
+| `pnpm changeset`         | Create a changeset          |
+| `pnpm changeset:version` | Update versions             |
+| `pnpm changeset:publish` | Publish to npm              |
 
 ## 📚 Documentation Files
 
-| File | Purpose |
-|------|---------|
-| `README.md` | Project overview and quick start |
-| `CHANGELOG.md` | Version history and release notes |
-| `CONTRIBUTING.md` | Development guidelines |
-| `EXAMPLES.md` | Format examples and usage patterns |
-| `QUICKREF.md` | This file - quick reference |
-| `docs/CLI.md` | Complete CLI documentation |
-| `docs/ARCHITECTURE.md` | Architecture with Mermaid diagrams |
-| `docs/development/PROJECT_DESIGN.md` | Complete design specification |
-| `docs/development/PROGRESS.md` | Detailed progress tracking |
-| `docs/README.md` | Documentation index |
+| File                                 | Purpose                            |
+| ------------------------------------ | ---------------------------------- |
+| `README.md`                          | Project overview and quick start   |
+| `CHANGELOG.md`                       | Version history and release notes  |
+| `CONTRIBUTING.md`                    | Development guidelines             |
+| `EXAMPLES.md`                        | Format examples and usage patterns |
+| `QUICKREF.md`                        | This file - quick reference        |
+| `docs/CLI.md`                        | Complete CLI documentation         |
+| `docs/ARCHITECTURE.md`               | Architecture with Mermaid diagrams |
+| `docs/development/PROJECT_DESIGN.md` | Complete design specification      |
+| `docs/development/PROGRESS.md`       | Detailed progress tracking         |
+| `docs/README.md`                     | Documentation index                |
 
 ## 🎯 Current Status
 
@@ -90,6 +90,7 @@ docs/
 **Completion:** ~95% toward v1.0.0
 
 ### ✅ Completed
+
 - ✅ Core Runtime (KaitaiStream, all primitive types)
 - ✅ KSY Parser (full YAML parser with validation)
 - ✅ Type Interpreter (execute schemas)
@@ -100,6 +101,7 @@ docs/
 - ✅ Documentation (complete user and developer docs)
 
 ### ⏳ Remaining for v1.0.0
+
 - Processing implementations (zlib, encryption)
 - Type imports across files
 - Additional performance optimizations
@@ -107,6 +109,7 @@ docs/
 ## 🔑 Key Classes
 
 ### KaitaiStream
+
 ```typescript
 import { KaitaiStream } from 'kaitai-struct-ts'
 
@@ -114,9 +117,9 @@ const buffer = new Uint8Array([0x01, 0x02, 0x03, 0x04])
 const stream = new KaitaiStream(buffer)
 
 // Read integers
-const byte = stream.readU1()        // 1 byte unsigned
-const word = stream.readU2le()      // 2 bytes little-endian
-const dword = stream.readU4be()     // 4 bytes big-endian
+const byte = stream.readU1() // 1 byte unsigned
+const word = stream.readU2le() // 2 bytes little-endian
+const dword = stream.readU4be() // 4 bytes big-endian
 
 // Read strings
 const str = stream.readStr(10, 'UTF-8')
@@ -133,13 +136,14 @@ const eof = stream.isEof()
 ```
 
 ### Error Classes
+
 ```typescript
 import {
   KaitaiError,
   EOFError,
   ParseError,
   ValidationError,
-  NotImplementedError
+  NotImplementedError,
 } from 'kaitai-struct-ts'
 
 try {
@@ -154,6 +158,7 @@ try {
 ## 📝 Coding Standards
 
 ### File Header Template
+
 ```typescript
 /**
  * @fileoverview Brief description
@@ -164,7 +169,8 @@ try {
 ```
 
 ### Function Documentation Template
-```typescript
+
+````typescript
 /**
  * Brief description.
  * Detailed explanation if needed.
@@ -180,10 +186,11 @@ try {
 export function myFunction(paramName: number): string {
   // implementation
 }
-```
+````
 
 ### Class Documentation Template
-```typescript
+
+````typescript
 /**
  * Brief class description.
  * More details about the class.
@@ -217,11 +224,12 @@ export class ClassName {
     return this.property
   }
 }
-```
+````
 
 ## 🧪 Testing Patterns
 
 ### Unit Test Template
+
 ```typescript
 import { describe, it, expect, beforeEach } from 'vitest'
 
@@ -248,7 +256,8 @@ describe('ComponentName', () => {
 ## 🎨 Mermaid Diagram Examples
 
 ### Flowchart
-~~~markdown
+
+````markdown
 ```mermaid
 flowchart TD
     A[Start] --> B{Decision}
@@ -257,10 +266,11 @@ flowchart TD
     C --> E[End]
     D --> E
 ```
-~~~
+````
 
 ### Sequence Diagram
-~~~markdown
+
+````markdown
 ```mermaid
 sequenceDiagram
     participant A as Actor A
@@ -268,10 +278,11 @@ sequenceDiagram
     A->>B: Request
     B-->>A: Response
 ```
-~~~
+````
 
 ### Class Diagram
-~~~markdown
+
+````markdown
 ```mermaid
 classDiagram
     class ClassName {
@@ -279,11 +290,12 @@ classDiagram
         +method() return
     }
 ```
-~~~
+````
 
 ## 🔄 Git Workflow
 
 ### Commit Message Format
+
 ```
 type(scope): subject
 
@@ -295,6 +307,7 @@ footer
 **Types:** feat, fix, docs, style, refactor, test, chore
 
 **Example:**
+
 ```
 feat(stream): add bit-level reading support
 
@@ -304,6 +317,7 @@ Closes #123
 ```
 
 ### Creating a Changeset
+
 ```bash
 pnpm changeset
 
@@ -344,26 +358,31 @@ git push --follow-tags
 ## 🐛 Debugging Tips
 
 ### Run Single Test
+
 ```bash
 pnpm test stream.test.ts
 ```
 
 ### Run Test in Watch Mode
+
 ```bash
 pnpm test --watch
 ```
 
 ### Debug with UI
+
 ```bash
 pnpm test:ui
 ```
 
 ### Check Types
+
 ```bash
 pnpm typecheck
 ```
 
 ### View Coverage
+
 ```bash
 pnpm test:coverage
 # Open coverage/index.html
@@ -381,23 +400,27 @@ pnpm test:coverage
 ## 💡 Tips
 
 1. **Always run tests before committing**
+
    ```bash
    pnpm test && git commit
    ```
 
 2. **Use watch mode during development**
+
    ```bash
    pnpm dev  # Build in watch mode
    pnpm test --watch  # Tests in watch mode
    ```
 
 3. **Check formatting before PR**
+
    ```bash
    pnpm format:check
    pnpm lint
    ```
 
 4. **Create changeset for every PR**
+
    ```bash
    pnpm changeset
    ```
@@ -410,6 +433,7 @@ pnpm test:coverage
 ## 🎯 Release Checklist
 
 ### Phase 1-4 (v0.1.0 - v0.7.0) ✅ Complete
+
 - [x] Project setup and infrastructure
 - [x] KaitaiStream implementation
 - [x] Error classes and string encoding
@@ -422,6 +446,7 @@ pnpm test:coverage
 - [x] Complete documentation
 
 ### Phase 5 (v1.0.0) 🔄 In Progress
+
 - [ ] Processing implementations (zlib, encryption)
 - [ ] Type imports across files
 - [ ] Extended format testing
@@ -442,6 +467,7 @@ pnpm test:coverage
 ## 🚀 Quick Start
 
 ### Library Usage
+
 ```typescript
 import { parse } from '@k67/kaitai-struct-ts'
 
@@ -456,12 +482,13 @@ seq:
     type: u2
 `
 
-const binaryData = new Uint8Array([0x4D, 0x59, 0x46, 0x4D, 0x01, 0x00])
+const binaryData = new Uint8Array([0x4d, 0x59, 0x46, 0x4d, 0x01, 0x00])
 const result = parse(ksyDefinition, binaryData)
 console.log(result.version) // 1
 ```
 
 ### CLI Usage
+
 ```bash
 # Parse binary file
 kaitai format.ksy data.bin
