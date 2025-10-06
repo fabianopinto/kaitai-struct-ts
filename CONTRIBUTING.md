@@ -460,10 +460,19 @@ gantt
 
 See [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for detailed phase information.
 
+## Release Process
+
+For maintainers with release permissions, see the [Release Guide](./docs/RELEASE_GUIDE.md) for detailed instructions on:
+- Creating releases
+- Version management with changesets
+- Publishing to NPM
+- Creating GitHub releases
+
 ## Questions?
 
 - Check [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for architecture details
 - Check [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for diagrams
+- Check [RELEASE_GUIDE.md](./docs/RELEASE_GUIDE.md) for release process
 - Open an issue for questions
 - Join discussions in existing issues
 
