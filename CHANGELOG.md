@@ -1,5 +1,180 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- 1aaa529: # v0.1.0 - Phase 1 Foundation Release
+
+  Initial release of kaitai-struct-ts - a TypeScript runtime interpreter for Kaitai Struct binary format definitions.
+
+  ## 🎉 Phase 1 MVP Complete
+
+  This release establishes the foundation for the project with a complete binary stream reader implementation and comprehensive project infrastructure.
+
+  ## ✨ Features
+
+  ### Core Implementation
+  - **KaitaiStream** - Complete binary stream reader
+    - Unsigned integers: u1, u2le, u2be, u4le, u4be, u8le, u8be
+    - Signed integers: s1, s2le, s2be, s4le, s4be, s8le, s8be
+    - Floating point: f4le, f4be, f8le, f8be (IEEE 754)
+    - Byte arrays: fixed length, until terminator, all remaining
+    - Strings: UTF-8, ASCII, Latin-1, UTF-16LE, UTF-16BE
+    - Bit-level reading: readBitsIntBe, readBitsIntLe
+    - Position management: seek, pos, isEof
+    - Substreams: isolated stream views
+
+  ### Error Handling
+  - `KaitaiError` - Base error class with position tracking
+  - `EOFError` - End of stream errors
+  - `ParseError` - Parsing failures
+  - `ValidationError` - Validation failures
+  - `NotImplementedError` - Feature placeholders
+
+  ### String Encoding
+  - UTF-8 encoding/decoding with fallback implementation
+  - ASCII and Latin-1 support
+  - UTF-16 Little Endian and Big Endian
+  - TextDecoder integration for additional encodings
+
+  ## 🧪 Testing
+  - 100+ test cases covering all KaitaiStream functionality
+  - Full coverage of integer types, floats, bytes, strings, and bit operations
+  - Error scenario testing
+  - Edge case coverage
+
+  ## 📚 Documentation
+  - Complete JSDoc on all public APIs
+  - File headers on all source files
+  - README with quick start guide
+  - PROJECT_DESIGN.md with detailed architecture
+  - ARCHITECTURE.md with 12 Mermaid diagrams
+  - CONTRIBUTING.md with development guidelines
+  - PROGRESS.md for tracking development
+  - SUMMARY.md for project overview
+  - QUICKREF.md for quick reference
+
+  ## 🛠️ Infrastructure
+  - TypeScript 5.9.3 with strict mode
+  - Build system: tsup (ESM + CJS)
+  - Testing: vitest with coverage and UI
+  - Linting: eslint with TypeScript plugin
+  - Formatting: prettier
+  - Version management: changesets
+  - Package exports for Node.js and browsers
+
+  ## 📦 What's Next
+
+  Phase 2 will add:
+  - KSY YAML parser
+  - Type interpreter for executing schemas
+  - Expression evaluator
+  - Conditionals and enums
+  - Repetitions and instances
+
+  ## 🔗 Links
+  - Repository: https://github.com/fabianopinto/kaitai-struct-ts
+  - NPM: https://www.npmjs.com/package/kaitai-struct-ts
+  - Documentation: See README.md and docs/
+
+- 4991b5d: # v0.2.0 - Phase 2 Core Implementation
+
+  Major update adding KSY parser and type interpreter for parsing binary data with Kaitai Struct definitions.
+
+  ## ✨ New Features
+
+  ### KSY Parser
+  - **Complete YAML parser** for .ksy format definitions
+  - **Schema validation** with detailed error messages and warnings
+  - **Nested type support** - types section with inheritance
+  - **Validation options** - strict mode and custom validation
+
+  ### Type Interpreter
+  - **Execute schemas** against binary streams
+  - **All primitive types** - integers, floats, strings, bytes
+  - **Both endianness** - little-endian and big-endian support
+  - **Nested user-defined types** - parse complex structures
+  - **Repetitions** - repeat: expr and repeat: eos
+  - **Contents validation** - verify expected byte sequences
+  - **Absolute positioning** - pos attribute support
+  - **Sized substreams** - size attribute for nested parsing
+
+  ### Main API
+  - **`parse()` function** - convenient one-line parsing
+  - **Full TypeScript types** - complete type definitions exported
+  - **Options support** - validate and strict mode
+
+  ## 🧪 Testing
+  - **58 tests passing** - comprehensive test coverage
+  - **Integration tests** - real-world parsing scenarios
+  - **Error handling tests** - proper error reporting
+
+  ## 📚 Documentation
+  - Complete JSDoc on all public APIs
+  - Updated README with examples
+  - Phase 2 progress tracking
+  - Architecture documentation
+
+  ## 🔧 Improvements
+  - Fixed vitest commands to use `run` mode
+  - Proper nested type validation
+  - Parent meta inheritance for nested types
+  - Better error messages with position tracking
+
+  ## 📦 What Works Now
+
+  Parse binary data with .ksy definitions:
+
+  ```typescript
+  import { parse } from 'kaitai-struct-ts'
+
+  const ksy = `
+  meta:
+    id: my_format
+    endian: le
+  seq:
+    - id: magic
+      contents: [0x4D, 0x5A]
+    - id: version
+      type: u2
+    - id: header
+      type: header_type
+  types:
+    header_type:
+      seq:
+        - id: flags
+          type: u1
+  `
+
+  const buffer = new Uint8Array([...])
+  const result = parse(ksy, buffer)
+  console.log(result.version)
+  console.log(result.header.flags)
+  ```
+
+  ## ⏳ Not Yet Implemented
+  - Expression evaluator (for if, repeat-until, calculated values)
+  - Enums (named constants)
+  - Switch types (type selection)
+  - Conditional parsing (if conditions)
+  - String terminators (strz)
+  - Processing (compression, encryption)
+  - Instances (lazy evaluation)
+  - Imports (cross-file references)
+
+  ## 🔗 Links
+  - Repository: https://github.com/fabianopinto/kaitai-struct-ts
+  - Documentation: See README.md and docs/
+
+### Patch Changes
+
+- e738429: Code quality improvements and test fixes
+  - Remove unnecessary eslint-disable comments
+  - Add type safety to switch test cases (replace `as any` with specific type assertions)
+  - Fix CLI path in integration tests
+  - Improve code formatting and readability
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
