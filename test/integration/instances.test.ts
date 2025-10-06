@@ -206,10 +206,15 @@ types:
       const buffer = new Uint8Array([5, 0, 0, 0, 0, 0x4d, 0x5a, 0x01])
       const result = parse(ksy, buffer)
 
+      interface HeaderType {
+        magic: number
+        version: number
+      }
+
       expect(result.header_offset).toBe(5)
       expect(result.header).toHaveProperty('magic')
-      expect((result.header as any).magic).toBe(0x5a4d)
-      expect((result.header as any).version).toBe(0x01)
+      expect((result.header as HeaderType).magic).toBe(0x5a4d)
+      expect((result.header as HeaderType).version).toBe(0x01)
     })
   })
 

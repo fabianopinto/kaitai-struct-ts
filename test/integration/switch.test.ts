@@ -36,7 +36,7 @@ types:
 
       expect(result.type_code).toBe(1)
       expect(result.data).toHaveProperty('value_a')
-      expect((result.data as any).value_a).toBe(0x0b0a)
+      expect((result.data as { value_a: number }).value_a).toBe(0x0b0a)
     })
 
     it('should handle different switch values', () => {
@@ -68,7 +68,7 @@ types:
 
       expect(result.type_code).toBe(2)
       expect(result.data).toHaveProperty('value_b')
-      expect((result.data as any).value_b).toBe(0x04030201)
+      expect((result.data as { value_b: number }).value_b).toBe(0x04030201)
     })
   })
 
@@ -107,7 +107,7 @@ types:
 
       expect(result.type_code).toBe(99)
       expect(result.data).toHaveProperty('value_default')
-      expect((result.data as any).value_default).toBe(0xff)
+      expect((result.data as { value_default: number }).value_default).toBe(0xff)
     })
   })
 
@@ -149,7 +149,7 @@ types:
       expect(result.base).toBe(2)
       expect(result.multiplier).toBe(4)
       // 2 * 4 = 8, so type_medium is selected (u2)
-      expect((result.data as any).value).toBe(0x0201)
+      expect((result.data as { value: number }).value).toBe(0x0201)
     })
   })
 
@@ -189,7 +189,7 @@ types:
 
       expect(result.type_code).toBe(1)
       expect(result.data).toHaveProperty('length')
-      expect((result.data as any).length).toBe(0x0a)
+      expect((result.data as { length: number }).length).toBe(0x0a)
     })
   })
 
@@ -233,8 +233,9 @@ types:
       expect(result.category).toBe(1)
       expect(result.subtype).toBe(2)
       expect(result.data).toHaveProperty('inner_data')
-      expect((result.data as any).inner_data).toHaveProperty('value_b')
-      expect((result.data as any).inner_data.value_b).toBe(0x0b0a)
+      const dataWithInner = result.data as { inner_data: { value_b: number } }
+      expect(dataWithInner.inner_data).toHaveProperty('value_b')
+      expect(dataWithInner.inner_data.value_b).toBe(0x0b0a)
     })
   })
 
