@@ -458,7 +458,7 @@ gantt
     Advanced Features    :2025-11-08, 14d
 ```
 
-See [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for detailed phase information.
+See [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) for detailed phase information.
 
 ## Release Process
 
@@ -470,9 +470,9 @@ For maintainers with release permissions, see the [Release Guide](./docs/RELEASE
 
 ## Questions?
 
-- Check [PROJECT_DESIGN.md](./PROJECT_DESIGN.md) for architecture details
-- Check [ARCHITECTURE.md](./docs/ARCHITECTURE.md) for diagrams
-- Check [RELEASE_GUIDE.md](./docs/RELEASE_GUIDE.md) for release process
+- Check [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) for architecture details
+- Check [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for diagrams
+- Check [docs/RELEASE_GUIDE.md](./docs/RELEASE_GUIDE.md) for release process
 - Open an issue for questions
 - Join discussions in existing issues
 

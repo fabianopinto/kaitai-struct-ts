@@ -438,4 +438,4 @@ The kaitai-struct-ts project has reached **~85% completion** toward v1.0.0!
 - [Format Gallery](https://formats.kaitai.io/)
 - [Project Design Document](./PROJECT_DESIGN.md)
 - [Architecture Documentation](./docs/ARCHITECTURE.md)
-- [Contributing Guide](./CONTRIBUTING.md)
+- [Contributing Guide](../../CONTRIBUTING.md)
