@@ -214,7 +214,9 @@ function formatOutput(
   }
 
   // JSON format
-  return pretty ? JSON.stringify(data, jsonReplacer, 2) : JSON.stringify(data, jsonReplacer)
+  return pretty
+    ? JSON.stringify(data, jsonReplacer, 2)
+    : JSON.stringify(data, jsonReplacer)
 }
 
 function main(): void {

@@ -15,8 +15,14 @@ seq:
 `
     // "Hello\0" + 0x2A00 (42 in little-endian)
     const data = new Uint8Array([
-      0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x00, // "Hello\0"
-      0x2a, 0x00, // 42
+      0x48,
+      0x65,
+      0x6c,
+      0x6c,
+      0x6f,
+      0x00, // "Hello\0"
+      0x2a,
+      0x00, // 42
     ])
 
     const result = parse(ksy, data) as Record<string, unknown>
@@ -40,9 +46,18 @@ seq:
 `
     // "foo\0bar\0baz\0"
     const data = new Uint8Array([
-      0x66, 0x6f, 0x6f, 0x00, // "foo\0"
-      0x62, 0x61, 0x72, 0x00, // "bar\0"
-      0x62, 0x61, 0x7a, 0x00, // "baz\0"
+      0x66,
+      0x6f,
+      0x6f,
+      0x00, // "foo\0"
+      0x62,
+      0x61,
+      0x72,
+      0x00, // "bar\0"
+      0x62,
+      0x61,
+      0x7a,
+      0x00, // "baz\0"
     ])
 
     const result = parse(ksy, data) as Record<string, unknown>
