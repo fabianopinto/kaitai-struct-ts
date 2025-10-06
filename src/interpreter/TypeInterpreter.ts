@@ -614,7 +614,15 @@ export class TypeInterpreter {
 
     // String types
     if (isStringType(type)) {
-      throw new ParseError('String types require size, size-eos, or terminator')
+      const encoding = this.schema.meta?.encoding || 'UTF-8'
+      
+      if (type === 'strz') {
+        // Null-terminated string with default parameters
+        return stream.readStrz(encoding, 0, false, true, true)
+      } else if (type === 'str') {
+        // str type requires size, size-eos, or terminator
+        throw new ParseError('str type requires size, size-eos, or terminator attribute')
+      }
     }
 
     throw new ParseError(`Unknown built-in type: ${type}`)
