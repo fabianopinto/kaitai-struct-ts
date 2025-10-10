@@ -316,19 +316,113 @@ export class KsyParser {
    * @param imports - Map of import names to their YAML content
    * @param options - Parsing options
    * @returns Parsed schema with resolved imports
+   * @throws {ParseError} If import resolution fails
+   * @example
+   * ```typescript
+   * const parser = new KsyParser()
+   * const imports = new Map([
+   *   ['/common/riff', riffYamlContent]
+   * ])
+   * const schema = parser.parseWithImports(wavYaml, imports)
+   * ```
    */
   parseWithImports(
     mainYaml: string,
-    _imports: Map<string, string>,
+    imports: Map<string, string>,
     options: ParseOptions = {}
   ): KsySchema {
     // Parse main schema
     const mainSchema = this.parse(mainYaml, options)
 
-    // TODO: Resolve imports
-    // This will be implemented when we add import support
+    // If no imports declared, return as-is
+    if (!mainSchema.meta.imports || mainSchema.meta.imports.length === 0) {
+      return mainSchema
+    }
+
+    // Resolve imports
+    const resolvedTypes: Record<string, KsySchema> = {}
+
+    for (const importPath of mainSchema.meta.imports) {
+      // Check if import is provided
+      if (!imports.has(importPath)) {
+        throw new ParseError(
+          `Import not found: ${importPath}. Available imports: ${Array.from(imports.keys()).join(', ')}`
+        )
+      }
+
+      // Parse the imported schema
+      const importYaml = imports.get(importPath)!
+      const importedSchema = this.parse(importYaml, {
+        ...options,
+        validate: false, // Skip validation for imported schemas
+      })
+
+      // Extract the namespace from the import path
+      // e.g., '/common/riff' -> 'riff'
+      const namespace = this.extractNamespace(importPath)
+
+      // Add imported types to the resolved types with namespace prefix
+      if (importedSchema.types) {
+        for (const [typeName, typeSchema] of Object.entries(
+          importedSchema.types
+        )) {
+          const qualifiedName = `${namespace}::${typeName}`
+          resolvedTypes[qualifiedName] = typeSchema
+        }
+      }
+
+      // Add the root imported schema as a type
+      // This allows referencing the imported schema directly
+      resolvedTypes[namespace] = {
+        meta: importedSchema.meta,
+        seq: importedSchema.seq,
+        instances: importedSchema.instances,
+        types: importedSchema.types,
+        enums: importedSchema.enums,
+      }
+
+      // Merge enums from imported schema
+      if (importedSchema.enums) {
+        if (!mainSchema.enums) {
+          mainSchema.enums = {}
+        }
+        for (const [enumName, enumSpec] of Object.entries(
+          importedSchema.enums
+        )) {
+          const qualifiedEnumName = `${namespace}::${enumName}`
+          mainSchema.enums[qualifiedEnumName] = enumSpec
+        }
+      }
+    }
+
+    // Merge resolved types into main schema
+    if (Object.keys(resolvedTypes).length > 0) {
+      mainSchema.types = {
+        ...resolvedTypes,
+        ...mainSchema.types,
+      }
+    }
 
     return mainSchema
+  }
+
+  /**
+   * Extract namespace from import path.
+   * Converts paths like '/common/riff' or 'common/riff' to 'riff'.
+   *
+   * @param importPath - Import path from meta.imports
+   * @returns Namespace identifier
+   * @private
+   */
+  private extractNamespace(importPath: string): string {
+    // Remove leading slash if present
+    const normalized = importPath.startsWith('/')
+      ? importPath.slice(1)
+      : importPath
+
+    // Get the last segment of the path
+    const segments = normalized.split('/')
+    return segments[segments.length - 1]
   }
 }
 
