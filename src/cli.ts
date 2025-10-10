@@ -8,10 +8,12 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs'
-import { resolve, join } from 'path'
+import { resolve, join, dirname } from 'path'
 import { parseArgs } from 'util'
-import { parse } from './index'
-import type { ParseOptions } from './index'
+import { parse as parseYaml } from 'yaml'
+import { KsyParser } from './parser'
+import { TypeInterpreter } from './interpreter'
+import { KaitaiStream } from './stream'
 
 interface CliOptions {
   output?: string
@@ -167,6 +169,73 @@ function readFile(filePath: string, description: string): Buffer {
   }
 }
 
+/**
+ * Load imports for a KSY file by detecting and reading imported files.
+ *
+ * @param ksyPath - Path to the main KSY file
+ * @param ksyContent - Content of the main KSY file
+ * @param quiet - Whether to suppress output
+ * @returns Map of import paths to their content
+ */
+function loadImports(
+  ksyPath: string,
+  ksyContent: string,
+  quiet: boolean
+): Map<string, string> {
+  const imports = new Map<string, string>()
+
+  try {
+    // Parse YAML to find imports
+    const schema = parseYaml(ksyContent) as {
+      meta?: { imports?: string[] }
+    }
+
+    if (!schema.meta?.imports || schema.meta.imports.length === 0) {
+      return imports
+    }
+
+    const ksyDir = dirname(resolve(ksyPath))
+
+    for (const importPath of schema.meta.imports) {
+      // Convert import path to file path
+      // e.g., '/common/riff' -> '../common/riff.ksy'
+      const normalizedPath = importPath.startsWith('/')
+        ? importPath.slice(1)
+        : importPath
+      const importFilePath = resolve(ksyDir, '..', normalizedPath + '.ksy')
+
+      if (!existsSync(importFilePath)) {
+        console.error(
+          `Error: Import file not found: ${importFilePath} (from import: ${importPath})`
+        )
+        process.exit(1)
+      }
+
+      if (!quiet) {
+        console.error(`  Loading import: ${importPath} -> ${importFilePath}`)
+      }
+
+      const importContent = readFileSync(importFilePath, 'utf-8')
+      imports.set(importPath, importContent)
+
+      // Recursively load nested imports
+      const nestedImports = loadImports(importFilePath, importContent, quiet)
+      for (const [nestedPath, nestedContent] of nestedImports) {
+        if (!imports.has(nestedPath)) {
+          imports.set(nestedPath, nestedContent)
+        }
+      }
+    }
+  } catch (error) {
+    console.error(
+      `Error loading imports: ${error instanceof Error ? error.message : String(error)}`
+    )
+    process.exit(1)
+  }
+
+  return imports
+}
+
 function extractField(obj: Record<string, unknown>, path: string): unknown {
   const parts = path.split('.')
   let current: unknown = obj
@@ -265,20 +334,43 @@ function main(): void {
   const ksyContent = readFile(ksyFile, 'KSY definition file').toString('utf-8')
   const binaryData = readFile(binaryFile, 'Binary file')
 
+  // Load imports
+  if (!options.quiet) {
+    console.error('Detecting imports...')
+  }
+  const imports = loadImports(ksyFile, ksyContent, options.quiet || false)
+
+  if (!options.quiet && imports.size > 0) {
+    console.error(`Loaded ${imports.size} import(s)`)
+  }
+
   // Parse options
-  const parseOptions: ParseOptions = {
+  const parseOptions = {
     validate: options.validate,
     strict: options.strict,
   }
 
   if (!options.quiet) {
-    console.error('Parsing...')
+    console.error('Parsing schema...')
   }
 
-  // Parse binary data
+  // Parse schema with imports
   let result: Record<string, unknown>
   try {
-    result = parse(ksyContent, binaryData, parseOptions)
+    const parser = new KsyParser()
+    const schema =
+      imports.size > 0
+        ? parser.parseWithImports(ksyContent, imports, parseOptions)
+        : parser.parse(ksyContent, parseOptions)
+
+    if (!options.quiet) {
+      console.error('Parsing binary data...')
+    }
+
+    // Create stream and interpreter
+    const stream = new KaitaiStream(binaryData)
+    const interpreter = new TypeInterpreter(schema)
+    result = interpreter.parse(stream)
   } catch (error) {
     console.error(
       `Parse error: ${error instanceof Error ? error.message : String(error)}`
