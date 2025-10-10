@@ -273,7 +273,7 @@ seq:
 
       expect(schema.types).toHaveProperty('base_type')
       expect(schema.types).toHaveProperty('base_type::outer')
-      
+
       // Check that nested types are preserved
       const outerType = schema.types!['base_type::outer']
       expect(outerType.types).toHaveProperty('inner')

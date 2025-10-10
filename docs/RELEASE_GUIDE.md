@@ -25,6 +25,7 @@ git status  # Should show "nothing to commit, working tree clean"
 ### 2. Run Changeset Version
 
 This command will:
+
 - Consume all changeset files in `.changeset/`
 - Update `package.json` version
 - Update `CHANGELOG.md` with all changes
@@ -35,6 +36,7 @@ pnpm changeset:version
 ```
 
 **Review the changes:**
+
 - Check the new version in `package.json`
 - Review the `CHANGELOG.md` entries
 - Verify changeset files were removed
@@ -66,6 +68,7 @@ git push origin main "v${VERSION}"
 ```
 
 **Alternative (manual version):**
+
 ```bash
 git tag v0.x.x
 git push origin main v0.x.x
@@ -91,16 +94,19 @@ The tag push will automatically trigger the publish workflow:
 After the workflow completes:
 
 **Check NPM:**
+
 ```bash
 npm view @k67/kaitai-struct-ts version
 # Should show the new version
 ```
 
 **Check GitHub Release:**
+
 - Go to [Releases](https://github.com/fabianopinto/kaitai-struct-ts/releases)
 - Verify the new release was created with correct version and changelog
 
 **Test Installation:**
+
 ```bash
 npm install @k67/kaitai-struct-ts@latest
 ```
@@ -148,6 +154,7 @@ pnpm changeset
 ```
 
 This will prompt you to:
+
 1. Select the type of change (patch/minor/major)
 2. Write a summary of the changes
 
@@ -219,6 +226,7 @@ pnpm changeset:version
 **Cause:** The tag was created from a branch other than main.
 
 **Solution:**
+
 1. Delete the tag: `git tag -d v0.x.x && git push origin :refs/tags/v0.x.x`
 2. Ensure you're on main: `git checkout main && git pull`
 3. Create tag again: `git tag v0.x.x && git push origin main v0.x.x`
@@ -230,6 +238,7 @@ pnpm changeset:version
 **Cause:** NPM token is invalid or expired.
 
 **Solution:**
+
 1. Generate new NPM token with publish permissions
 2. Update `NPM_TOKEN` secret in repository settings
 3. Re-run the workflow
@@ -241,6 +250,7 @@ pnpm changeset:version
 **Cause:** The version in `package.json` already exists on NPM.
 
 **Solution:**
+
 1. Delete the tag: `git tag -d v0.x.x && git push origin :refs/tags/v0.x.x`
 2. Run `pnpm changeset:version` again (it will bump to next version)
 3. Commit and tag with the new version
@@ -250,6 +260,7 @@ pnpm changeset:version
 **Problem:** CI is failing on main, can't release.
 
 **Solution:**
+
 1. Fix the failing tests/lint issues
 2. Push fix to main through a PR
 3. Once CI is green, proceed with release
@@ -263,6 +274,7 @@ For urgent security fixes or critical bugs:
 ### Fast-track Process
 
 1. **Create hotfix branch from main:**
+
    ```bash
    git checkout main
    git pull
@@ -270,6 +282,7 @@ For urgent security fixes or critical bugs:
    ```
 
 2. **Make the fix and add changeset:**
+
    ```bash
    # Make your changes
    pnpm changeset  # Select patch, describe the fix
@@ -278,6 +291,7 @@ For urgent security fixes or critical bugs:
    ```
 
 3. **Create PR and merge immediately:**
+
    ```bash
    git push origin hotfix/critical-fix
    gh pr create --title "fix: critical security issue" --body "Emergency fix"
@@ -326,11 +340,13 @@ For urgent security fixes or critical bugs:
 ### Tag Protection
 
 Tags matching `v*` pattern should be protected to prevent:
+
 - Accidental releases
 - Unauthorized releases
 - Releases from non-main branches
 
 **To configure (admin only):**
+
 1. Go to Settings → Tags → Add rule
 2. Pattern: `v*`
 3. Enable: "Restrict tag creation"
@@ -339,6 +355,7 @@ Tags matching `v*` pattern should be protected to prevent:
 ### Branch Validation
 
 The publish workflow includes automatic validation to ensure tags point to commits on `main`. This prevents:
+
 - Publishing unreviewed code
 - Publishing code that hasn't passed CI
 - Accidental releases from feature branches
@@ -359,11 +376,13 @@ GitHub branch protection requires bypass permission to push directly to `main` (
 #### Recommended Setup
 
 **For solo maintainer:** Use `Repository Admin`
+
 - Maximum security
 - Only you can release
 - Full control over repository
 
 **For team with multiple maintainers:** Use `Maintain`
+
 - Separate release permissions from admin access
 - Maintainers can release but not delete repo
 - Better role separation

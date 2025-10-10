@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
 /**
  * Test script for WAV parsing with imports (ES Module version)
  * Run with: node test-wav-imports.mjs
@@ -24,10 +25,10 @@ function main() {
   console.log('📖 Reading KSY definitions...')
   const wavKsyPath = resolve(__dirname, 'media/wav.ksy')
   const riffKsyPath = resolve(__dirname, 'common/riff.ksy')
-  
+
   console.log(`  - WAV:  ${wavKsyPath}`)
   console.log(`  - RIFF: ${riffKsyPath}`)
-  
+
   const wavKsy = readFileSync(wavKsyPath, 'utf-8')
   const riffKsy = readFileSync(riffKsyPath, 'utf-8')
   console.log('  ✅ KSY files loaded')
@@ -45,18 +46,20 @@ function main() {
   console.log('🔧 Parsing KSY with import resolution...')
   const parser = new KsyParser()
   const imports = new Map([['/common/riff', riffKsy]])
-  
+
   console.log('  - Resolving imports: /common/riff')
   const schema = parser.parseWithImports(wavKsy, imports, { validate: true })
   console.log('  ✅ Schema parsed successfully')
-  
+
   // Show resolved types
   if (schema.types) {
     console.log(`  - Resolved types: ${Object.keys(schema.types).length}`)
-    const importedTypes = Object.keys(schema.types).filter(t => t.includes('::'))
+    const importedTypes = Object.keys(schema.types).filter((t) =>
+      t.includes('::')
+    )
     if (importedTypes.length > 0) {
       console.log('  - Imported types:')
-      importedTypes.slice(0, 5).forEach(t => console.log(`    • ${t}`))
+      importedTypes.slice(0, 5).forEach((t) => console.log(`    • ${t}`))
       if (importedTypes.length > 5) {
         console.log(`    ... and ${importedTypes.length - 5} more`)
       }
@@ -68,7 +71,7 @@ function main() {
   console.log('🔍 Parsing binary data...')
   const stream = new KaitaiStream(wavData)
   const interpreter = new TypeInterpreter(schema)
-  
+
   try {
     const result = interpreter.parse(stream)
     console.log('  ✅ Binary data parsed successfully')
@@ -88,7 +91,6 @@ function main() {
     console.log()
 
     console.log('✅ Test completed successfully!')
-    
   } catch (error) {
     console.error('❌ Parse error:', error)
     if (error instanceof Error) {

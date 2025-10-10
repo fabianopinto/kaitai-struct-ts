@@ -54,7 +54,10 @@ describe('CLI', () => {
     try {
       if (!existsSync(CLI_PATH)) {
         console.log('Building CLI...')
-        execSync('pnpm build', { cwd: join(__dirname, '..', '..'), stdio: 'inherit' })
+        execSync('pnpm build', {
+          cwd: join(__dirname, '..', '..'),
+          stdio: 'inherit',
+        })
       }
     } catch (error) {
       console.error('Failed to build CLI:', error)

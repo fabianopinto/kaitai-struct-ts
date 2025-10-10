@@ -5,6 +5,7 @@ This document explains the organization and purpose of all documentation files i
 ## Overview
 
 Documentation is organized into three main categories:
+
 1. **User Documentation** - For end users of the library
 2. **Contributor Documentation** - For developers contributing to the project
 3. **Maintainer Documentation** - For project maintainers and release managers
@@ -13,14 +14,14 @@ Documentation is organized into three main categories:
 
 These are the most important user-facing documents:
 
-| File | Purpose | Audience |
-|------|---------|----------|
-| `README.md` | Main project documentation, installation, quick start | Everyone |
-| `CHANGELOG.md` | Complete version history and changes | Everyone |
-| `CONTRIBUTING.md` | How to contribute, coding standards, workflow | Contributors |
-| `EXAMPLES.md` | Real-world format examples and usage patterns | Users |
-| `QUICKREF.md` | Quick reference for Kaitai Struct syntax | Users |
-| `LICENSE` | MIT license | Everyone |
+| File              | Purpose                                               | Audience     |
+| ----------------- | ----------------------------------------------------- | ------------ |
+| `README.md`       | Main project documentation, installation, quick start | Everyone     |
+| `CHANGELOG.md`    | Complete version history and changes                  | Everyone     |
+| `CONTRIBUTING.md` | How to contribute, coding standards, workflow         | Contributors |
+| `EXAMPLES.md`     | Real-world format examples and usage patterns         | Users        |
+| `QUICKREF.md`     | Quick reference for Kaitai Struct syntax              | Users        |
+| `LICENSE`         | MIT license                                           | Everyone     |
 
 **Principle:** Keep root level clean with only essential, user-facing documents.
 
@@ -28,45 +29,45 @@ These are the most important user-facing documents:
 
 ### Main Documentation Files
 
-| File | Purpose | Audience |
-|------|---------|----------|
-| `docs/README.md` | Documentation index and navigation | Everyone |
-| `docs/ARCHITECTURE.md` | System architecture with diagrams | Contributors |
-| `docs/CLI.md` | Complete CLI documentation | Users |
-| `docs/RELEASE_GUIDE.md` | Step-by-step release instructions | Maintainers |
-| `docs/RELEASE_PROCESS_ANALYSIS.md` | Release process analysis and improvements | Maintainers |
+| File                               | Purpose                                   | Audience     |
+| ---------------------------------- | ----------------------------------------- | ------------ |
+| `docs/README.md`                   | Documentation index and navigation        | Everyone     |
+| `docs/ARCHITECTURE.md`             | System architecture with diagrams         | Contributors |
+| `docs/CLI.md`                      | Complete CLI documentation                | Users        |
+| `docs/RELEASE_GUIDE.md`            | Step-by-step release instructions         | Maintainers  |
+| `docs/RELEASE_PROCESS_ANALYSIS.md` | Release process analysis and improvements | Maintainers  |
 
 ### docs/cli/ - CLI-Specific Documentation
 
-| File | Purpose | Status |
-|------|---------|--------|
-| `CLI_GUIDE.md` | CLI implementation guide | Active |
-| `CLI_QUICKREF.md` | CLI quick reference card | Active |
-| `CLI_IMPLEMENTATION_SUMMARY.md` | Implementation summary | Active |
-| `CLI_TEST_RESULTS.md` | Test results snapshot | Active |
+| File                            | Purpose                  | Status |
+| ------------------------------- | ------------------------ | ------ |
+| `CLI_GUIDE.md`                  | CLI implementation guide | Active |
+| `CLI_QUICKREF.md`               | CLI quick reference card | Active |
+| `CLI_IMPLEMENTATION_SUMMARY.md` | Implementation summary   | Active |
+| `CLI_TEST_RESULTS.md`           | Test results snapshot    | Active |
 
 **Purpose:** Detailed CLI documentation for users and developers.
 
 ### docs/development/ - Development Documentation
 
-| File | Purpose | Status |
-|------|---------|--------|
-| `PROJECT_DESIGN.md` | Project design and roadmap | Active |
-| `PROGRESS.md` | Development progress tracking | Active |
-| `PHASE_1_COMPLETE.md` | Phase 1 completion report | Historical |
-| `PHASE_2_PROGRESS.md` | Phase 2 progress report | Historical |
-| `RELEASE_NOTES_v0.1.0.md` | v0.1.0 release notes | Historical |
-| `RELEASE_NOTES_v0.2.0.md` | v0.2.0 release notes | Historical |
-| `RELEASE_SUMMARY.md` | Release summary | Historical |
-| `SUMMARY.md` | Project summary | Historical |
+| File                      | Purpose                       | Status     |
+| ------------------------- | ----------------------------- | ---------- |
+| `PROJECT_DESIGN.md`       | Project design and roadmap    | Active     |
+| `PROGRESS.md`             | Development progress tracking | Active     |
+| `PHASE_1_COMPLETE.md`     | Phase 1 completion report     | Historical |
+| `PHASE_2_PROGRESS.md`     | Phase 2 progress report       | Historical |
+| `RELEASE_NOTES_v0.1.0.md` | v0.1.0 release notes          | Historical |
+| `RELEASE_NOTES_v0.2.0.md` | v0.2.0 release notes          | Historical |
+| `RELEASE_SUMMARY.md`      | Release summary               | Historical |
+| `SUMMARY.md`              | Project summary               | Historical |
 
 **Purpose:** Development planning, progress tracking, and historical records.
 
 ### docs/.archive/ - Archived Documents
 
-| File | Purpose | Reason for Archiving |
-|------|---------|---------------------|
-| `COMMIT_SUMMARY.md` | CLI implementation commit summary | Temporary document, info now in CHANGELOG |
+| File                                 | Purpose                                | Reason for Archiving                          |
+| ------------------------------------ | -------------------------------------- | --------------------------------------------- |
+| `COMMIT_SUMMARY.md`                  | CLI implementation commit summary      | Temporary document, info now in CHANGELOG     |
 | `OPTION_1_IMPLEMENTATION_SUMMARY.md` | Release process implementation summary | Temporary document, info now in RELEASE_GUIDE |
 
 **Purpose:** Preserve temporary documents for reference without cluttering active documentation.
@@ -108,11 +109,13 @@ Root (Essential user docs)
 ### Active Documents
 
 **Characteristics:**
+
 - Regularly updated
 - Referenced by other docs
 - Essential for current work
 
 **Examples:**
+
 - `README.md`
 - `CHANGELOG.md`
 - `docs/RELEASE_GUIDE.md`
@@ -121,11 +124,13 @@ Root (Essential user docs)
 ### Historical Documents
 
 **Characteristics:**
+
 - No longer updated
 - Useful for reference
 - Part of project history
 
 **Examples:**
+
 - `docs/development/PHASE_1_COMPLETE.md`
 - `docs/development/RELEASE_NOTES_v0.1.0.md`
 
@@ -134,11 +139,13 @@ Root (Essential user docs)
 ### Archived Documents
 
 **Characteristics:**
+
 - Temporary/one-time use
 - Superseded by other docs
 - Kept for reference only
 
 **Examples:**
+
 - `docs/.archive/COMMIT_SUMMARY.md`
 - `docs/.archive/OPTION_1_IMPLEMENTATION_SUMMARY.md`
 
@@ -154,6 +161,7 @@ Archive a document when:
 4. ✅ It's not part of the regular workflow
 
 **Don't archive:**
+
 - Historical records (phase reports, old release notes) → Keep in `development/`
 - Active documentation that's still useful
 - Documents referenced in README or other active docs
@@ -163,11 +171,13 @@ Archive a document when:
 ### Regular Reviews
 
 **Quarterly:**
+
 - Review `docs/development/` for outdated progress tracking
 - Update `docs/README.md` if structure changes
 - Check for broken links
 
 **After Each Release:**
+
 - Update `CHANGELOG.md`
 - Archive any temporary release documents
 - Update version references in docs
@@ -175,15 +185,18 @@ Archive a document when:
 ### Adding New Documentation
 
 **User documentation:**
+
 - Add to root level if essential (rare)
 - Add to `docs/` if detailed/specialized
 - Update `docs/README.md` index
 
 **Development documentation:**
+
 - Add to `docs/development/`
 - Update `docs/README.md` index
 
 **Temporary documentation:**
+
 - Create in appropriate location
 - Plan to archive after use
 - Reference from relevant active docs
@@ -191,16 +204,19 @@ Archive a document when:
 ### Removing Documentation
 
 **Never delete:**
+
 - Historical records
 - Release notes
 - Phase completion reports
 
 **Archive instead:**
+
 - Temporary documents
 - Superseded implementation notes
 - One-time summaries
 
 **Only delete:**
+
 - Duplicate files
 - Truly obsolete content with no historical value
 
@@ -258,6 +274,7 @@ Archive a document when:
 ## Summary
 
 The documentation is organized to:
+
 - ✅ Make essential docs easy to find (root level)
 - ✅ Provide detailed docs for those who need them (docs/)
 - ✅ Separate by audience (users, contributors, maintainers)

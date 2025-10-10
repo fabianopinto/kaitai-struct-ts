@@ -463,6 +463,7 @@ See [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) f
 ## Release Process
 
 For maintainers with release permissions, see the [Release Guide](./docs/RELEASE_GUIDE.md) for detailed instructions on:
+
 - Creating releases
 - Version management with changesets
 - Publishing to NPM

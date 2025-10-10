@@ -19,5 +19,6 @@ This commit added a complete CLI utility to kaitai-struct-ts and reorganized all
 **Dependencies Added:** None
 
 For detailed information, see:
+
 - [CHANGELOG.md](../../CHANGELOG.md) - v0.7.0 entry
 - [CLI.md](../CLI.md) - Complete CLI documentation

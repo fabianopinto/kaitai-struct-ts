@@ -106,20 +106,22 @@ WAV Format Parsing with Import Resolution
 ### 1. Import Declaration
 
 In `wav.ksy`:
+
 ```yaml
 meta:
   id: wav
   imports:
-    - /common/riff  # Import path
+    - /common/riff # Import path
 ```
 
 ### 2. Using Imported Types
 
 In `wav.ksy`:
+
 ```yaml
 seq:
   - id: chunk
-    type: 'riff::chunk'  # Namespace-qualified type
+    type: 'riff::chunk' # Namespace-qualified type
 ```
 
 ### 3. Programmatic Usage
@@ -148,11 +150,11 @@ const result = interpreter.parse(stream)
 
 Import paths are converted to namespaces:
 
-| Import Path | Namespace | Example Type |
-|-------------|-----------|--------------|
-| `/common/riff` | `riff` | `riff::chunk` |
-| `/formats/media/wav` | `wav` | `wav::format_chunk` |
-| `utils/helpers` | `helpers` | `helpers::util_type` |
+| Import Path          | Namespace | Example Type         |
+| -------------------- | --------- | -------------------- |
+| `/common/riff`       | `riff`    | `riff::chunk`        |
+| `/formats/media/wav` | `wav`     | `wav::format_chunk`  |
+| `utils/helpers`      | `helpers` | `helpers::util_type` |
 
 ### Type Resolution
 
@@ -174,18 +176,20 @@ When an import is resolved:
 **Cause:** The import path in the KSY doesn't match the key in the imports Map.
 
 **Solution:** Ensure the import path matches exactly:
+
 ```typescript
 // In KSY: imports: ['/common/riff']
 // In code:
 const imports = new Map([['/common/riff', riffKsy]]) // ✅ Correct
-const imports = new Map([['common/riff', riffKsy]])  // ❌ Wrong (missing /)
+const imports = new Map([['common/riff', riffKsy]]) // ❌ Wrong (missing /)
 ```
 
 ### Error: "Unknown type: riff::chunk"
 
 **Cause:** The import wasn't resolved, or the type doesn't exist in the imported schema.
 
-**Solution:** 
+**Solution:**
+
 1. Check that the import is provided in the Map
 2. Verify the type exists in the imported schema
 3. Check the namespace is correct
@@ -195,6 +199,7 @@ const imports = new Map([['common/riff', riffKsy]])  // ❌ Wrong (missing /)
 **Cause:** The binary data might not match the format, or there's a parsing error.
 
 **Solution:**
+
 1. Verify the binary file is a valid WAV file
 2. Check the console output for more specific error messages
 3. Try with a different WAV file
@@ -223,19 +228,24 @@ import { parse as parseYaml } from 'yaml'
 function loadImports(ksyPath: string): Map<string, string> {
   const imports = new Map()
   const dir = dirname(ksyPath)
-  
+
   // Read the KSY to find imports
   const ksy = readFileSync(ksyPath, 'utf-8')
   const schema = parseYaml(ksy)
-  
+
   // Load each import relative to the examples folder
   for (const importPath of schema.meta?.imports || []) {
     // Convert '/common/riff' to 'examples/common/riff.ksy'
-    const fullPath = resolve(dir, '..', 'examples', importPath.slice(1) + '.ksy')
+    const fullPath = resolve(
+      dir,
+      '..',
+      'examples',
+      importPath.slice(1) + '.ksy'
+    )
     const content = readFileSync(fullPath, 'utf-8')
     imports.set(importPath, content)
   }
-  
+
   return imports
 }
 ```

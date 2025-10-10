@@ -3,7 +3,9 @@
 ## Current State Analysis
 
 ### Branch Protection Rules
+
 The `main` branch has the following protections:
+
 - ✅ Require pull request before merging
 - ✅ Require status checks to pass (CI must pass)
 - ✅ Block force pushes
@@ -13,6 +15,7 @@ The `main` branch has the following protections:
 ### Current Workflow Triggers
 
 #### CI Workflow (`.github/workflows/ci.yml`)
+
 ```yaml
 on:
   push:
@@ -20,16 +23,19 @@ on:
   pull_request:
     branches: [main]
 ```
+
 - Runs on pushes to `main` and PRs targeting `main`
 - Required status check for merging
 
 #### Publish Workflow (`.github/workflows/publish.yml`)
+
 ```yaml
 on:
   push:
     tags:
       - 'v*'
 ```
+
 - Triggers on ANY tag push matching `v*` pattern
 - **Does NOT check which branch the tag points to**
 - Runs: lint, typecheck, tests, build, publish to npm, create GitHub release
@@ -39,6 +45,7 @@ on:
 ## Key Findings
 
 ### 1. ✅ Tags Can Be Pushed Without PRs
+
 **Answer: YES**
 
 - Branch protection rules apply to **branches**, not **tags**
@@ -47,14 +54,17 @@ on:
 - Evidence: Publish workflow ran at `2025-10-06T17:26:53Z` with `head_sha: ae00386` (the version bump commit)
 
 ### 2. ⚠️ Tags From Non-Main Branches Can Trigger Publish
+
 **Answer: YES - This is a potential issue**
 
 The publish workflow triggers on **any** `v*` tag push, regardless of:
+
 - Which branch the tag points to
 - Whether the commit is in `main`
 - Whether CI has passed
 
 **Example scenario:**
+
 ```bash
 # On a feature branch
 git checkout -b feature/experimental
@@ -64,6 +74,7 @@ git push origin v0.9.0  # ⚠️ This WILL trigger publish!
 ```
 
 This could accidentally publish:
+
 - Unreviewed code
 - Code that hasn't passed CI
 - Code not merged to main
@@ -71,6 +82,7 @@ This could accidentally publish:
 ### 3. Current Process Is Overly Complex
 
 The current release process requires:
+
 1. Create changeset file
 2. Create release branch
 3. Push branch
@@ -81,6 +93,7 @@ The current release process requires:
 8. Push tag (triggers publish)
 
 **Issues:**
+
 - Steps 2-6 are only needed because of branch protection
 - The actual publish trigger (tag push) bypasses all protections
 - Version bump commits clutter the history
@@ -102,12 +115,13 @@ The current release process requires:
    - Restrict who can create/delete tags (maintainers only)
 
 2. **Update Publish Workflow**
+
    ```yaml
    on:
      push:
        tags:
          - 'v*'
-   
+
    jobs:
      publish:
        runs-on: ubuntu-latest
@@ -123,24 +137,26 @@ The current release process requires:
    ```
 
 3. **Simplified Release Process**
+
    ```bash
    # 1. Ensure you're on main and up to date
    git checkout main
    git pull
-   
+
    # 2. Run changeset version (updates package.json, CHANGELOG.md)
    pnpm changeset:version
-   
+
    # 3. Commit version bump
    git add .
    git commit -m "chore: release v0.x.x"
-   
+
    # 4. Create and push tag
    git tag v0.x.x
    git push origin main v0.x.x
    ```
 
 **Benefits:**
+
 - No PR needed for version bumps
 - Tag push triggers publish automatically
 - Validation ensures tag is on main
@@ -148,6 +164,7 @@ The current release process requires:
 - Cleaner git history
 
 **Trade-offs:**
+
 - Requires direct push to main (need bypass permission for version bumps)
 - Less review of version bump commits
 
@@ -158,6 +175,7 @@ The current release process requires:
 **Automate everything with a workflow dispatch:**
 
 #### Create `.github/workflows/release.yml`
+
 ```yaml
 name: Release
 
@@ -179,34 +197,34 @@ jobs:
     permissions:
       contents: write
       id-token: write
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Run changeset version
         run: pnpm changeset:version
-      
+
       - name: Get new version
         id: version
         run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-      
+
       - name: Commit version bump
         run: |
           git config user.name "github-actions[bot]"
@@ -214,18 +232,18 @@ jobs:
           git add .
           git commit -m "chore: release v${{ steps.version.outputs.VERSION }}"
           git push
-      
+
       - name: Create and push tag
         run: |
           git tag v${{ steps.version.outputs.VERSION }}
           git push origin v${{ steps.version.outputs.VERSION }}
-      
+
       - name: Run tests
         run: pnpm test
-      
+
       - name: Build
         run: pnpm build
-      
+
       - name: Publish to NPM
         run: pnpm publish --no-git-checks
         env:
@@ -233,12 +251,14 @@ jobs:
 ```
 
 **Release Process:**
+
 1. Go to Actions → Release → Run workflow
 2. Select version bump type
 3. Click "Run workflow"
 4. Everything happens automatically
 
 **Benefits:**
+
 - One-click release
 - No local git operations needed
 - Guaranteed to run from main
@@ -246,6 +266,7 @@ jobs:
 - Can add approval gates
 
 **Trade-offs:**
+
 - Requires GitHub Actions to have write permissions
 - Need to configure bot to bypass branch protection
 
@@ -260,10 +281,12 @@ Continue with PR-based version bumps, but add safety checks:
 3. Keep creating PRs for version bumps
 
 **Benefits:**
+
 - Maximum review/safety
 - No permission changes needed
 
 **Trade-offs:**
+
 - Most complex process
 - Version bump PRs add noise
 - Slowest release cycle
@@ -287,6 +310,7 @@ Continue with PR-based version bumps, but add safety checks:
    - Restrict creation to maintainers
 
 2. **Update publish workflow** with branch validation
+
    ```bash
    # Add this step after checkout in publish.yml
    - name: Verify tag is on main branch
@@ -311,10 +335,12 @@ Continue with PR-based version bumps, but add safety checks:
 ## Security Considerations
 
 ### Current Risk
+
 - Anyone with push access can publish by pushing a tag from any branch
 - No validation that code has been reviewed or tested
 
 ### After Improvements
+
 - Tag protection limits who can create tags
 - Branch validation ensures only main commits are published
 - CI has already passed on main before tag is created
@@ -326,10 +352,8 @@ Continue with PR-based version bumps, but add safety checks:
 
 - **Q: Can I still do emergency releases?**
   - A: Yes, with bypass permission you can push directly to main + tag
-  
 - **Q: What if CI fails on main?**
   - A: Don't create the tag until CI is fixed
-  
 - **Q: Can I test the publish workflow?**
   - A: Yes, create a tag like `v0.8.1-test` (won't match `v*` pattern)
   - Or: Use a separate test workflow with manual trigger
