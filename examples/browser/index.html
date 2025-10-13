@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaitai Struct Browser Example</title>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+          Cantarell, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+        line-height: 1.6;
+      }
+      h1 {
+        color: #333;
+        border-bottom: 2px solid #4caf50;
+        padding-bottom: 10px;
+      }
+      .example {
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      pre {
+        background: #fff;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+        border: 1px solid #ddd;
+      }
+      .info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 4px;
+        border-left: 4px solid #2196f3;
+        margin: 20px 0;
+      }
+      .success {
+        background: #e8f5e9;
+        padding: 15px;
+        border-radius: 4px;
+        border-left: 4px solid #4caf50;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🚀 Kaitai Struct Browser Example</h1>
+
+    <div class="info">
+      <strong>📦 Bundle Size:</strong> Only 11.5KB gzipped!<br />
+      <strong>✨ Features:</strong> Full Kaitai Struct parsing in the browser
+    </div>
+
+    <div class="example">
+      <h2>Example: Parse Binary Data</h2>
+      <p>
+        This example parses a simple binary format with a magic header and
+        integer values.
+      </p>
+      <button onclick="runExample()">Run Example</button>
+      <div id="output"></div>
+    </div>
+
+    <script type="module">
+      import { parse } from '../../dist/browser/index.mjs'
+
+      // Make parse available globally for the button
+      window.parse = parse
+
+      window.runExample = function () {
+        const output = document.getElementById('output')
+        output.innerHTML = '<p>⏳ Parsing...</p>'
+
+        try {
+          // Define a simple KSY schema
+          const schema = `
+meta:
+  id: simple_format
+  endian: le
+seq:
+  - id: magic
+    contents: [0x4B, 0x53, 0x54, 0x53]  # "KSTS"
+  - id: version
+    type: u2
+  - id: count
+    type: u2
+  - id: values
+    type: u4
+    repeat: expr
+    repeat-expr: count
+`
+
+          // Create test data
+          const data = new Uint8Array([
+            0x4b,
+            0x53,
+            0x54,
+            0x53, // Magic: "KSTS"
+            0x01,
+            0x00, // Version: 1
+            0x03,
+            0x00, // Count: 3
+            0x0a,
+            0x00,
+            0x00,
+            0x00, // Value 1: 10
+            0x14,
+            0x00,
+            0x00,
+            0x00, // Value 2: 20
+            0x1e,
+            0x00,
+            0x00,
+            0x00, // Value 3: 30
+          ])
+
+          // Parse the data
+          const result = parse(schema, data)
+
+          // Display results
+          output.innerHTML = `
+          <div class="success">
+            <h3>✅ Parse Successful!</h3>
+            <pre>${JSON.stringify(result, null, 2)}</pre>
+          </div>
+          <p><strong>Parsed Data:</strong></p>
+          <ul>
+            <li>Magic: ${JSON.stringify(result.magic)}</li>
+            <li>Version: ${result.version}</li>
+            <li>Count: ${result.count}</li>
+            <li>Values: ${JSON.stringify(result.values)}</li>
+          </ul>
+        `
+        } catch (error) {
+          output.innerHTML = `
+          <div style="background: #ffebee; padding: 15px; border-radius: 4px; border-left: 4px solid #f44336;">
+            <h3>❌ Error</h3>
+            <pre>${error.message}</pre>
+          </div>
+        `
+        }
+      }
+    </script>
+
+    <div class="info">
+      <h3>📚 Features Demonstrated</h3>
+      <ul>
+        <li>✅ Binary format parsing in browser</li>
+        <li>✅ Magic byte validation</li>
+        <li>✅ Multi-byte integer parsing (little-endian)</li>
+        <li>✅ Repeat expressions with dynamic counts</li>
+        <li>✅ Optimized bundle size (11.5KB gzipped)</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <h2>Usage in Your Project</h2>
+      <pre><code>// Install
+npm install @k67/kaitai-struct-ts
+
+// Import (browser build automatically selected)
+import { parse } from '@k67/kaitai-struct-ts'
+
+// Use
+const schema = `...` // Your KSY schema
+const data = new Uint8Array([...]) // Your binary data
+const result = parse(schema, data)
+</code></pre>
+    </div>
+  </body>
+</html>
