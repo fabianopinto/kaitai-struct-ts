@@ -5,23 +5,26 @@
  * @license MIT
  */
 
-import { KaitaiStream } from '../stream'
+import { KaitaiStream } from '../stream/KaitaiStream'
 import {
-  ParseError,
-  ValidationError,
-  NotImplementedError,
-} from '../utils/errors'
-import type { KsySchema, AttributeSpec, Endianness } from '../parser/schema'
-import {
+  KsySchema,
+  AttributeSpec,
+  Endianness,
   isBuiltinType,
-  getTypeEndianness,
   getBaseType,
+  getTypeEndianness,
   isIntegerType,
   isFloatType,
   isStringType,
 } from '../parser/schema'
 import { Context } from './Context'
 import { evaluateExpression } from '../expression'
+import {
+  ParseError,
+  ValidationError,
+  NotImplementedError,
+} from '../utils/errors'
+import { applyProcess } from '../utils/process'
 
 /**
  * Interprets Kaitai Struct schemas and parses binary data.
@@ -750,7 +753,7 @@ export class TypeInterpreter {
 
   /**
    * Apply processing transformation to data.
-   * Supports basic transformations like zlib decompression.
+   * Delegates to the process utility module.
    *
    * @param data - Data to process
    * @param process - Processing specification
@@ -761,19 +764,7 @@ export class TypeInterpreter {
     data: Uint8Array,
     process: string | Record<string, unknown>
   ): Uint8Array {
-    const processType =
-      typeof process === 'string' ? process : process.algorithm
-
-    // For now, return data as-is with a note that processing isn't fully implemented
-    // Full implementation would require zlib, encryption libraries, etc.
-    if (processType) {
-      throw new NotImplementedError(
-        `Processing type "${processType}" is not yet implemented. ` +
-          `Supported in future versions with zlib, encryption, etc.`
-      )
-    }
-
-    return data
+    return applyProcess(data, process)
   }
 
   /**
