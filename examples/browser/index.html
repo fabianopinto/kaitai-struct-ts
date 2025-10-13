@@ -79,7 +79,13 @@
     </div>
 
     <script type="module">
-      import { parse } from '../../dist/browser/index.mjs'
+      // When serving from examples/browser/, need to go up to project root
+      // When serving from project root, this path works too
+      const basePath = window.location.pathname.includes('/examples/browser')
+        ? '../../dist/browser/index.mjs'
+        : '/dist/browser/index.mjs'
+
+      const { parse } = await import(basePath)
 
       function runExample() {
         const output = document.getElementById('output')

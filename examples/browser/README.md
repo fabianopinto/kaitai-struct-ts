@@ -18,10 +18,10 @@ The browser build is highly optimized:
 # From project root
 pnpm build
 
-# Serve the example
-npx serve examples/browser
+# Serve from project root (so dist/ is accessible)
+pnpx serve .
 
-# Open http://localhost:3000
+# Open http://localhost:3000/examples/browser/
 ```
 
 ### Option 2: Direct HTML
@@ -180,7 +180,7 @@ pnpm test
 
 ```bash
 # Analyze bundle composition
-npx esbuild-visualizer dist/browser/index.mjs
+pnpx esbuild-visualizer dist/browser/index.mjs
 ```
 
 ### Benchmark Results
