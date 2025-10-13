@@ -68,22 +68,8 @@ export class StreamingKaitaiStream {
     return this._isEof && this.bufferOffset >= this.buffer.length
   }
 
-  /**
-   * Check if we're at EOF by trying to ensure 1 byte.
-   * This is more accurate than the isEof getter.
-   * @private
-   */
-  private async checkEof(): Promise<boolean> {
-    try {
-      await this.ensureBytes(1)
-      return false
-    } catch (error) {
-      if (error instanceof EOFError) {
-        return true
-      }
-      throw error
-    }
-  }
+  // Note: checkEof method removed as it's not currently used.
+  // Can be added back if needed for future features.
 
   /**
    * Ensure at least `bytes` are available in the buffer.

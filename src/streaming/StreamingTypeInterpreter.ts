@@ -35,22 +35,24 @@ type InternalParseEvent =
 export class StreamingTypeInterpreter {
   private schema: KsySchema
   private stream: StreamingKaitaiStream
-  private progressInterval: number
-  private yieldInterval: number
-  private totalBytes?: number
+  // Reserved for future use
+  // private progressInterval: number
+  // private yieldInterval: number
+  // private totalBytes?: number
 
   constructor(
     schema: KsySchema,
     stream: StreamingKaitaiStream,
-    progressInterval = 1024 * 1024,
-    yieldInterval = 100,
-    totalBytes?: number
+    _progressInterval = 1024 * 1024,
+    _yieldInterval = 100,
+    _totalBytes?: number
   ) {
     this.schema = schema
     this.stream = stream
-    this.progressInterval = progressInterval
-    this.yieldInterval = yieldInterval
-    this.totalBytes = totalBytes
+    // Reserved for future progress tracking
+    // this.progressInterval = progressInterval
+    // this.yieldInterval = yieldInterval
+    // this.totalBytes = totalBytes
   }
 
   /**
@@ -58,7 +60,8 @@ export class StreamingTypeInterpreter {
    */
   async *parseStreaming(): AsyncGenerator<InternalParseEvent> {
     const result: Record<string, unknown> = {}
-    const context = new Context(result, result, result)
+    // Cast stream to KaitaiStream for Context compatibility
+    const context = new Context(this.stream as never, result, result as never)
 
     // Parse sequential fields
     if (this.schema.seq) {
@@ -140,7 +143,11 @@ export class StreamingTypeInterpreter {
       }
     } else if (attr.repeat === 'expr' && attr['repeat-expr']) {
       // Repeat N times
-      const count = this.evaluateExpression(attr['repeat-expr'], context)
+      const repeatExpr =
+        typeof attr['repeat-expr'] === 'number'
+          ? String(attr['repeat-expr'])
+          : attr['repeat-expr']
+      const count = this.evaluateExpression(repeatExpr, context)
       if (typeof count !== 'number') {
         throw new ParseError(
           `repeat-expr must evaluate to number, got ${typeof count}`
@@ -158,7 +165,11 @@ export class StreamingTypeInterpreter {
         result.push(value)
 
         // Check condition with current value as _
-        const condContext = new Context(context.root, context.parent, value)
+        const condContext = new Context(
+          this.stream as never,
+          context.root,
+          value as never
+        )
         const shouldStop = this.evaluateExpression(
           attr['repeat-until'],
           condContext
