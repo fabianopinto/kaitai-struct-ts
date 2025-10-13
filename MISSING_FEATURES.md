@@ -235,19 +235,34 @@ Context:
 
 ---
 
-### 4. Browser Bundle Optimization
+### 4. ~~Browser Bundle Optimization~~ ✅ COMPLETED
 
-**Priority:** Medium
+**Priority:** ~~Medium~~ **DONE**  
+**Status:** ✅ Fully Implemented (v0.10.0)
 
-**Current:** Works in browser but not optimized  
-**Proposed:** Separate browser build with tree-shaking
+**Completed Improvements:**
 
-**Improvements:**
+- ✅ Separate browser build (dist/browser/)
+- ✅ 55% size reduction (91KB → 41KB)
+- ✅ Gzipped: 11.5KB (40% reduction)
+- ✅ Minification and tree-shaking enabled
+- ✅ Code splitting and dead code elimination
+- ✅ CDN-friendly builds
+- ✅ Browser export condition in package.json
 
-- Remove Node.js-specific code
-- Smaller bundle size
-- Better tree-shaking
-- CDN-friendly builds
+**Bundle Sizes:**
+
+- Node.js: 91KB (unminified)
+- Browser: 41KB (minified)
+- Browser: 11.5KB (gzipped)
+
+**Example:**
+
+```html
+<script type="module">
+  import { parse } from 'https://unpkg.com/@k67/kaitai-struct-ts/dist/browser/index.mjs'
+</script>
+```
 
 ---
 
@@ -279,6 +294,7 @@ These features were recently implemented:
 
 - ✅ **Expression-based endianness** - Dynamic byte order selection
 - ✅ **Enhanced error messages** - Byte offsets and hex context
+- ✅ **Browser bundle optimization** - 55% size reduction (11.5KB gzipped)
 
 ### Expression Language (v0.9.0)
 
@@ -362,7 +378,7 @@ These features were recently implemented:
 
 ### Medium Priority
 
-3. **Browser bundle optimization** - Reduce bundle size
+3. ~~**Browser bundle optimization**~~ ✅ **COMPLETED**
 4. **Streaming API design** - Plan architecture
 5. **Enhanced validation** - Better constraints
 
