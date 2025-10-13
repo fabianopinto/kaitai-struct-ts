@@ -96,6 +96,14 @@ export interface EnumAccessNode extends ASTNode {
 }
 
 /**
+ * Array literal node ([a, b, c]).
+ */
+export interface ArrayLiteralNode extends ASTNode {
+  kind: 'ArrayLiteral'
+  elements: ASTNode[]
+}
+
+/**
  * Type union for all AST nodes.
  */
 export type Expression =
@@ -108,6 +116,7 @@ export type Expression =
   | IndexAccessNode
   | MethodCallNode
   | EnumAccessNode
+  | ArrayLiteralNode
 
 /**
  * Create a literal node.
@@ -191,4 +200,11 @@ export function createEnumAccess(
   value: string
 ): EnumAccessNode {
   return { kind: 'EnumAccess', enumName, value }
+}
+
+/**
+ * Create an array literal node.
+ */
+export function createArrayLiteral(elements: ASTNode[]): ArrayLiteralNode {
+  return { kind: 'ArrayLiteral', elements }
 }

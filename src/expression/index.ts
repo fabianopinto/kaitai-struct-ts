@@ -34,8 +34,11 @@ export function evaluateExpression(
   expression: string,
   context: Context
 ): unknown {
+  // Strip unsupported generic cast syntax like .as<bytes>
+  // This is a no-op for our evaluator since we infer types dynamically.
+  const preprocessed = expression.replace(/\.as<[^>]+>/g, '')
   // Lexical analysis
-  const lexer = new Lexer(expression)
+  const lexer = new Lexer(preprocessed)
   const tokens = lexer.tokenize()
 
   // Parsing

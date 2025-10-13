@@ -6,17 +6,19 @@ This directory contains practical examples demonstrating how to use `@k67/kaitai
 
 ```
 examples/
-├── README.md          # This file
-├── wav/               # WAV audio file format
-│   ├── README.md
-│   ├── wav.ksy        # Format definition
-│   └── small.wav      # Sample file
-└── edid/              # EDID display identification
-    ├── README.md
-    ├── edid.ksy       # Format definition
-    ├── edid-1.0.bin   # EDID 1.0 sample
-    ├── edid-1.1.bin   # EDID 1.1 sample
-    └── edid-1.2.bin   # EDID 1.2 sample
+├── README.md               # This file (examples index)
+├── common/                 # Shared formats used by others
+│   └── riff.ksy            # RIFF container (imported by WAV)
+├── media/                  # Media formats
+│   ├── wav.ksy             # WAV format (imports /common/riff)
+│   └── wav/
+│       └── small.wav       # Sample WAV file
+└── hardware/               # Hardware-related formats
+    └── edid/
+        ├── edid.ksy        # EDID format definition
+        ├── edid-1.0.bin
+        ├── edid-1.1.bin
+        └── edid-1.2.bin
 ```
 
 ## 🎯 Examples
@@ -48,27 +50,63 @@ Parse VESA Enhanced Extended Display Identification Data. Demonstrates:
 ### Using the CLI
 
 ```bash
-# Parse WAV file
-npx @k67/kaitai-struct-ts examples/wav/wav.ksy examples/wav/small.wav
+# From project root (when running from source)
+pnpm build
 
-# Parse EDID file
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.0.bin
+# Parse WAV (imports /common/riff automatically)
+node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav
+
+# Parse EDID
+node dist/cli.js examples/hardware/edid/edid.ksy examples/hardware/edid/edid-1.0.bin
+
+# Output to a file
+node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav -o out.json
+
+# Extract a specific field
+node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav --field chunk.id
+
+# Alternate: using the published package via pnpx
+pnpx @k67/kaitai-struct-ts examples/media/wav.ksy examples/media/wav/small.wav
+```
+
+## 🧩 Import Resolution (Standard Feature)
+
+- Import paths declared in `meta.imports` are automatically resolved by the CLI.
+- Imported types and enums are available via a namespace derived from the import path.
+
+Example from `examples/media/wav.ksy`:
+
+```yaml
+meta:
+  id: wav
+  imports:
+    - /common/riff # Import path
+
+seq:
+  - id: chunk
+    type: 'riff::chunk' # Namespace-qualified type
 ```
 
 ### Using the Library
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
 import { readFileSync } from 'fs'
+import { KsyParser, TypeInterpreter, KaitaiStream } from '@k67/kaitai-struct-ts'
 
-// Load format definition
-const ksy = readFileSync('examples/wav/wav.ksy', 'utf-8')
+// Load format definitions
+const wavKsy = readFileSync('examples/media/wav.ksy', 'utf-8')
+const riffKsy = readFileSync('examples/common/riff.ksy', 'utf-8')
 
-// Load binary data
-const data = readFileSync('examples/wav/small.wav')
+// Parse schema with imports
+const parser = new KsyParser()
+const imports = new Map([['/common/riff', riffKsy]])
+const schema = parser.parseWithImports(wavKsy, imports)
 
-// Parse
-const result = parse(ksy, data)
+// Parse binary data
+const data = readFileSync('examples/media/wav/small.wav')
+const stream = new KaitaiStream(data)
+const interpreter = new TypeInterpreter(schema)
+const result = interpreter.parse(stream)
 console.log(result)
 ```
 

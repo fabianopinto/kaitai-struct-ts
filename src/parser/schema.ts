@@ -373,7 +373,10 @@ export const BUILTIN_TYPES = [
  * @returns True if the type is built-in
  */
 export function isBuiltinType(type: string): boolean {
-  return (BUILTIN_TYPES as readonly string[]).includes(type)
+  if ((BUILTIN_TYPES as readonly string[]).includes(type)) return true
+  // Bit field types: b1, b2, ..., b64
+  if (/^b\d+$/.test(type)) return true
+  return false
 }
 
 /**

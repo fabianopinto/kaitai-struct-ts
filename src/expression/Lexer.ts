@@ -169,6 +169,21 @@ export class Lexer {
       return createToken(TokenType.NUMBER, parseInt(value, 16), start)
     }
 
+    // Handle binary numbers (0b...)
+    if (this.current === '0' && this.peek() === 'b') {
+      value += this.current
+      this.advance()
+      value += this.current
+      this.advance()
+
+      while (this.current !== null && /[01]/.test(this.current)) {
+        value += this.current
+        this.advance()
+      }
+
+      return createToken(TokenType.NUMBER, parseInt(value, 2), start)
+    }
+
     // Regular decimal number
     while (this.current !== null && this.isDigit(this.current)) {
       value += this.current

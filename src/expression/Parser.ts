@@ -18,6 +18,7 @@ import {
   createIndexAccess,
   createMethodCall,
   createEnumAccess,
+  createArrayLiteral,
 } from './AST'
 
 /**
@@ -385,6 +386,19 @@ export class ExpressionParser {
       const expr = this.parseTernary()
       this.expect(TokenType.RPAREN, 'Expected ) after expression')
       return expr
+    }
+
+    // Array literal
+    if (this.match(TokenType.LBRACKET)) {
+      const elements: ASTNode[] = []
+      if (this.current().type !== TokenType.RBRACKET) {
+        elements.push(this.parseTernary())
+        while (this.match(TokenType.COMMA)) {
+          elements.push(this.parseTernary())
+        }
+      }
+      this.expect(TokenType.RBRACKET, 'Expected ] after array literal')
+      return createArrayLiteral(elements)
     }
 
     throw new ParseError(

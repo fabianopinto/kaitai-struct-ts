@@ -60,6 +60,9 @@ export class Evaluator {
       case 'EnumAccess':
         return this.evaluateEnumAccess(n.enumName, n.value, context)
 
+      case 'ArrayLiteral':
+        return this.evaluateArrayLiteral(n.elements, context)
+
       default:
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         throw new ParseError(`Unknown AST node kind: ${(node as any).kind}`)
@@ -314,7 +317,37 @@ export class Evaluator {
     if (typeof left === 'bigint' || typeof right === 'bigint') {
       return BigInt(left as number) === BigInt(right as number)
     }
+
+    // Sequence equality: support number[] and Uint8Array
+    const toArray = (v: unknown): number[] | null => {
+      if (Array.isArray(v))
+        return v.map((x) => (typeof x === 'bigint' ? Number(x) : (x as number)))
+      if (v instanceof Uint8Array) return Array.from(v)
+      return null
+    }
+
+    const leftArr = toArray(left)
+    const rightArr = toArray(right)
+    if (leftArr && rightArr) {
+      if (leftArr.length !== rightArr.length) return false
+      for (let i = 0; i < leftArr.length; i++) {
+        if (leftArr[i] !== rightArr[i]) return false
+      }
+      return true
+    }
+
     return left === right
+  }
+
+  /**
+   * Evaluate an array literal.
+   * @private
+   */
+  private evaluateArrayLiteral(
+    elements: ASTNode[],
+    context: Context
+  ): unknown[] {
+    return elements.map((e) => this.evaluate(e, context))
   }
 
   /**

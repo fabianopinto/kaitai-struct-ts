@@ -61,6 +61,19 @@ export class TypeInterpreter {
   }
 
   /**
+   * Safely extract a KaitaiStream from an object that may expose `_io`.
+   * Avoids using `any` casts to satisfy linting.
+   */
+  private static getKaitaiIO(val: unknown): KaitaiStream | null {
+    if (val && typeof val === 'object') {
+      const rec = val as Record<string, unknown>
+      const maybe = rec['_io']
+      if (maybe instanceof KaitaiStream) return maybe
+    }
+    return null
+  }
+
+  /**
    * Parse binary data according to the schema.
    *
    * @param stream - Binary stream to parse
@@ -76,6 +89,9 @@ export class TypeInterpreter {
     const result: Record<string, unknown> = {}
     const context = new Context(stream, result, parent, this.schema.enums)
     context.current = result
+
+    // Expose current stream for use in expressions (e.g., slot._io)
+    ;(result as Record<string, unknown>)['_io'] = stream
 
     // Set parameters in context if this is a parametric type
     if (typeArgs && this.schema.params) {
@@ -215,7 +231,23 @@ export class TypeInterpreter {
    * @private
    */
   private parseAttribute(attr: AttributeSpec, context: Context): unknown {
-    const stream = context.io
+    // Determine the stream to use (support custom I/O via attr.io)
+    let stream: KaitaiStream = context.io
+    if (attr.io !== undefined) {
+      const ioVal = this.evaluateValue(attr.io, context)
+      if (ioVal instanceof KaitaiStream) {
+        stream = ioVal
+      } else {
+        const kio = TypeInterpreter.getKaitaiIO(ioVal)
+        if (kio) {
+          stream = kio
+        } else {
+          throw new ParseError(
+            'io must evaluate to a KaitaiStream or an object with _io'
+          )
+        }
+      }
+    }
 
     // Handle conditional parsing
     if (attr.if) {
@@ -238,10 +270,7 @@ export class TypeInterpreter {
       }
     }
 
-    // Handle custom I/O
-    if (attr.io) {
-      throw new NotImplementedError('Custom I/O streams')
-    }
+    // Custom I/O handled above by selecting stream
 
     // Handle repetition
     if (attr.repeat) {
@@ -385,7 +414,11 @@ export class TypeInterpreter {
       return bytes
     } else {
       // String contents
-      const encoding = attr.encoding || this.schema.meta.encoding || 'UTF-8'
+      const encoding =
+        attr.encoding ||
+        this.schema.meta?.encoding ||
+        this.parentMeta?.encoding ||
+        'UTF-8'
       const str = stream.readStr(expected.length, encoding)
       if (str !== expected) {
         throw new ValidationError(
@@ -425,7 +458,11 @@ export class TypeInterpreter {
 
       if (type === 'str' || !type) {
         // String or raw bytes
-        const encoding = attr.encoding || this.schema.meta.encoding || 'UTF-8'
+        const encoding =
+          attr.encoding ||
+          this.schema.meta?.encoding ||
+          this.parentMeta?.encoding ||
+          'UTF-8'
         let data: Uint8Array
         if (type === 'str') {
           data = stream.readBytes(size)
@@ -458,12 +495,25 @@ export class TypeInterpreter {
     // Handle size-eos
     if (attr['size-eos']) {
       if (type === 'str') {
-        const encoding = attr.encoding || this.schema.meta.encoding || 'UTF-8'
+        const encoding =
+          attr.encoding ||
+          this.schema.meta?.encoding ||
+          this.parentMeta?.encoding ||
+          'UTF-8'
         const bytes = stream.readBytesFull()
         // eslint-disable-next-line no-undef
         return new TextDecoder(encoding).decode(bytes)
       } else {
-        return stream.readBytesFull()
+        let bytes = stream.readBytesFull()
+        // Apply processing if specified
+        if (attr.process) {
+          bytes = this.applyProcessing(bytes, attr.process)
+        }
+        if (type) {
+          const sub = new KaitaiStream(bytes)
+          return this.parseType(type, sub, context, attr['type-args'])
+        }
+        return bytes
       }
     }
 
@@ -609,6 +659,15 @@ export class TypeInterpreter {
     // Float types
     if (isFloatType(type)) {
       return this.readFloat(base, endian, stream)
+    }
+
+    // Bit field types: b1, b2, ..., b64 (default bit-endian: BE)
+    if (/^b\d+$/.test(type)) {
+      const n = parseInt(type.slice(1), 10)
+      const val = stream.readBitsIntBe(n)
+      // Return number when safely representable, else BigInt
+      const maxSafe = BigInt(Number.MAX_SAFE_INTEGER)
+      return val <= maxSafe ? Number(val) : val
     }
 
     // String types
