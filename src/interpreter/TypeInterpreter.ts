@@ -88,7 +88,7 @@ export class TypeInterpreter {
     root?: unknown
   ): Record<string, unknown> {
     const result: Record<string, unknown> = {}
-    
+
     // For top-level parse, result is the root; for nested, use provided root
     const actualRoot = root || result
     const context = new Context(stream, actualRoot, parent, this.schema.enums)
@@ -99,7 +99,7 @@ export class TypeInterpreter {
 
     // Expose current stream for use in expressions (e.g., slot._io)
     ;(result as Record<string, unknown>)['_io'] = stream
-    
+
     // Expose root for nested types
     if (root) {
       ;(result as Record<string, unknown>)['_root'] = root
@@ -593,7 +593,12 @@ export class TypeInterpreter {
       }
 
       const interpreter = new TypeInterpreter(typeSchema, meta)
-      return interpreter.parse(stream, context.current, effectiveArgs, context.root)
+      return interpreter.parse(
+        stream,
+        context.current,
+        effectiveArgs,
+        context.root
+      )
     }
 
     throw new ParseError(`Unknown type: ${typeName}`)

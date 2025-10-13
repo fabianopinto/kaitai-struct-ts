@@ -86,17 +86,20 @@ pak.resources.forEach((resource, index) => {
     console.log(`Resource ${resource.id}:`)
     console.log('  Offset:', resource.ofs_body)
     console.log('  Length:', resource.len_body)
-    
+
     // Convert body to string if it's text
-    if (pak.encoding === 1) { // UTF-8
-      const text = new TextDecoder('utf-8').decode(new Uint8Array(resource.body))
+    if (pak.encoding === 1) {
+      // UTF-8
+      const text = new TextDecoder('utf-8').decode(
+        new Uint8Array(resource.body)
+      )
       console.log('  Content:', text)
     }
   }
 })
 
 // Access aliases
-pak.aliases.forEach(alias => {
+pak.aliases.forEach((alias) => {
   console.log(`Alias ${alias.id} -> Resource ${alias.resource_idx}`)
 })
 ```
@@ -161,12 +164,14 @@ All features work correctly with this format.
 ### Version Differences
 
 #### Version 4
+
 - 4-byte version field
 - 4-byte resource count
 - 1-byte encoding
 - Resources immediately follow
 
 #### Version 5
+
 - 4-byte version field
 - 1-byte encoding
 - 3-byte padding
@@ -176,19 +181,21 @@ All features work correctly with this format.
 
 ### Encoding Types
 
-| Code | Encoding | Description                           |
-| ---- | -------- | ------------------------------------- |
-| 0    | Binary   | File contains only binary resources   |
-| 1    | UTF-8    | Text resources encoded in UTF-8       |
-| 2    | UTF-16   | Text resources encoded in UTF-16      |
+| Code | Encoding | Description                         |
+| ---- | -------- | ----------------------------------- |
+| 0    | Binary   | File contains only binary resources |
+| 1    | UTF-8    | Text resources encoded in UTF-8     |
+| 2    | UTF-16   | Text resources encoded in UTF-16    |
 
 ### Resource Structure
 
 Each resource entry contains:
+
 - **ID** (2 bytes) - Resource identifier
 - **Offset** (4 bytes) - Offset to resource data
 
 The length is calculated by looking at the next resource's offset:
+
 ```
 length = next_resource.offset - current_resource.offset
 ```
@@ -198,6 +205,7 @@ A sentinel entry (ID=0) marks the end of resources.
 ### Alias Structure (v5 only)
 
 Each alias entry contains:
+
 - **ID** (2 bytes) - Alias identifier
 - **Resource Index** (2 bytes) - Index into resources array
 
@@ -240,7 +248,7 @@ instances:
 seq:
   - id: resources
     repeat: expr
-    repeat-expr: num_resources + 1  # Uses instance in expression
+    repeat-expr: num_resources + 1 # Uses instance in expression
 ```
 
 ### Parameterized Types

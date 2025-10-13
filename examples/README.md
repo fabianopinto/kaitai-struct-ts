@@ -62,7 +62,7 @@ Parse XAR (eXtensible ARchive) files. Demonstrates:
 - Process algorithms (zlib decompression)
 - Enum value conversion (.to_i)
 - Complex conditional expressions
-- _sizeof and _root references
+- \_sizeof and \_root references
 
 **See:** [`archive/README.md`](./archive/README.md)
 

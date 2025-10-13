@@ -263,46 +263,52 @@ function safeStringify(data: unknown, pretty: boolean): string {
     // Handle primitives and special cases first
     if (obj === null || obj === undefined) return obj
     if (typeof obj === 'bigint') return String(obj)
-    if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') return obj
-    
+    if (
+      typeof obj === 'string' ||
+      typeof obj === 'number' ||
+      typeof obj === 'boolean'
+    )
+      return obj
+
     // Handle special object types
     if (obj instanceof Uint8Array) return Array.from(obj)
-    
+
     // Avoid circular references
     if (typeof obj === 'object') {
       if (seen.has(obj)) return '[Circular]'
       seen.add(obj)
     }
-    
+
     if (Array.isArray(obj)) {
-      return obj.map(item => safeClone(item, seen))
+      return obj.map((item) => safeClone(item, seen))
     }
-    
+
     // Handle regular objects
     if (typeof obj === 'object') {
       const result: Record<string, unknown> = {}
       const objRecord = obj as Record<string, unknown>
-      
+
       for (const key in objRecord) {
         // Skip internal properties
         if (key === '_io' || key === '_root' || key === '_parent') continue
-        
+
         try {
           const value = objRecord[key]
           result[key] = safeClone(value, seen)
         } catch (error) {
           // If accessing a lazy property fails, mark it as unavailable
-          result[key] = `[Error: ${error instanceof Error ? error.message : 'unavailable'}]`
+          result[key] =
+            `[Error: ${error instanceof Error ? error.message : 'unavailable'}]`
         }
       }
-      
+
       return result
     }
-    
+
     // Fallback for unknown types
     return obj
   }
-  
+
   const safe = safeClone(data)
   return pretty ? JSON.stringify(safe, null, 2) : JSON.stringify(safe)
 }

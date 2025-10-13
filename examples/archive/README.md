@@ -33,8 +33,8 @@ This example showcases:
 - ✅ **Instances** - Lazy-evaluated computed fields
 - ✅ **Conditional parsing** - Optional checksum algorithm names
 - ✅ **Complex expressions** - Ternary operators and enum comparisons
-- ✅ **_sizeof tracking** - Calculating consumed bytes
-- ✅ **_root references** - Accessing root-level fields from nested types
+- ✅ **\_sizeof tracking** - Calculating consumed bytes
+- ✅ **\_root references** - Accessing root-level fields from nested types
 - ✅ **Property-style methods** - `.to_i` on enum values
 
 ## 🚀 Usage
@@ -115,7 +115,7 @@ console.log('TOC XML:', xar.toc.xml_string)
 > - ✅ Zlib decompression (process: zlib)
 > - ✅ Enum value conversion (.to_i)
 > - ✅ Complex conditional expressions
-> - ✅ _sizeof and _root references
+> - ✅ \_sizeof and \_root references
 > - ✅ Instance calculations
 
 All features work correctly with this format.
@@ -131,14 +131,14 @@ All features work correctly with this format.
 
 ### Header Structure
 
-| Offset | Size | Field                    | Description                |
-| ------ | ---- | ------------------------ | -------------------------- |
-| 0-3    | 4    | Magic                    | "xar!" (0x78617221)        |
-| 4-5    | 2    | Header length            | Size of header in bytes    |
-| 6-7    | 2    | Version                  | XAR format version         |
-| 8-15   | 8    | TOC compressed length    | Size of compressed TOC     |
-| 16-23  | 8    | TOC uncompressed length  | Size of uncompressed TOC   |
-| 24-27  | 4    | Checksum algorithm       | Algorithm identifier       |
+| Offset | Size | Field                   | Description              |
+| ------ | ---- | ----------------------- | ------------------------ |
+| 0-3    | 4    | Magic                   | "xar!" (0x78617221)      |
+| 4-5    | 2    | Header length           | Size of header in bytes  |
+| 6-7    | 2    | Version                 | XAR format version       |
+| 8-15   | 8    | TOC compressed length   | Size of compressed TOC   |
+| 16-23  | 8    | TOC uncompressed length | Size of uncompressed TOC |
+| 24-27  | 4    | Checksum algorithm      | Algorithm identifier     |
 
 ### Checksum Algorithms
 
