@@ -52,14 +52,20 @@ seq:
       // Check event types
       expect(events[0].type).toBe('start')
       expect(events[1].type).toBe('field')
-      expect(events[1].name).toBe('magic')
-      expect(events[1].value).toBe(0x5354534b) // "KSTS" in little-endian
+      if (events[1].type === 'field') {
+        expect(events[1].name).toBe('magic')
+        expect(events[1].value).toBe(0x5354534b) // "KSTS" in little-endian
+      }
       expect(events[2].type).toBe('field')
-      expect(events[2].name).toBe('version')
-      expect(events[2].value).toBe(1)
+      if (events[2].type === 'field') {
+        expect(events[2].name).toBe('version')
+        expect(events[2].value).toBe(1)
+      }
       expect(events[3].type).toBe('field')
-      expect(events[3].name).toBe('count')
-      expect(events[3].value).toBe(3)
+      if (events[3].type === 'field') {
+        expect(events[3].name).toBe('count')
+        expect(events[3].value).toBe(3)
+      }
       expect(events[4].type).toBe('complete')
     })
 
@@ -223,7 +229,9 @@ seq:
 
       const errorEvent = events.find((e) => e.type === 'error')
       expect(errorEvent).toBeDefined()
-      expect(errorEvent.error).toBeInstanceOf(Error)
+      if (errorEvent && errorEvent.type === 'error') {
+        expect(errorEvent.error).toBeInstanceOf(Error)
+      }
     })
   })
 
@@ -241,7 +249,10 @@ seq:
 `
       const data = new Uint8Array([0x34, 0x12, 0x78, 0x56])
 
-      const result = await parseStreamingSimple(schema, createStream(data))
+      const result = (await parseStreamingSimple(
+        schema,
+        createStream(data)
+      )) as Record<string, unknown>
 
       expect(result).toEqual({
         value1: 0x1234,
@@ -277,7 +288,10 @@ seq:
 `
       const data = new Uint8Array([0x12, 0x34, 0x56, 0x78])
 
-      const result = await parseStreamingSimple(schema, createStream(data))
+      const result = (await parseStreamingSimple(
+        schema,
+        createStream(data)
+      )) as Record<string, unknown>
       expect(result.value).toBe(0x12345678)
     })
 
@@ -303,7 +317,10 @@ seq:
         0x78, // BE: 0x12345678
       ])
 
-      const result = await parseStreamingSimple(schema, createStream(data))
+      const result = (await parseStreamingSimple(
+        schema,
+        createStream(data)
+      )) as Record<string, unknown>
       expect(result.le_value).toBe(0x12345678)
       expect(result.be_value).toBe(0x12345678)
     })
@@ -336,7 +353,10 @@ seq:
         0x3f, // f8: 1.0
       ])
 
-      const result = await parseStreamingSimple(schema, createStream(data))
+      const result = (await parseStreamingSimple(
+        schema,
+        createStream(data)
+      )) as Record<string, unknown>
       expect(result.float_value).toBeCloseTo(1.0, 5)
       expect(result.double_value).toBeCloseTo(1.0, 10)
     })
@@ -356,7 +376,10 @@ seq:
         0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
       ])
 
-      const result = await parseStreamingSimple(schema, createStream(data))
+      const result = (await parseStreamingSimple(
+        schema,
+        createStream(data)
+      )) as Record<string, unknown>
       expect(result.big_value).toBe(0xffffffffffffffffn)
     })
   })

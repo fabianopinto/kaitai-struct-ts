@@ -8,8 +8,11 @@ import { StreamingKaitaiStream } from '../../src/stream/StreamingKaitaiStream'
 import { EOFError } from '../../src/utils/errors'
 
 // Helper to create a ReadableStream from Uint8Array
-// eslint-disable-next-line no-undef
-function createStream(data: Uint8Array, chunkSize = 8): ReadableStream<Uint8Array> {
+function createStream(
+  data: Uint8Array,
+  chunkSize = 8
+  // eslint-disable-next-line no-undef
+): ReadableStream<Uint8Array> {
   let offset = 0
   // eslint-disable-next-line no-undef
   return new ReadableStream({

@@ -21,7 +21,7 @@ describe('Expression Methods', () => {
     const stream = new KaitaiStream(new Uint8Array())
     // Create context with data as both current and root
     const root = { ...data }
-    const context = new Context(data, root, stream, {})
+    const context = new Context(stream, root, data as never, {})
     return evaluator.evaluate(ast, context)
   }
 
