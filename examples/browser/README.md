@@ -6,9 +6,9 @@ This example demonstrates using `@k67/kaitai-struct-ts` in a browser environment
 
 The browser build is highly optimized:
 
-- **Minified:** 41KB
-- **Gzipped:** 11.5KB
-- **Reduction:** 55% smaller than Node.js build
+- **Minified:** 157KB
+- **Gzipped:** 49KB
+- **Includes:** YAML parser and pako (zlib) bundled
 
 ## 🚀 Quick Start
 

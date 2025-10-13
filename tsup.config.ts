@@ -27,6 +27,7 @@ export default defineConfig([
     platform: 'browser',
     treeshake: true,
     external: ['fs', 'path', 'util'],
+    noExternal: ['yaml', 'pako'], // Bundle these dependencies for browser
     esbuildOptions(options) {
       options.mangleProps = /^_/
       options.drop = ['console', 'debugger']
