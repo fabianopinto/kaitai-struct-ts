@@ -1,0 +1,221 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'CHANGELOG.md'
+      - 'package.json'
+
+jobs:
+  check-version:
+    name: Check for version bump
+    runs-on: ubuntu-latest
+    outputs:
+      should-release: ${{ steps.check.outputs.should-release }}
+      version: ${{ steps.check.outputs.version }}
+      prev-version: ${{ steps.check.outputs.prev-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check version change
+        id: check
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          git checkout HEAD~1 package.json 2>/dev/null || true
+          PREV_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
+          git checkout HEAD package.json
+          
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "prev-version=$PREV_VERSION" >> $GITHUB_OUTPUT
+          
+          if [ "$CURRENT_VERSION" != "$PREV_VERSION" ]; then
+            echo "should-release=true" >> $GITHUB_OUTPUT
+            echo "Version changed: $PREV_VERSION -> $CURRENT_VERSION"
+          else
+            echo "should-release=false" >> $GITHUB_OUTPUT
+            echo "No version change detected"
+          fi
+
+  create-release-notes:
+    name: Create release notes
+    runs-on: ubuntu-latest
+    needs: check-version
+    if: needs.check-version.outputs.should-release == 'true'
+    outputs:
+      notes: ${{ steps.extract.outputs.notes }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract changelog for version
+        id: extract
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          
+          # Extract section between [VERSION] and next version or EOF
+          NOTES=$(awk "/## \[$VERSION\]/,/## \[/" CHANGELOG.md | sed '1d;$d' | sed '/^$/d')
+          
+          if [ -z "$NOTES" ]; then
+            echo "No changelog entry found for version $VERSION"
+            NOTES="See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details."
+          fi
+          
+          # Save to file to handle multiline
+          echo "$NOTES" > /tmp/notes.txt
+          
+          # Set output using heredoc for multiline
+          {
+            echo 'notes<<EOF'
+            cat /tmp/notes.txt
+            echo EOF
+          } >> $GITHUB_OUTPUT
+
+      - name: Create release draft
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const version = '${{ needs.check-version.outputs.version }}'
+            const notes = `${{ steps.extract.outputs.notes }}`
+            const repo = '${{ github.repository }}'
+            
+            const fullNotes = [
+              `## Changes in v${version}`,
+              '',
+              notes,
+              '',
+              '### Installation',
+              '',
+              '```bash',
+              `npm install @k67/kaitai-struct-ts@${version}`,
+              '# or',
+              `pnpm add @k67/kaitai-struct-ts@${version}`,
+              '```',
+              '',
+              '### Links',
+              '',
+              `- [CHANGELOG](https://github.com/${repo}/blob/main/CHANGELOG.md)`,
+              `- [npm package](https://www.npmjs.com/package/@k67/kaitai-struct-ts/v/${version})`,
+            ].join('\n')
+            
+            // Check if release already exists
+            let release
+            try {
+              release = await github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag: `v${version}`,
+              })
+              core.info(`Release v${version} already exists`)
+            } catch (error) {
+              if (error.status === 404) {
+                // Create draft release (without tag since we can't create tags)
+                core.info(`Creating draft release for v${version}`)
+                core.info('Note: Tag must be created manually due to repository rules')
+                
+                // Save release notes to artifact for manual use
+                const fs = require('fs')
+                fs.writeFileSync('release-notes.md', fullNotes)
+                
+                core.info('Release notes saved. Manual steps required:')
+                core.info('1. Create tag v' + version + ' manually or via repository settings')
+                core.info('2. Create release with the generated notes')
+              } else {
+                throw error
+              }
+            }
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes-v${{ needs.check-version.outputs.version }}
+          path: release-notes.md
+          if-no-files-found: ignore
+
+  notify:
+    name: Notify about manual steps
+    runs-on: ubuntu-latest
+    needs: [check-version, create-release-notes]
+    if: needs.check-version.outputs.should-release == 'true'
+    steps:
+      - name: Create issue for manual release
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const version = '${{ needs.check-version.outputs.version }}'
+            const repo = '${{ github.repository }}'
+            const runId = '${{ github.run_id }}'
+            
+            const issueBody = [
+              `## Release v${version} Ready`,
+              '',
+              `Version ${version} has been committed to main but requires manual steps due to repository tag creation rules.`,
+              '',
+              '### Manual Steps Required',
+              '',
+              '1. **Create the tag:**',
+              '   ```bash',
+              `   git tag v${version}`,
+              `   git push origin v${version}`,
+              '   ```',
+              '',
+              `   Or create via GitHub UI: Releases → Draft a new release → Choose tag: v${version}`,
+              '',
+              '2. **Publish to npm:**',
+              '   ```bash',
+              '   pnpm publish --access public --no-git-checks',
+              '   ```',
+              '',
+              '3. **Create GitHub Release:**',
+              '   - Download release notes from workflow artifacts',
+              `   - Create release with tag v${version}`,
+              '   - Paste release notes',
+              '',
+              '### Automation Status',
+              '',
+              `- ✅ Version bumped to ${version}`,
+              '- ✅ CHANGELOG updated',
+              '- ✅ Release notes generated (see artifacts)',
+              '- ⏳ Tag creation (blocked by repository rules)',
+              '- ⏳ npm publish (requires manual action)',
+              '- ⏳ GitHub release (requires tag)',
+              '',
+              '### Links',
+              '',
+              `- [Workflow run](https://github.com/${repo}/actions/runs/${runId})`,
+              `- [Release notes artifact](https://github.com/${repo}/actions/runs/${runId})`,
+              '',
+              '---',
+              '*This issue was automatically created by the release workflow.*',
+            ].join('\n')
+
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'release',
+            })
+            
+            const existingIssue = issues.data.find(issue => 
+              issue.title.includes(`Release v${version}`)
+            )
+            
+            if (existingIssue) {
+              core.info(`Issue already exists: #${existingIssue.number}`)
+            } else {
+              const issue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Release v${version} - Manual Steps Required`,
+                body: issueBody,
+                labels: ['release', 'automation'],
+              })
+              core.info(`Created issue: #${issue.data.number}`)
+            }

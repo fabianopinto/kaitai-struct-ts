@@ -1,0 +1,114 @@
+name: Update Changelog
+
+on:
+  pull_request:
+    types: [opened, synchronize, labeled]
+
+jobs:
+  check-changelog:
+    name: Check changelog update
+    runs-on: ubuntu-latest
+    if: |
+      !contains(github.event.pull_request.labels.*.name, 'skip-changelog') &&
+      !contains(github.event.pull_request.labels.*.name, 'dependencies')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if CHANGELOG.md was modified
+        id: check
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          if echo "$CHANGED_FILES" | grep -q "CHANGELOG.md"; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ CHANGELOG.md has been updated"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "⚠️ CHANGELOG.md has not been updated"
+          fi
+
+      - name: Comment on PR if changelog missing
+        if: steps.check.outputs.changed == 'false'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const comment = `## ⚠️ Changelog Update Required
+
+This PR does not include updates to \`CHANGELOG.md\`.
+
+Please add an entry describing your changes under the \`## [Unreleased]\` section.
+
+### How to update the changelog:
+
+1. Edit \`CHANGELOG.md\`
+2. Add your changes under \`## [Unreleased]\` in the appropriate category:
+   - **Added** - New features
+   - **Changed** - Changes in existing functionality
+   - **Deprecated** - Soon-to-be removed features
+   - **Removed** - Removed features
+   - **Fixed** - Bug fixes
+   - **Security** - Security fixes
+
+### Example:
+
+\`\`\`markdown
+## [Unreleased]
+
+### Added
+- New feature X that does Y
+
+### Fixed
+- Bug in Z component
+\`\`\`
+
+---
+
+If this PR doesn't require a changelog entry, add the \`skip-changelog\` label.`
+
+            // Check if comment already exists
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            })
+            
+            const botComment = comments.data.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Changelog Update Required')
+            )
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment,
+              })
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              })
+            }
+
+      - name: Add label if changelog updated
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['changelog-updated'],
+            })

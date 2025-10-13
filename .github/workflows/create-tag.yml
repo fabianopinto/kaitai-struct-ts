@@ -1,11 +1,15 @@
 name: Create Release Tag
 
+# NOTE: This workflow is currently blocked by repository rules that prevent
+# tag creation from GitHub Actions. Use manual tag creation instead.
+# See .github/RELEASE_CHECKLIST.md for instructions.
+
 on:
   workflow_dispatch:
     inputs:
       tag:
         description: "Tag to create (e.g., v0.9.0)"
-        required: true
+        required: false
         type: string
 
 jobs:
@@ -31,17 +35,34 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const tag = core.getInput('tag')
+            const input = core.getInput('tag')
+            let tag = (input || '').trim()
+
+            if (!tag) {
+              const fs = require('fs')
+              const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+              tag = `v${pkg.version}`
+              core.info(`No tag provided, defaulting to package.json version: ${tag}`)
+            }
+
             if (!/^v\d+\.\d+\.\d+$/.test(tag)) {
               core.setFailed(`Invalid tag format: ${tag}`)
               return
             }
 
+            // Resolve main HEAD SHA to comply with rulesets
+            const { data: mainRef } = await github.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'heads/main',
+            })
+            const sha = mainRef.object.sha
+
             const { data: ref } = await github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${tag}`,
-              sha: context.sha,
+              sha,
             })
             core.info(`Created tag ${ref.ref} at ${ref.object.sha}`)
 
