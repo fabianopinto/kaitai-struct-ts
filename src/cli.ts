@@ -260,36 +260,47 @@ function extractField(obj: Record<string, unknown>, path: string): unknown {
 function safeStringify(data: unknown, pretty: boolean): string {
   // Create a deep copy that evaluates getters safely
   function safeClone(obj: unknown, seen = new WeakSet<object>()): unknown {
+    // Handle primitives and special cases first
     if (obj === null || obj === undefined) return obj
-    if (typeof obj !== 'object') return obj
-    if (obj instanceof Uint8Array) return Array.from(obj)
     if (typeof obj === 'bigint') return String(obj)
+    if (typeof obj === 'string' || typeof obj === 'number' || typeof obj === 'boolean') return obj
+    
+    // Handle special object types
+    if (obj instanceof Uint8Array) return Array.from(obj)
     
     // Avoid circular references
-    if (seen.has(obj)) return '[Circular]'
-    seen.add(obj)
+    if (typeof obj === 'object') {
+      if (seen.has(obj)) return '[Circular]'
+      seen.add(obj)
+    }
     
     if (Array.isArray(obj)) {
       return obj.map(item => safeClone(item, seen))
     }
     
-    const result: Record<string, unknown> = {}
-    const objRecord = obj as Record<string, unknown>
-    
-    for (const key in objRecord) {
-      // Skip internal properties
-      if (key === '_io' || key === '_root' || key === '_parent') continue
+    // Handle regular objects
+    if (typeof obj === 'object') {
+      const result: Record<string, unknown> = {}
+      const objRecord = obj as Record<string, unknown>
       
-      try {
-        const value = objRecord[key]
-        result[key] = safeClone(value, seen)
-      } catch (error) {
-        // If accessing a lazy property fails, mark it as unavailable
-        result[key] = `[Error: ${error instanceof Error ? error.message : 'unavailable'}]`
+      for (const key in objRecord) {
+        // Skip internal properties
+        if (key === '_io' || key === '_root' || key === '_parent') continue
+        
+        try {
+          const value = objRecord[key]
+          result[key] = safeClone(value, seen)
+        } catch (error) {
+          // If accessing a lazy property fails, mark it as unavailable
+          result[key] = `[Error: ${error instanceof Error ? error.message : 'unavailable'}]`
+        }
       }
+      
+      return result
     }
     
-    return result
+    // Fallback for unknown types
+    return obj
   }
   
   const safe = safeClone(data)
