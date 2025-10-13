@@ -155,10 +155,12 @@ graph LR
     D --> D2[Context.ts]
     D --> D3[index.ts]
 
-    E --> E1[ExpressionEvaluator.ts]
+    E --> E1[Evaluator.ts]
     E --> E2[Lexer.ts]
     E --> E3[Parser.ts]
-    E --> E4[index.ts]
+    E --> E4[AST.ts]
+    E --> E5[Token.ts]
+    E --> E6[index.ts]
 
     F --> F1[primitives.ts]
     F --> F2[index.ts]
@@ -252,18 +254,16 @@ graph TD
     D -->|EOF| E[EOFError]
     D -->|Parse| F[ParseError]
     D -->|Validation| G[ValidationError]
-    D -->|Not Implemented| H[NotImplementedError]
-    D -->|Other| I[KaitaiError]
+    D -->|Other| H[KaitaiError]
 
-    E --> J[Include Position]
-    F --> J
-    G --> J
+    E --> I[Include Position]
+    F --> I
+    G --> I
 
-    J --> K[Throw Error]
-    H --> K
-    I --> K
+    I --> J[Throw Error]
+    H --> J
 
-    K --> L[User Catches]
+    J --> K[User Catches]
 ```
 
 ## Phase Implementation Roadmap
@@ -288,11 +288,17 @@ gantt
     Comprehensive Tests    :p2_5, after p2_1, 14d
 
     section Phase 3 - Advanced
-    Substreams             :p3_1, after p2_6, 5d
-    Processing             :p3_2, after p3_1, 7d
-    Bit-sized Integers     :p3_3, after p3_2, 4d
-    Imports                :p3_4, after p3_3, 5d
-    Performance Opts       :p3_5, after p3_4, 7d
+    Substreams             :done, p3_1, after p2_5, 5d
+    Processing (Basic)     :done, p3_2, after p3_1, 7d
+    Bit-sized Integers     :done, p3_3, after p3_2, 4d
+    Imports                :done, p3_4, after p3_3, 5d
+    CLI Tool               :done, p3_5, after p3_4, 7d
+    
+    section Phase 4 - Production
+    Custom IO Streams      :done, p4_1, after p3_5, 3d
+    Array Literals         :done, p4_2, after p4_1, 2d
+    Binary Literals        :done, p4_3, after p4_1, 1d
+    Real-world Testing     :done, p4_4, after p4_2, 3d
 ```
 
 ## Performance Considerations
@@ -335,10 +341,13 @@ graph TD
     B --> B4[Expression Tests]
     B --> B5[Utility Tests]
 
-    C --> C1[Simple Formats]
-    C --> C2[GIF Format]
-    C --> C3[ZIP Format]
-    C --> C4[ELF Format]
+    C --> C1[Basic Parsing]
+    C --> C2[Expressions]
+    C --> C3[Enums & Switch]
+    C --> C4[Instances]
+    C --> C5[CLI Tests]
+    C --> C6[WAV Format]
+    C --> C7[EDID Format]
 
     D --> D1[1MB Files]
     D --> D2[10MB Files]
