@@ -255,12 +255,21 @@ function extractField(obj: Record<string, unknown>, path: string): unknown {
 }
 
 /**
- * Custom JSON replacer to handle BigInt values
+ * Custom JSON replacer to handle BigInt values and exclude internal properties
  */
-function jsonReplacer(_key: string, value: unknown): unknown {
+function jsonReplacer(key: string, value: unknown): unknown {
+  // Exclude internal Kaitai Struct properties
+  if (key === '_io' || key === '_root' || key === '_parent') {
+    return undefined
+  }
+  
   if (typeof value === 'bigint') {
     // Convert BigInt to string to make it JSON-serializable
     return value.toString()
+  }
+  if (value instanceof Uint8Array) {
+    // Convert Uint8Array to regular array for better JSON representation
+    return Array.from(value)
   }
   return value
 }

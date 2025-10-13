@@ -194,6 +194,20 @@ export class Evaluator {
       )
     }
 
+    // Handle special Kaitai Struct pseudo-properties that act like methods
+    if (property === 'to_i') {
+      // Convert to integer (works for numbers, strings, etc.)
+      if (typeof obj === 'number') return Math.floor(obj)
+      if (typeof obj === 'bigint') return Number(obj)
+      if (typeof obj === 'string') return parseInt(obj, 10)
+      if (typeof obj === 'boolean') return obj ? 1 : 0
+      return this.toInt(obj)
+    }
+
+    if (property === 'to_s') {
+      return String(obj)
+    }
+
     if (typeof obj === 'object') {
       return (obj as Record<string, unknown>)[property]
     }

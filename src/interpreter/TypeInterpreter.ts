@@ -78,19 +78,32 @@ export class TypeInterpreter {
    * @param stream - Binary stream to parse
    * @param parent - Parent object (for nested types)
    * @param typeArgs - Arguments for parametric types
+   * @param root - Root object of the parse tree (for nested types)
    * @returns Parsed object
    */
   parse(
     stream: KaitaiStream,
     parent?: unknown,
-    typeArgs?: Array<string | number | boolean>
+    typeArgs?: Array<string | number | boolean>,
+    root?: unknown
   ): Record<string, unknown> {
     const result: Record<string, unknown> = {}
-    const context = new Context(stream, result, parent, this.schema.enums)
+    
+    // For top-level parse, result is the root; for nested, use provided root
+    const actualRoot = root || result
+    const context = new Context(stream, actualRoot, parent, this.schema.enums)
     context.current = result
+
+    // Track starting position for _sizeof calculation
+    const startPos = stream.pos
 
     // Expose current stream for use in expressions (e.g., slot._io)
     ;(result as Record<string, unknown>)['_io'] = stream
+    
+    // Expose root for nested types
+    if (root) {
+      ;(result as Record<string, unknown>)['_root'] = root
+    }
 
     // Set parameters in context if this is a parametric type
     if (typeArgs && this.schema.params) {
@@ -119,6 +132,10 @@ export class TypeInterpreter {
         }
       }
     }
+
+    // Calculate and store _sizeof (number of bytes consumed)
+    const endPos = stream.pos
+    ;(result as Record<string, unknown>)['_sizeof'] = endPos - startPos
 
     // Set up lazy-evaluated instances
     if (this.schema.instances) {
@@ -575,7 +592,7 @@ export class TypeInterpreter {
       }
 
       const interpreter = new TypeInterpreter(typeSchema, meta)
-      return interpreter.parse(stream, context.current, effectiveArgs)
+      return interpreter.parse(stream, context.current, effectiveArgs, context.root)
     }
 
     throw new ParseError(`Unknown type: ${typeName}`)
