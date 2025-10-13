@@ -119,15 +119,15 @@ export class Evaluator {
 
       // Bitwise
       case '<<':
-        return this.toInt(leftVal) << this.toInt(rightVal)
+        return this.bitwiseOp(leftVal, rightVal, (a, b) => a << b)
       case '>>':
-        return this.toInt(leftVal) >> this.toInt(rightVal)
+        return this.bitwiseOp(leftVal, rightVal, (a, b) => a >> b)
       case '&':
-        return this.toInt(leftVal) & this.toInt(rightVal)
+        return this.bitwiseOp(leftVal, rightVal, (a, b) => a & b)
       case '|':
-        return this.toInt(leftVal) | this.toInt(rightVal)
+        return this.bitwiseOp(leftVal, rightVal, (a, b) => a | b)
       case '^':
-        return this.toInt(leftVal) ^ this.toInt(rightVal)
+        return this.bitwiseOp(leftVal, rightVal, (a, b) => a ^ b)
 
       // Logical
       case 'and':
@@ -233,14 +233,13 @@ export class Evaluator {
   private evaluateMethodCall(
     object: ASTNode,
     method: string,
-    _args: ASTNode[],
+    args: ASTNode[],
     context: Context
   ): unknown {
     const obj = this.evaluate(object, context)
-    // TODO: Use args for method calls that need them
-    // const evalArgs = args.map((arg) => this.evaluate(arg, context))
+    const evalArgs = args.map((arg) => this.evaluate(arg, context))
 
-    // Handle common methods
+    // Array/String length
     if (method === 'length' || method === 'size') {
       if (Array.isArray(obj)) return obj.length
       if (obj instanceof Uint8Array) return obj.length
@@ -248,7 +247,12 @@ export class Evaluator {
       throw new ParseError(`Object does not have a ${method} property`)
     }
 
+    // Type conversions
     if (method === 'to_i') {
+      const base = evalArgs.length > 0 ? this.toInt(evalArgs[0]) : 10
+      if (typeof obj === 'string') {
+        return parseInt(obj, base)
+      }
       return this.toInt(obj)
     }
 
@@ -256,7 +260,218 @@ export class Evaluator {
       return String(obj)
     }
 
+    // String methods
+    if (typeof obj === 'string') {
+      return this.evaluateStringMethod(obj, method, evalArgs)
+    }
+
+    // Array methods
+    if (Array.isArray(obj) || obj instanceof Uint8Array) {
+      return this.evaluateArrayMethod(obj, method, evalArgs)
+    }
+
     throw new ParseError(`Unknown method: ${method}`)
+  }
+
+  /**
+   * Evaluate string methods.
+   * @private
+   */
+  private evaluateStringMethod(
+    str: string,
+    method: string,
+    args: unknown[]
+  ): unknown {
+    switch (method) {
+      case 'substring': {
+        const start = args.length > 0 ? this.toInt(args[0]) : 0
+        const end = args.length > 1 ? this.toInt(args[1]) : undefined
+        return str.substring(start, end)
+      }
+
+      case 'substr': {
+        const start = args.length > 0 ? this.toInt(args[0]) : 0
+        const length = args.length > 1 ? this.toInt(args[1]) : undefined
+        return str.substr(start, length)
+      }
+
+      case 'reverse':
+        return str.split('').reverse().join('')
+
+      case 'to_i': {
+        const base = args.length > 0 ? this.toInt(args[0]) : 10
+        return parseInt(str, base)
+      }
+
+      case 'length':
+      case 'size':
+        return str.length
+
+      // Ruby-style string methods used in Kaitai
+      case 'upcase':
+      case 'to_upper':
+        return str.toUpperCase()
+
+      case 'downcase':
+      case 'to_lower':
+        return str.toLowerCase()
+
+      case 'capitalize':
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+
+      case 'strip':
+      case 'trim':
+        return str.trim()
+
+      case 'lstrip':
+      case 'trim_start':
+        return str.trimStart()
+
+      case 'rstrip':
+      case 'trim_end':
+        return str.trimEnd()
+
+      case 'starts_with':
+      case 'startsWith': {
+        if (args.length === 0) {
+          throw new ParseError('starts_with requires 1 argument')
+        }
+        return str.startsWith(String(args[0]))
+      }
+
+      case 'ends_with':
+      case 'endsWith': {
+        if (args.length === 0) {
+          throw new ParseError('ends_with requires 1 argument')
+        }
+        return str.endsWith(String(args[0]))
+      }
+
+      case 'includes':
+      case 'contains': {
+        if (args.length === 0) {
+          throw new ParseError('includes requires 1 argument')
+        }
+        return str.includes(String(args[0]))
+      }
+
+      case 'index_of':
+      case 'indexOf': {
+        if (args.length === 0) {
+          throw new ParseError('index_of requires 1 argument')
+        }
+        return str.indexOf(String(args[0]))
+      }
+
+      case 'split': {
+        if (args.length === 0) {
+          throw new ParseError('split requires 1 argument')
+        }
+        return str.split(String(args[0]))
+      }
+
+      case 'replace': {
+        if (args.length < 2) {
+          throw new ParseError('replace requires 2 arguments')
+        }
+        return str.replace(String(args[0]), String(args[1]))
+      }
+
+      case 'replace_all':
+      case 'replaceAll': {
+        if (args.length < 2) {
+          throw new ParseError('replace_all requires 2 arguments')
+        }
+        const search = String(args[0])
+        const replace = String(args[1])
+        // Use split/join for compatibility with older targets
+        return str.split(search).join(replace)
+      }
+
+      case 'pad_left':
+      case 'padStart': {
+        if (args.length === 0) {
+          throw new ParseError('pad_left requires at least 1 argument')
+        }
+        const length = this.toInt(args[0])
+        const fillString = args.length > 1 ? String(args[1]) : ' '
+        return str.padStart(length, fillString)
+      }
+
+      case 'pad_right':
+      case 'padEnd': {
+        if (args.length === 0) {
+          throw new ParseError('pad_right requires at least 1 argument')
+        }
+        const length = this.toInt(args[0])
+        const fillString = args.length > 1 ? String(args[1]) : ' '
+        return str.padEnd(length, fillString)
+      }
+
+      default:
+        throw new ParseError(`Unknown string method: ${method}`)
+    }
+  }
+
+  /**
+   * Evaluate array methods.
+   * @private
+   */
+  private evaluateArrayMethod(
+    arr: unknown[] | Uint8Array,
+    method: string,
+    args: unknown[]
+  ): unknown {
+    const array = Array.isArray(arr) ? arr : Array.from(arr)
+
+    switch (method) {
+      case 'length':
+      case 'size':
+        return array.length
+
+      case 'first':
+        return array[0]
+
+      case 'last':
+        return array[array.length - 1]
+
+      case 'min':
+        return Math.min(...array.map((v) => this.toNumber(v)))
+
+      case 'max':
+        return Math.max(...array.map((v) => this.toNumber(v)))
+
+      case 'reverse':
+        return [...array].reverse()
+
+      case 'sort':
+        return [...array].sort((a, b) => this.compare(a, b))
+
+      case 'includes':
+      case 'contains': {
+        if (args.length === 0) {
+          throw new ParseError('includes requires 1 argument')
+        }
+        return array.some((item) => this.equals(item, args[0]))
+      }
+
+      case 'index_of':
+      case 'indexOf': {
+        if (args.length === 0) {
+          throw new ParseError('index_of requires 1 argument')
+        }
+        return array.findIndex((item) => this.equals(item, args[0]))
+      }
+
+      case 'slice': {
+        const start = args.length > 0 ? this.toInt(args[0]) : 0
+        const end = args.length > 1 ? this.toInt(args[1]) : undefined
+        return array.slice(start, end)
+      }
+
+      default:
+        throw new ParseError(`Unknown array method: ${method}`)
+    }
   }
 
   /**
@@ -293,6 +508,53 @@ export class Evaluator {
   private modulo(a: number, b: number): number {
     const result = a % b
     return result < 0 ? result + b : result
+  }
+
+  /**
+   * Helper: Bitwise operation with BigInt support.
+   * JavaScript bitwise operators work on 32-bit integers, but Kaitai
+   * may use 64-bit values. For values that fit in 32 bits, use native ops.
+   * For larger values, convert to BigInt (with limitations).
+   * @private
+   */
+  private bitwiseOp(
+    left: unknown,
+    right: unknown,
+    op: (a: number, b: number) => number
+  ): number | bigint {
+    // Check if we're dealing with BigInt values
+    if (typeof left === 'bigint' || typeof right === 'bigint') {
+      // Convert to BigInt and perform operation
+      const leftBig = typeof left === 'bigint' ? left : BigInt(left as number)
+      const rightBig =
+        typeof right === 'bigint' ? right : BigInt(right as number)
+
+      // BigInt bitwise operations
+      // Note: Shift operations require the right operand to be a regular number
+      if (op.toString().includes('<<')) {
+        return leftBig << BigInt(Number(rightBig))
+      }
+      if (op.toString().includes('>>')) {
+        return leftBig >> BigInt(Number(rightBig))
+      }
+      if (op.toString().includes('&')) {
+        return leftBig & rightBig
+      }
+      if (op.toString().includes('|')) {
+        return leftBig | rightBig
+      }
+      if (op.toString().includes('^')) {
+        return leftBig ^ rightBig
+      }
+    }
+
+    // Handle undefined/null values
+    if (left === undefined || left === null || right === undefined || right === null) {
+      throw new ParseError('Cannot perform bitwise operation on null/undefined')
+    }
+
+    // For regular numbers, use 32-bit operations
+    return op(this.toInt(left), this.toInt(right))
   }
 
   /**
