@@ -1,5 +1,52 @@
 # Changelog
 
+## 0.10.0
+
+### Minor Changes
+
+- # Streaming API Implementation (v0.10.0)
+
+  Major new feature: Streaming API for parsing large files without loading everything into memory.
+
+  ## Added
+  - **StreamingKaitaiStream**: Forward-only stream reader with configurable buffering
+    - Supports ReadableStream and AsyncIterable sources
+    - All primitive types (u1-u8, s1-s8, f4, f8, BigInt)
+    - String reading (fixed-length and null-terminated)
+    - Configurable chunk size and buffer limits
+    - Position tracking and EOF detection
+  - **parseStreaming()**: Event-based progressive parsing
+    - Start, field, progress, complete, and error events
+    - Configurable progress intervals
+    - Support for sequential fields, repeats, and conditionals
+    - Works with Node.js streams and browser ReadableStream
+  - **StreamingTypeInterpreter**: Sequential field parser
+    - Repeat support (eos, expr, until)
+    - Conditional fields (if expressions)
+    - Endianness handling (meta + type-specific)
+    - Expression evaluation
+
+  ## Features
+  - Parse files larger than available RAM
+  - Progressive results before completion
+  - Memory usage stays within configured limits
+  - Compatible with Node.js and browser streams
+  - 38 comprehensive tests (26 unit + 12 integration)
+
+  ## Documentation
+  - Complete streaming API design document
+  - Architecture overview and examples
+  - Performance considerations
+  - Limitations and workarounds
+
+  ## Improvements
+  - Test files now included in TypeScript checking and ESLint
+  - Fixed YAML syntax in changelog workflow
+  - Resolved all compilation warnings
+  - Browser bundle includes YAML parser (49KB gzipped)
+
+  All 283 tests passing ✅
+
 ## 0.9.0
 
 ### Minor Changes
