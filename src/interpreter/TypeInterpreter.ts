@@ -10,6 +10,7 @@ import {
   KsySchema,
   AttributeSpec,
   Endianness,
+  EndianExpression,
   isBuiltinType,
   getBaseType,
   getTypeEndianness,
@@ -791,16 +792,29 @@ export class TypeInterpreter {
   private parseBuiltinType(
     type: string,
     stream: KaitaiStream,
-    _context: Context
+    context: Context
   ): unknown {
     const base = getBaseType(type)
     const typeEndian = getTypeEndianness(type)
     // Get endianness from schema or parent
     const meta = this.schema.meta || this.parentMeta
     const metaEndian = meta?.endian
-    // Handle expression-based endianness (not yet implemented)
-    const endian: Endianness =
-      typeEndian || (typeof metaEndian === 'string' ? metaEndian : 'le')
+    
+    // Resolve endianness (static or expression-based)
+    let endian: Endianness
+    if (typeEndian) {
+      // Type-specific endianness (e.g., u4le, u4be)
+      endian = typeEndian
+    } else if (typeof metaEndian === 'string') {
+      // Static endianness from meta
+      endian = metaEndian
+    } else if (metaEndian && typeof metaEndian === 'object') {
+      // Expression-based endianness (switch-on)
+      endian = this.evaluateEndianExpression(metaEndian, context)
+    } else {
+      // Default to little-endian
+      endian = 'le'
+    }
 
     // Integer types
     if (isIntegerType(type)) {
@@ -913,6 +927,48 @@ export class TypeInterpreter {
     process: string | Record<string, unknown>
   ): Uint8Array {
     return applyProcess(data, process)
+  }
+
+  /**
+   * Evaluate expression-based endianness (switch-on).
+   *
+   * @param endianExpr - Endianness expression with switch-on and cases
+   * @param context - Execution context
+   * @returns Resolved endianness ('le' or 'be')
+   * @private
+   */
+  private evaluateEndianExpression(
+    endianExpr: EndianExpression,
+    context: Context
+  ): Endianness {
+    const switchOn = endianExpr['switch-on']
+    const cases = endianExpr.cases
+
+    if (!switchOn || typeof switchOn !== 'string') {
+      throw new ParseError('Endian expression missing "switch-on" field')
+    }
+
+    if (!cases || typeof cases !== 'object') {
+      throw new ParseError('Endian expression missing "cases" field')
+    }
+
+    // Evaluate the switch-on expression
+    const switchValue = this.evaluateValue(switchOn, context)
+    
+    // Convert to string for case matching
+    const key = String(switchValue)
+    
+    // Look up the endianness in cases
+    if (key in cases) {
+      const endian = cases[key]
+      if (endian !== 'le' && endian !== 'be') {
+        throw new ParseError(`Invalid endianness value: ${endian}`)
+      }
+      return endian
+    }
+
+    // Default to little-endian if no match
+    return 'le'
   }
 
   /**
