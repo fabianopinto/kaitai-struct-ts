@@ -255,23 +255,45 @@ function extractField(obj: Record<string, unknown>, path: string): unknown {
 }
 
 /**
- * Custom JSON replacer to handle BigInt values and exclude internal properties
+ * Safe JSON stringify that handles lazy evaluation errors
  */
-function jsonReplacer(key: string, value: unknown): unknown {
-  // Exclude internal Kaitai Struct properties
-  if (key === '_io' || key === '_root' || key === '_parent') {
-    return undefined
+function safeStringify(data: unknown, pretty: boolean): string {
+  // Create a deep copy that evaluates getters safely
+  function safeClone(obj: unknown, seen = new WeakSet<object>()): unknown {
+    if (obj === null || obj === undefined) return obj
+    if (typeof obj !== 'object') return obj
+    if (obj instanceof Uint8Array) return Array.from(obj)
+    if (typeof obj === 'bigint') return String(obj)
+    
+    // Avoid circular references
+    if (seen.has(obj)) return '[Circular]'
+    seen.add(obj)
+    
+    if (Array.isArray(obj)) {
+      return obj.map(item => safeClone(item, seen))
+    }
+    
+    const result: Record<string, unknown> = {}
+    const objRecord = obj as Record<string, unknown>
+    
+    for (const key in objRecord) {
+      // Skip internal properties
+      if (key === '_io' || key === '_root' || key === '_parent') continue
+      
+      try {
+        const value = objRecord[key]
+        result[key] = safeClone(value, seen)
+      } catch (error) {
+        // If accessing a lazy property fails, mark it as unavailable
+        result[key] = `[Error: ${error instanceof Error ? error.message : 'unavailable'}]`
+      }
+    }
+    
+    return result
   }
   
-  if (typeof value === 'bigint') {
-    // Convert BigInt to string to make it JSON-serializable
-    return value.toString()
-  }
-  if (value instanceof Uint8Array) {
-    // Convert Uint8Array to regular array for better JSON representation
-    return Array.from(value)
-  }
-  return value
+  const safe = safeClone(data)
+  return pretty ? JSON.stringify(safe, null, 2) : JSON.stringify(safe)
 }
 
 /**
@@ -284,7 +306,7 @@ function formatOutput(
 ): string {
   if (format === 'yaml') {
     // Simple YAML output (could use yaml library for complex cases)
-    return JSON.stringify(data, jsonReplacer, 2)
+    return safeStringify(data, true)
       .replace(/^{$/gm, '')
       .replace(/^}$/gm, '')
       .replace(/^\s*"([^"]+)":\s*/gm, '$1: ')
@@ -292,9 +314,7 @@ function formatOutput(
   }
 
   // JSON format
-  return pretty
-    ? JSON.stringify(data, jsonReplacer, 2)
-    : JSON.stringify(data, jsonReplacer)
+  return safeStringify(data, pretty)
 }
 
 function main(): void {

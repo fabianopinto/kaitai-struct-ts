@@ -123,6 +123,12 @@ export class TypeInterpreter {
       }
     }
 
+    // Set up lazy-evaluated instances BEFORE parsing seq fields
+    // This allows seq fields to reference instances in their expressions
+    if (this.schema.instances) {
+      this.setupInstances(result, stream, context)
+    }
+
     // Parse sequential fields
     if (this.schema.seq) {
       for (const attr of this.schema.seq) {
@@ -136,11 +142,6 @@ export class TypeInterpreter {
     // Calculate and store _sizeof (number of bytes consumed)
     const endPos = stream.pos
     ;(result as Record<string, unknown>)['_sizeof'] = endPos - startPos
-
-    // Set up lazy-evaluated instances
-    if (this.schema.instances) {
-      this.setupInstances(result, stream, context)
-    }
 
     return result
   }
