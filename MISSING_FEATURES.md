@@ -8,25 +8,29 @@ This document tracks features that are not yet implemented, known limitations, a
 
 ## 🚧 Not Yet Implemented
 
-### 1. Expression-Based Endianness
+### 1. ~~Expression-Based Endianness~~ ✅ COMPLETED
 
-**Status:** ⚠️ Partially Supported  
-**Priority:** Medium  
-**Location:** `src/interpreter/TypeInterpreter.ts:801`
+**Status:** ✅ Fully Implemented (v0.10.0)  
+**Priority:** ~~Medium~~ **DONE**  
+**Location:** `src/interpreter/TypeInterpreter.ts:940`
 
-Currently, endianness can only be specified as a static string (`'le'` or `'be'`). Expression-based endianness (switch-on) is not supported.
+Expression-based endianness is now fully supported! Dynamic endianness selection based on field values.
 
-**Example (not working):**
+**Example (now working):**
 ```yaml
 meta:
   endian:
-    switch-on: some_field
+    switch-on: byte_order_flag
     cases:
       0: le
       1: be
 ```
 
-**Workaround:** Use switch types to parse different endianness variants.
+**Features:**
+- Switch-on expression evaluation
+- Case-based mapping
+- Default fallback to little-endian
+- Type-specific endianness still takes precedence
 
 ---
 
@@ -148,20 +152,29 @@ Validation is implemented but could be enhanced:
 
 ## 💡 Potential Improvements
 
-### 1. Better Error Messages
+### 1. ~~Better Error Messages~~ ✅ COMPLETED
 
-**Priority:** High
+**Priority:** ~~High~~ **DONE**  
+**Status:** ✅ Fully Implemented (v0.10.0)
 
-**Current Issues:**
-- Error positions not always accurate
-- Stack traces can be verbose
-- Limited context in parse errors
+**Completed Improvements:**
+- ✅ Byte offset in all errors (hexadecimal format)
+- ✅ Hex dump context showing surrounding bytes
+- ✅ ASCII representation alongside hex
+- ✅ Visual marker pointing to error position
+- ✅ Multi-line formatted output
 
-**Improvements:**
-- Add byte offset to all errors
-- Show surrounding context (hex dump)
-- Clearer error messages for common mistakes
+**Example Output:**
+```
+Parse error: Invalid magic bytes (at byte offset 0x0)
+Context:
+  00000000: 00 01 02 03 04 05 06 07 | ........ <--
+```
+
+**Future Enhancements:**
 - Validation error aggregation
+- Field path in error messages
+- Suggestions for common mistakes
 
 ---
 
@@ -241,6 +254,10 @@ Validation is implemented but could be enhanced:
 
 These features were recently implemented:
 
+### v0.10.0 (Latest)
+- ✅ **Expression-based endianness** - Dynamic byte order selection
+- ✅ **Enhanced error messages** - Byte offsets and hex context
+
 ### Expression Language (v0.9.0)
 - ✅ Method calls with arguments
 - ✅ 20+ string methods
@@ -312,8 +329,8 @@ These features were recently implemented:
 ## 🎯 Recommended Priorities
 
 ### High Priority
-1. **Better error messages** - Improve developer experience
-2. **Expression-based endianness** - Complete feature parity
+1. ~~**Better error messages**~~ ✅ **COMPLETED**
+2. ~~**Expression-based endianness**~~ ✅ **COMPLETED**
 
 ### Medium Priority
 3. **Browser bundle optimization** - Reduce bundle size
