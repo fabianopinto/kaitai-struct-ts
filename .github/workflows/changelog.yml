@@ -37,38 +37,28 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const comment = `## ⚠️ Changelog Update Required
-
-This PR does not include updates to \`CHANGELOG.md\`.
-
-Please add an entry describing your changes under the \`## [Unreleased]\` section.
-
-### How to update the changelog:
-
-1. Edit \`CHANGELOG.md\`
-2. Add your changes under \`## [Unreleased]\` in the appropriate category:
-   - **Added** - New features
-   - **Changed** - Changes in existing functionality
-   - **Deprecated** - Soon-to-be removed features
-   - **Removed** - Removed features
-   - **Fixed** - Bug fixes
-   - **Security** - Security fixes
-
-### Example:
-
-\`\`\`markdown
-## [Unreleased]
-
-### Added
-- New feature X that does Y
-
-### Fixed
-- Bug in Z component
-\`\`\`
-
----
-
-If this PR doesn't require a changelog entry, add the \`skip-changelog\` label.`
+            const comment = "## ⚠️ Changelog Update Required\n\n" +
+              "This PR does not include updates to `CHANGELOG.md`.\n\n" +
+              "Please add an entry describing your changes under the `## [Unreleased]` section.\n\n" +
+              "### How to update the changelog:\n\n" +
+              "1. Edit `CHANGELOG.md`\n" +
+              "2. Add your changes under `## [Unreleased]` in the appropriate category:\n" +
+              "   - **Added** - New features\n" +
+              "   - **Changed** - Changes in existing functionality\n" +
+              "   - **Deprecated** - Soon-to-be removed features\n" +
+              "   - **Removed** - Removed features\n" +
+              "   - **Fixed** - Bug fixes\n" +
+              "   - **Security** - Security fixes\n\n" +
+              "### Example:\n\n" +
+              "```markdown\n" +
+              "## [Unreleased]\n\n" +
+              "### Added\n" +
+              "- New feature X that does Y\n\n" +
+              "### Fixed\n" +
+              "- Bug in Z component\n" +
+              "```\n\n" +
+              "---\n\n" +
+              "If this PR doesn't require a changelog entry, add the `skip-changelog` label."
 
             // Check if comment already exists
             const comments = await github.rest.issues.listComments({
