@@ -17,6 +17,7 @@ This document tracks features that are not yet implemented, known limitations, a
 Expression-based endianness is now fully supported! Dynamic endianness selection based on field values.
 
 **Example (now working):**
+
 ```yaml
 meta:
   endian:
@@ -27,6 +28,7 @@ meta:
 ```
 
 **Features:**
+
 - Switch-on expression evaluation
 - Case-based mapping
 - Default fallback to little-endian
@@ -43,16 +45,18 @@ meta:
 Bit rotation (ROL/ROR) only supports single-byte operations. Multi-byte group rotation is not implemented.
 
 **Current Support:**
+
 - ✅ `rol(amount: 1-7)` - Single byte rotation
 - ✅ `ror(amount: 1-7)` - Single byte rotation
 - ❌ `rol(amount: N, group: 2+)` - Multi-byte rotation
 
 **Example (not working):**
+
 ```yaml
 process:
   algorithm: rol
   amount: 3
-  group: 4  # Not supported
+  group: 4 # Not supported
 ```
 
 ---
@@ -66,10 +70,11 @@ process:
 Generic cast syntax like `.as<bytes>` is stripped from expressions as a no-op. Type inference is done dynamically.
 
 **Example (stripped):**
+
 ```yaml
 instances:
   data_bytes:
-    value: some_field.as<bytes>  # .as<bytes> is removed
+    value: some_field.as<bytes> # .as<bytes> is removed
 ```
 
 **Impact:** Minimal - type inference works without explicit casts.
@@ -88,6 +93,7 @@ The following process algorithms are not implemented:
 - **Other hash algorithms** - SHA-3, BLAKE2, etc.
 
 **Current Support:**
+
 - ✅ zlib (deflate/inflate)
 - ✅ xor (single/multi-byte key)
 - ✅ rol/ror (bit rotation, single byte)
@@ -105,12 +111,14 @@ The following process algorithms are not implemented:
 All encodings supported by the browser's `TextDecoder` API are available. Unsupported encodings throw an error.
 
 **Supported:**
+
 - ✅ UTF-8, UTF-16LE, UTF-16BE
-- ✅ ASCII, ISO-8859-* family
-- ✅ Windows-125* family
+- ✅ ASCII, ISO-8859-\* family
+- ✅ Windows-125\* family
 - ✅ Most common encodings
 
 **Not Supported:**
+
 - ❌ Exotic/legacy encodings not in TextDecoder
 - ❌ Custom encoding tables
 
@@ -124,11 +132,13 @@ All encodings supported by the browser's `TextDecoder` API are available. Unsupp
 Validation is implemented but could be enhanced:
 
 **Current:**
+
 - ✅ `valid: { eq: value }` - Equality check
 - ✅ `valid: { any-of: [values] }` - Enum check
 - ✅ `valid: { min: N, max: N }` - Range check
 
 **Potential Enhancements:**
+
 - ⚠️ Custom validation expressions
 - ⚠️ Cross-field validation
 - ⚠️ Regex validation for strings
@@ -142,6 +152,7 @@ Validation is implemented but could be enhanced:
 **Priority:** Low (optimize when needed)
 
 **Potential Improvements:**
+
 - Stream buffering for large files
 - Lazy instance memoization (currently implemented)
 - Expression AST caching
@@ -158,6 +169,7 @@ Validation is implemented but could be enhanced:
 **Status:** ✅ Fully Implemented (v0.10.0)
 
 **Completed Improvements:**
+
 - ✅ Byte offset in all errors (hexadecimal format)
 - ✅ Hex dump context showing surrounding bytes
 - ✅ ASCII representation alongside hex
@@ -165,6 +177,7 @@ Validation is implemented but could be enhanced:
 - ✅ Multi-line formatted output
 
 **Example Output:**
+
 ```
 Parse error: Invalid magic bytes (at byte offset 0x0)
 Context:
@@ -172,6 +185,7 @@ Context:
 ```
 
 **Future Enhancements:**
+
 - Validation error aggregation
 - Field path in error messages
 - Suggestions for common mistakes
@@ -186,11 +200,13 @@ Context:
 **Proposed:** Stream large files chunk by chunk
 
 **Use Cases:**
+
 - Parsing multi-GB files
 - Network streams
 - Progressive parsing
 
 **Challenges:**
+
 - Requires significant architecture changes
 - Instances and forward references complicate streaming
 - Would need separate streaming API
@@ -205,12 +221,14 @@ Context:
 **Proposed:** Pre-compile schemas to TypeScript/JavaScript
 
 **Benefits:**
+
 - Faster parsing (no interpretation overhead)
 - Type safety (generated TypeScript types)
 - Better IDE support
 - Smaller runtime bundle
 
 **Challenges:**
+
 - Complex code generation
 - Dynamic features harder to compile
 - Maintenance of two code paths
@@ -225,6 +243,7 @@ Context:
 **Proposed:** Separate browser build with tree-shaking
 
 **Improvements:**
+
 - Remove Node.js-specific code
 - Smaller bundle size
 - Better tree-shaking
@@ -237,6 +256,7 @@ Context:
 **Priority:** Low (nice to have)
 
 **Proposed Features:**
+
 - Hex viewer with field overlays
 - Interactive schema exploration
 - Step-through parsing
@@ -244,6 +264,7 @@ Context:
 - Export to various formats
 
 **Similar Tools:**
+
 - Kaitai Struct Web IDE
 - 010 Editor templates
 - ImHex patterns
@@ -255,27 +276,32 @@ Context:
 These features were recently implemented:
 
 ### v0.10.0 (Latest)
+
 - ✅ **Expression-based endianness** - Dynamic byte order selection
 - ✅ **Enhanced error messages** - Byte offsets and hex context
 
 ### Expression Language (v0.9.0)
+
 - ✅ Method calls with arguments
 - ✅ 20+ string methods
 - ✅ Array methods
 - ✅ Property-style `.to_i` and `.to_s`
 
 ### Process Algorithms (v0.9.0)
+
 - ✅ Zlib decompression
 - ✅ XOR encryption/decryption
 - ✅ ROL/ROR bit rotation
 - ✅ Byte swapping (bswap2/4/8/16)
 
 ### Type Parameterization (v0.9.0)
+
 - ✅ Parameterized type syntax
 - ✅ Expression arguments
 - ✅ Nested parameter passing
 
 ### Runtime Features (v0.9.0)
+
 - ✅ `_sizeof` tracking
 - ✅ `_root` references
 - ✅ Instance-based repeat expressions
@@ -287,39 +313,40 @@ These features were recently implemented:
 
 ### Core Features
 
-| Feature                  | Status | Notes                           |
-| ------------------------ | ------ | ------------------------------- |
-| Basic types (u1-u8, etc) | ✅     | All integer/float types         |
-| Bit fields (b1-b64)      | ✅     | Full support                    |
-| Strings (str, strz)      | ✅     | With encoding support           |
-| Custom types             | ✅     | User-defined structures         |
-| Switch types             | ✅     | Type selection                  |
-| Enums                    | ✅     | Named constants                 |
-| Instances                | ✅     | Lazy evaluation                 |
-| Conditional parsing (if) | ✅     | Expression-based                |
-| Repeats                  | ✅     | expr, until, eos                |
-| Positioned reads (pos)   | ✅     | Absolute positioning            |
-| Custom IO streams        | ✅     | Substreams                      |
-| Imports                  | ✅     | Module system                   |
-| Parameters               | ✅     | Type parameterization           |
-| Process algorithms       | ✅     | zlib, xor, rol, ror, bswap      |
-| Expression evaluation    | ✅     | Full operator support           |
-| _sizeof tracking         | ✅     | Byte consumption                |
-| _root references         | ✅     | Root object access              |
+| Feature                  | Status | Notes                      |
+| ------------------------ | ------ | -------------------------- |
+| Basic types (u1-u8, etc) | ✅     | All integer/float types    |
+| Bit fields (b1-b64)      | ✅     | Full support               |
+| Strings (str, strz)      | ✅     | With encoding support      |
+| Custom types             | ✅     | User-defined structures    |
+| Switch types             | ✅     | Type selection             |
+| Enums                    | ✅     | Named constants            |
+| Instances                | ✅     | Lazy evaluation            |
+| Conditional parsing (if) | ✅     | Expression-based           |
+| Repeats                  | ✅     | expr, until, eos           |
+| Positioned reads (pos)   | ✅     | Absolute positioning       |
+| Custom IO streams        | ✅     | Substreams                 |
+| Imports                  | ✅     | Module system              |
+| Parameters               | ✅     | Type parameterization      |
+| Process algorithms       | ✅     | zlib, xor, rol, ror, bswap |
+| Expression evaluation    | ✅     | Full operator support      |
+| \_sizeof tracking        | ✅     | Byte consumption           |
+| \_root references        | ✅     | Root object access         |
 
 ### Advanced Features
 
-| Feature                  | Status | Notes                           |
-| ------------------------ | ------ | ------------------------------- |
-| Expression-based endian  | ❌     | Switch-on endianness            |
-| ROL/ROR group size > 1   | ❌     | Multi-byte rotation             |
-| Generic cast syntax      | ⚠️     | Stripped (not needed)           |
-| AES/advanced crypto      | ❌     | Would need external lib         |
-| Streaming API            | ❌     | Future enhancement              |
-| Schema compilation       | ❌     | Code generation                 |
-| Visual debugger          | ❌     | Separate tool                   |
+| Feature                 | Status | Notes                   |
+| ----------------------- | ------ | ----------------------- |
+| Expression-based endian | ❌     | Switch-on endianness    |
+| ROL/ROR group size > 1  | ❌     | Multi-byte rotation     |
+| Generic cast syntax     | ⚠️     | Stripped (not needed)   |
+| AES/advanced crypto     | ❌     | Would need external lib |
+| Streaming API           | ❌     | Future enhancement      |
+| Schema compilation      | ❌     | Code generation         |
+| Visual debugger         | ❌     | Separate tool           |
 
 **Legend:**
+
 - ✅ Fully implemented
 - ⚠️ Partially implemented or has limitations
 - ❌ Not implemented
@@ -329,15 +356,18 @@ These features were recently implemented:
 ## 🎯 Recommended Priorities
 
 ### High Priority
+
 1. ~~**Better error messages**~~ ✅ **COMPLETED**
 2. ~~**Expression-based endianness**~~ ✅ **COMPLETED**
 
 ### Medium Priority
+
 3. **Browser bundle optimization** - Reduce bundle size
 4. **Streaming API design** - Plan architecture
 5. **Enhanced validation** - Better constraints
 
 ### Low Priority
+
 6. **ROL/ROR group size** - Rare use case
 7. **Schema compilation** - Performance optimization
 8. **Visual debugger** - Nice to have

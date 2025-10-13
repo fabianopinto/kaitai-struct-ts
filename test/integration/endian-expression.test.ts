@@ -25,7 +25,10 @@ seq:
     // Little-endian case (flag = 0)
     const bufferLE = new Uint8Array([
       0x00, // flag = 0 (little-endian)
-      0x01, 0x02, 0x03, 0x04, // value = 0x04030201 in LE
+      0x01,
+      0x02,
+      0x03,
+      0x04, // value = 0x04030201 in LE
     ])
 
     const resultLE = parse(schema, bufferLE) as Record<string, unknown>
@@ -35,7 +38,10 @@ seq:
     // Big-endian case (flag = 1)
     const bufferBE = new Uint8Array([
       0x01, // flag = 1 (big-endian)
-      0x01, 0x02, 0x03, 0x04, // value = 0x01020304 in BE
+      0x01,
+      0x02,
+      0x03,
+      0x04, // value = 0x01020304 in BE
     ])
 
     const resultBE = parse(schema, bufferBE) as Record<string, unknown>
@@ -67,8 +73,12 @@ seq:
 `
     const bufferLE = new Uint8Array([
       0x00, // little_endian
-      0x34, 0x12, // 0x1234 in LE
-      0x78, 0x56, 0x34, 0x12, // 0x12345678 in LE
+      0x34,
+      0x12, // 0x1234 in LE
+      0x78,
+      0x56,
+      0x34,
+      0x12, // 0x12345678 in LE
     ])
 
     const result = parse(schema, bufferLE) as Record<string, unknown>
@@ -94,7 +104,10 @@ seq:
 `
     const buffer = new Uint8Array([
       0x99, // flag = 99 (not in cases, defaults to LE)
-      0x01, 0x02, 0x03, 0x04,
+      0x01,
+      0x02,
+      0x03,
+      0x04,
     ])
 
     const result = parse(schema, buffer) as Record<string, unknown>
@@ -120,7 +133,10 @@ seq:
     // Little-endian float
     const bufferLE = new Uint8Array([
       0x00, // LE flag
-      0x00, 0x00, 0x80, 0x3f, // 1.0 in LE (IEEE 754)
+      0x00,
+      0x00,
+      0x80,
+      0x3f, // 1.0 in LE (IEEE 754)
     ])
 
     const resultLE = parse(schema, bufferLE) as Record<string, unknown>
@@ -149,9 +165,18 @@ seq:
 `
     const buffer = new Uint8Array([
       0x01, // BE flag
-      0x01, 0x02, 0x03, 0x04, // value_default (uses BE from meta)
-      0x01, 0x02, 0x03, 0x04, // value_explicit_le (forces LE)
-      0x01, 0x02, 0x03, 0x04, // value_explicit_be (forces BE)
+      0x01,
+      0x02,
+      0x03,
+      0x04, // value_default (uses BE from meta)
+      0x01,
+      0x02,
+      0x03,
+      0x04, // value_explicit_le (forces LE)
+      0x01,
+      0x02,
+      0x03,
+      0x04, // value_explicit_be (forces BE)
     ])
 
     const result = parse(schema, buffer) as Record<string, unknown>
@@ -182,16 +207,21 @@ seq:
 `
     const buffer = new Uint8Array([
       0x01, // byte_order = 1 (BE)
-      0x01, 0x02, // value1 = 0x0102 in BE
-      0x01, 0x02, 0x03, 0x04, // value2 = 0x01020304 in BE
-      0xAB, 0xCD, // value3 = 0xABCD in BE
+      0x01,
+      0x02, // value1 = 0x0102 in BE
+      0x01,
+      0x02,
+      0x03,
+      0x04, // value2 = 0x01020304 in BE
+      0xab,
+      0xcd, // value3 = 0xABCD in BE
     ])
 
     const result = parse(schema, buffer) as Record<string, unknown>
     expect(result.byte_order).toBe(1)
     expect(result.value1).toBe(0x0102) // BE
     expect(result.value2).toBe(0x01020304) // BE
-    expect(result.value3).toBe(0xABCD) // BE
+    expect(result.value3).toBe(0xabcd) // BE
   })
 
   it('should handle string keys in cases', () => {
@@ -211,7 +241,8 @@ seq:
 `
     const buffer = new Uint8Array([
       0x00, // mode = 0
-      0x34, 0x12, // value
+      0x34,
+      0x12, // value
     ])
 
     const result = parse(schema, buffer) as Record<string, unknown>

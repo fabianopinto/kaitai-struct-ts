@@ -799,7 +799,7 @@ export class TypeInterpreter {
     // Get endianness from schema or parent
     const meta = this.schema.meta || this.parentMeta
     const metaEndian = meta?.endian
-    
+
     // Resolve endianness (static or expression-based)
     let endian: Endianness
     if (typeEndian) {
@@ -954,10 +954,10 @@ export class TypeInterpreter {
 
     // Evaluate the switch-on expression
     const switchValue = this.evaluateValue(switchOn, context)
-    
+
     // Convert to string for case matching
     const key = String(switchValue)
-    
+
     // Look up the endianness in cases
     if (key in cases) {
       const endian = cases[key]

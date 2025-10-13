@@ -54,10 +54,7 @@ export class KaitaiError extends Error {
    * Format hex dump context around error position.
    * @private
    */
-  private static formatHexContext(
-    data: Uint8Array,
-    position?: number
-  ): string {
+  private static formatHexContext(data: Uint8Array, position?: number): string {
     const contextSize = 16 // Show 16 bytes before and after
     const start = Math.max(0, (position ?? 0) - contextSize)
     const end = Math.min(data.length, (position ?? 0) + contextSize)
