@@ -33,7 +33,7 @@ jobs:
       - name: Create tag via GitHub API
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.TAG_CREATION_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const input = core.getInput('tag')
             let tag = (input || '').trim()
