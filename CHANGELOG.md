@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+- CLI: import resolution, RIFF custom IO and EDID support
+  - CLI now auto-loads imports from meta.imports
+  - Interpreter: parent meta encoding fallback
+  - Interpreter: custom io streams via \_io, size-eos substreams
+  - Interpreter: built-in bit fields (b1..b64)
+  - Expressions: array literals, binary (0b...) numbers, sequence equality, strip .as<...>
+  - Examples/docs cleaned and merged; WAV/EDID run end-to-end
+
+### Patch Changes
+
+- 7470585: Improve release process with simplified workflow and security enhancements
+  - Add branch validation to publish workflow to prevent accidental releases from non-main branches
+  - Create comprehensive release guide with step-by-step instructions
+  - Add release process analysis document explaining the improvements
+  - Update CONTRIBUTING.md with release process section
+  - Simplify release workflow from 8+ steps to 4 commands
+
 ## 0.8.0
 
 ### Minor Changes
