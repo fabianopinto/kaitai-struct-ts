@@ -75,7 +75,7 @@ export interface StreamingParseOptions {
  */
 export async function* parseStreaming(
   schema: string | KsySchema,
-  source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>,
+  source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>, // eslint-disable-line no-undef
   options: StreamingParseOptions = {}
 ): AsyncGenerator<ParseEvent> {
   const {
@@ -120,7 +120,8 @@ export async function* parseStreaming(
 
         // Yield control periodically
         if (fieldCount % yieldInterval === 0) {
-          await new Promise((resolve) => setImmediate(resolve))
+          // eslint-disable-next-line no-undef
+          await new Promise((resolve) => setTimeout(resolve, 0))
         }
       }
 
@@ -177,7 +178,7 @@ export async function* parseStreaming(
  */
 export async function parseStreamingSimple(
   schema: string | KsySchema,
-  source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>,
+  source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>, // eslint-disable-line no-undef
   options: StreamingParseOptions = {}
 ): Promise<unknown> {
   for await (const event of parseStreaming(schema, source, options)) {

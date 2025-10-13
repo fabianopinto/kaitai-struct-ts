@@ -19,7 +19,7 @@ import { EOFError } from '../utils/errors'
  * ```
  */
 export class StreamingKaitaiStream {
-  private reader: ReadableStreamDefaultReader<Uint8Array> | null = null
+  private reader: ReadableStreamDefaultReader<Uint8Array> | null = null // eslint-disable-line no-undef
   private iterator: AsyncIterator<Uint8Array> | null = null
   private buffer: Uint8Array = new Uint8Array(0)
   private bufferOffset = 0
@@ -35,7 +35,7 @@ export class StreamingKaitaiStream {
    * @param options - Configuration options
    */
   constructor(
-    source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>,
+    source: ReadableStream<Uint8Array> | AsyncIterable<Uint8Array>, // eslint-disable-line no-undef
     options: {
       chunkSize?: number
       maxBufferSize?: number
@@ -359,7 +359,7 @@ export class StreamingKaitaiStream {
    */
   async readStr(length: number, encoding: string): Promise<string> {
     const bytes = await this.readBytes(length)
-    const decoder = new TextDecoder(encoding)
+    const decoder = new TextDecoder(encoding) // eslint-disable-line no-undef
     return decoder.decode(bytes)
   }
 
@@ -413,7 +413,7 @@ export class StreamingKaitaiStream {
       bytes.push(byte)
     }
 
-    const decoder = new TextDecoder(encoding)
+    const decoder = new TextDecoder(encoding) // eslint-disable-line no-undef
     return decoder.decode(new Uint8Array(bytes))
   }
 

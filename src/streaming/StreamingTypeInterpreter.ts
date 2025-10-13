@@ -220,13 +220,13 @@ export class StreamingTypeInterpreter {
    * Parse a built-in type.
    *
    * @param type - Type name
-   * @param context - Execution context
+   * @param _context - Execution context (unused for now, reserved for future expression evaluation)
    * @returns Parsed value
    * @private
    */
   private async parseBuiltinType(
     type: string,
-    context: Context
+    _context: Context
   ): Promise<unknown> {
     const base = getBaseType(type)
     const typeEndian = getTypeEndianness(type)
