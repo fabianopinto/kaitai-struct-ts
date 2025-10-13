@@ -549,7 +549,12 @@ export class Evaluator {
     }
 
     // Handle undefined/null values
-    if (left === undefined || left === null || right === undefined || right === null) {
+    if (
+      left === undefined ||
+      left === null ||
+      right === undefined ||
+      right === null
+    ) {
       throw new ParseError('Cannot perform bitwise operation on null/undefined')
     }
 

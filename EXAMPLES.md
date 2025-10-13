@@ -122,7 +122,7 @@ Import paths in `.ksy` files are resolved as follows:
 meta:
   id: wav
   imports:
-    - /common/riff  # Absolute path from format root
+    - /common/riff # Absolute path from format root
 ```
 
 When using `parseWithImports()`, provide a Map with matching keys:
@@ -191,6 +191,7 @@ console.log('Week/Year:', result.mfg_week, result.mfg_year)
 ```
 
 **Features demonstrated:**
+
 - Bit fields (b1, b2, b7, etc.)
 - Binary literals (0b0111110000000000)
 - Array literals and comparisons
@@ -345,6 +346,7 @@ seq:
 ```
 
 **Supported operators:**
+
 - Arithmetic: `+`, `-`, `*`, `/`, `%`
 - Comparison: `<`, `<=`, `>`, `>=`, `==`, `!=`
 - Logical: `and`, `or`, `not`
@@ -352,6 +354,7 @@ seq:
 - Ternary: `condition ? ifTrue : ifFalse`
 
 **Supported literals:**
+
 - Decimal: `42`, `3.14`
 - Hexadecimal: `0xFF`, `0x1A2B`
 - Binary: `0b1010`, `0b11110000`
@@ -393,7 +396,7 @@ seq:
       cases:
         1: text_file
         2: binary_file
-        _: unknown_file  # Default case
+        _: unknown_file # Default case
 ```
 
 ### Bit Fields
@@ -421,7 +424,7 @@ types:
     seq:
       - id: data
         size-eos: true
-        io: _parent._io  # Use parent's stream
+        io: _parent._io # Use parent's stream
 ```
 
 ### Array Comparisons

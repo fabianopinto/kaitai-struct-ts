@@ -293,7 +293,7 @@ gantt
     Bit-sized Integers     :done, p3_3, after p3_2, 4d
     Imports                :done, p3_4, after p3_3, 5d
     CLI Tool               :done, p3_5, after p3_4, 7d
-    
+
     section Phase 4 - Production
     Custom IO Streams      :done, p4_1, after p3_5, 3d
     Array Literals         :done, p4_2, after p4_1, 2d

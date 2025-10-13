@@ -127,7 +127,9 @@ describe('Expression Methods', () => {
       })
 
       it('should replace all occurrences', () => {
-        expect(evaluate('"hello hello".replace_all("l", "L")')).toBe('heLLo heLLo')
+        expect(evaluate('"hello hello".replace_all("l", "L")')).toBe(
+          'heLLo heLLo'
+        )
       })
     })
 

@@ -13,6 +13,7 @@ pnpm changeset
 ```
 
 Follow the prompts:
+
 - Select the type of change (patch/minor/major)
 - Describe the changes
 
@@ -27,6 +28,7 @@ pnpm changeset version
 ```
 
 This will:
+
 - Update `package.json` version
 - Update `CHANGELOG.md` with all pending changesets
 - Remove consumed changeset files
@@ -40,6 +42,7 @@ git push origin main
 ```
 
 This triggers the `release.yml` workflow which:
+
 - Detects the version change
 - Extracts changelog entries
 - Generates release notes
@@ -52,12 +55,14 @@ This triggers the `release.yml` workflow which:
 Repository rules prevent automated tag creation. Create manually:
 
 **Option A: Command Line**
+
 ```bash
 git tag v<VERSION>
 git push origin v<VERSION>
 ```
 
 **Option B: GitHub UI**
+
 1. Go to Releases → Draft a new release
 2. Click "Choose a tag"
 3. Type `v<VERSION>` and click "Create new tag"
@@ -65,27 +70,32 @@ git push origin v<VERSION>
 ### 5. Publish to npm
 
 Ensure you're logged in to npm:
+
 ```bash
 npm whoami
 ```
 
 If not logged in:
+
 ```bash
 npm login
 ```
 
 Publish the package:
+
 ```bash
 pnpm publish --access public --no-git-checks
 ```
 
 This will:
+
 - Run `prepublishOnly` script (build, test, lint)
 - Publish to npm registry
 
 ### 6. Create GitHub Release
 
 **Option A: Using CLI**
+
 ```bash
 gh release create v<VERSION> \
   --title "v<VERSION>" \
@@ -93,6 +103,7 @@ gh release create v<VERSION> \
 ```
 
 **Option B: Using GitHub UI**
+
 1. Go to Releases → Draft a new release
 2. Select the tag `v<VERSION>`
 3. Set title: `v<VERSION>`
@@ -105,6 +116,7 @@ gh release create v<VERSION> \
 After release, verify:
 
 1. **npm package published:**
+
    ```bash
    npm view @k67/kaitai-struct-ts version
    # Should show: <VERSION>
@@ -115,6 +127,7 @@ After release, verify:
    - Verify release notes are correct
 
 3. **Installation works:**
+
    ```bash
    npm install @k67/kaitai-struct-ts@<VERSION>
    ```
@@ -127,6 +140,7 @@ After release, verify:
 ## Troubleshooting
 
 ### Tag already exists
+
 ```bash
 # Delete local tag
 git tag -d v<VERSION>
@@ -140,6 +154,7 @@ git push origin v<VERSION>
 ```
 
 ### npm publish fails
+
 ```bash
 # Check if version already published
 npm view @k67/kaitai-struct-ts versions
@@ -149,6 +164,7 @@ pnpm changeset version
 ```
 
 ### Release workflow didn't trigger
+
 - Ensure both `CHANGELOG.md` and `package.json` were modified
 - Check workflow runs: https://github.com/fabianopinto/kaitai-struct-ts/actions
 

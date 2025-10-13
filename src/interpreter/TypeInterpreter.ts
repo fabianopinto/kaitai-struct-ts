@@ -19,11 +19,7 @@ import {
 } from '../parser/schema'
 import { Context } from './Context'
 import { evaluateExpression } from '../expression'
-import {
-  ParseError,
-  ValidationError,
-  NotImplementedError,
-} from '../utils/errors'
+import { ParseError, ValidationError } from '../utils/errors'
 import { applyProcess } from '../utils/process'
 
 /**
@@ -553,14 +549,18 @@ export class TypeInterpreter {
       )
     }
 
+    // Parse parameterized type syntax: type_name(arg1, arg2, ...)
+    const { typeName, args } = this.parseParameterizedType(type, context)
+    const effectiveArgs = args.length > 0 ? args : typeArgs
+
     // Handle built-in types
-    if (isBuiltinType(type)) {
-      return this.parseBuiltinType(type, stream, context)
+    if (isBuiltinType(typeName)) {
+      return this.parseBuiltinType(typeName, stream, context)
     }
 
     // Handle user-defined types
-    if (this.schema.types && type in this.schema.types) {
-      const typeSchema = this.schema.types[type]
+    if (this.schema.types && typeName in this.schema.types) {
+      const typeSchema = this.schema.types[typeName]
       // Pass parent meta for nested types
       const meta = this.schema.meta || this.parentMeta
 
@@ -575,10 +575,135 @@ export class TypeInterpreter {
       }
 
       const interpreter = new TypeInterpreter(typeSchema, meta)
-      return interpreter.parse(stream, context.current, typeArgs)
+      return interpreter.parse(stream, context.current, effectiveArgs)
     }
 
-    throw new ParseError(`Unknown type: ${type}`)
+    throw new ParseError(`Unknown type: ${typeName}`)
+  }
+
+  /**
+   * Parse parameterized type syntax and extract type name and arguments.
+   * Supports: type_name(arg1, arg2, ...) or just type_name
+   *
+   * @param typeSpec - Type specification string
+   * @param context - Execution context for evaluating argument expressions
+   * @returns Object with typeName and evaluated args
+   * @private
+   */
+  private parseParameterizedType(
+    typeSpec: string,
+    context: Context
+  ): { typeName: string; args: Array<string | number | boolean> } {
+    // Check if type has parameters: type_name(...)
+    const match = typeSpec.match(/^([a-z_][a-z0-9_]*)\((.*)\)$/i)
+
+    if (!match) {
+      // No parameters, return as-is
+      return { typeName: typeSpec, args: [] }
+    }
+
+    const typeName = match[1]
+    const argsString = match[2].trim()
+
+    if (!argsString) {
+      // Empty parameters: type_name()
+      return { typeName, args: [] }
+    }
+
+    // Parse arguments - handle strings, numbers, booleans, and expressions
+    const args: Array<string | number | boolean> = []
+    let current = ''
+    let inString = false
+    let stringChar = ''
+    let parenDepth = 0
+
+    for (let i = 0; i < argsString.length; i++) {
+      const char = argsString[i]
+
+      if (inString) {
+        current += char
+        if (char === stringChar && argsString[i - 1] !== '\\') {
+          inString = false
+        }
+      } else if (char === '"' || char === "'") {
+        inString = true
+        stringChar = char
+        current += char
+      } else if (char === '(') {
+        parenDepth++
+        current += char
+      } else if (char === ')') {
+        parenDepth--
+        current += char
+      } else if (char === ',' && parenDepth === 0) {
+        // Argument separator
+        args.push(this.parseArgument(current.trim(), context))
+        current = ''
+      } else {
+        current += char
+      }
+    }
+
+    // Add last argument
+    if (current.trim()) {
+      args.push(this.parseArgument(current.trim(), context))
+    }
+
+    return { typeName, args }
+  }
+
+  /**
+   * Parse and evaluate a single type argument.
+   *
+   * @param arg - Argument string
+   * @param context - Execution context
+   * @returns Evaluated argument value
+   * @private
+   */
+  private parseArgument(
+    arg: string,
+    context: Context
+  ): string | number | boolean {
+    // Boolean literals
+    if (arg === 'true') return true
+    if (arg === 'false') return false
+
+    // String literals
+    if (
+      (arg.startsWith('"') && arg.endsWith('"')) ||
+      (arg.startsWith("'") && arg.endsWith("'"))
+    ) {
+      return arg.slice(1, -1)
+    }
+
+    // Numeric literals
+    if (/^-?\d+$/.test(arg)) {
+      return parseInt(arg, 10)
+    }
+    if (/^-?\d+\.\d+$/.test(arg)) {
+      return parseFloat(arg)
+    }
+    if (/^0x[0-9a-f]+$/i.test(arg)) {
+      return parseInt(arg, 16)
+    }
+
+    // Expression - evaluate in context
+    try {
+      const result = this.evaluateValue(arg, context)
+      // Convert to primitive types
+      if (
+        typeof result === 'string' ||
+        typeof result === 'number' ||
+        typeof result === 'boolean'
+      ) {
+        return result
+      }
+      // For other types, convert to number if possible
+      return Number(result)
+    } catch {
+      // If evaluation fails, treat as string
+      return arg
+    }
   }
 
   /**

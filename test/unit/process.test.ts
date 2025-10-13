@@ -12,14 +12,14 @@ describe('Process Utilities', () => {
   describe('XOR Processing', () => {
     it('should XOR with single byte key', () => {
       const data = new Uint8Array([0x00, 0x11, 0x22, 0x33])
-      const result = applyProcess(data, { algorithm: 'xor', key: 0xFF })
-      expect(result).toEqual(new Uint8Array([0xFF, 0xEE, 0xDD, 0xCC]))
+      const result = applyProcess(data, { algorithm: 'xor', key: 0xff })
+      expect(result).toEqual(new Uint8Array([0xff, 0xee, 0xdd, 0xcc]))
     })
 
     it('should XOR with multi-byte key', () => {
       const data = new Uint8Array([0x00, 0x11, 0x22, 0x33, 0x44])
-      const result = applyProcess(data, { algorithm: 'xor', key: [0xAA, 0xBB] })
-      expect(result).toEqual(new Uint8Array([0xAA, 0xAA, 0x88, 0x88, 0xEE]))
+      const result = applyProcess(data, { algorithm: 'xor', key: [0xaa, 0xbb] })
+      expect(result).toEqual(new Uint8Array([0xaa, 0xaa, 0x88, 0x88, 0xee]))
     })
 
     it('should throw if XOR key is missing', () => {
@@ -38,7 +38,7 @@ describe('Process Utilities', () => {
 
     it('should handle XOR with string algorithm', () => {
       // When using string format, key must be provided separately
-      const data = new Uint8Array([0x00, 0xFF])
+      const data = new Uint8Array([0x00, 0xff])
       expect(() => applyProcess(data, 'xor')).toThrow(
         'XOR process requires a key parameter'
       )
@@ -99,9 +99,9 @@ describe('Process Utilities', () => {
 
     it('should throw on invalid rotation amount', () => {
       const data = new Uint8Array([0x00])
-      expect(() => applyProcess(data, { algorithm: 'ror', amount: -1 })).toThrow(
-        'ROR amount must be between 0 and 7'
-      )
+      expect(() =>
+        applyProcess(data, { algorithm: 'ror', amount: -1 })
+      ).toThrow('ROR amount must be between 0 and 7')
     })
   })
 
@@ -119,21 +119,25 @@ describe('Process Utilities', () => {
     })
 
     it('should swap 8-byte groups (bswap8)', () => {
-      const data = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08])
+      const data = new Uint8Array([
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+      ])
       const result = applyProcess(data, 'bswap8')
-      expect(result).toEqual(new Uint8Array([0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01]))
+      expect(result).toEqual(
+        new Uint8Array([0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01])
+      )
     })
 
     it('should swap 16-byte groups (bswap16)', () => {
       const data = new Uint8Array([
-        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-        0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c,
+        0x0d, 0x0e, 0x0f, 0x10,
       ])
       const result = applyProcess(data, 'bswap16')
       expect(result).toEqual(
         new Uint8Array([
-          0x10, 0x0F, 0x0E, 0x0D, 0x0C, 0x0B, 0x0A, 0x09,
-          0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01,
+          0x10, 0x0f, 0x0e, 0x0d, 0x0c, 0x0b, 0x0a, 0x09, 0x08, 0x07, 0x06,
+          0x05, 0x04, 0x03, 0x02, 0x01,
         ])
       )
     })
@@ -148,7 +152,7 @@ describe('Process Utilities', () => {
 
   describe('Zlib Decompression', () => {
     it('should decompress zlib data', () => {
-      const original = new Uint8Array([0x48, 0x65, 0x6C, 0x6C, 0x6F]) // "Hello"
+      const original = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f]) // "Hello"
       const compressed = deflate(original)
       const result = applyProcess(compressed, 'zlib')
       expect(result).toEqual(original)
@@ -163,7 +167,9 @@ describe('Process Utilities', () => {
 
     it('should throw on invalid zlib data', () => {
       const invalid = new Uint8Array([0x00, 0x01, 0x02])
-      expect(() => applyProcess(invalid, 'zlib')).toThrow('Zlib decompression failed')
+      expect(() => applyProcess(invalid, 'zlib')).toThrow(
+        'Zlib decompression failed'
+      )
     })
   })
 
@@ -186,12 +192,15 @@ describe('Process Utilities', () => {
   describe('Real-World Scenarios', () => {
     it('should handle encrypted and compressed data', () => {
       // Simulate: compress -> XOR encrypt
-      const original = new Uint8Array([0x48, 0x65, 0x6C, 0x6C, 0x6F])
+      const original = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f])
       const compressed = deflate(original)
-      const encrypted = applyProcess(compressed, { algorithm: 'xor', key: 0xAA })
+      const encrypted = applyProcess(compressed, {
+        algorithm: 'xor',
+        key: 0xaa,
+      })
 
       // Decrypt -> decompress
-      const decrypted = applyProcess(encrypted, { algorithm: 'xor', key: 0xAA })
+      const decrypted = applyProcess(encrypted, { algorithm: 'xor', key: 0xaa })
       const decompressed = applyProcess(decrypted, 'zlib')
 
       expect(decompressed).toEqual(original)
@@ -206,7 +215,10 @@ describe('Process Utilities', () => {
 
     it('should handle rotated obfuscated data', () => {
       const obfuscated = new Uint8Array([0b11000000, 0b10100000])
-      const deobfuscated = applyProcess(obfuscated, { algorithm: 'ror', amount: 2 })
+      const deobfuscated = applyProcess(obfuscated, {
+        algorithm: 'ror',
+        amount: 2,
+      })
       expect(deobfuscated).toEqual(new Uint8Array([0b00110000, 0b00101000]))
     })
   })

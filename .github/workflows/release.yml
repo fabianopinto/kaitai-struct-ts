@@ -29,10 +29,10 @@ jobs:
           git checkout HEAD~1 package.json 2>/dev/null || true
           PREV_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
           git checkout HEAD package.json
-          
+
           echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "prev-version=$PREV_VERSION" >> $GITHUB_OUTPUT
-          
+
           if [ "$CURRENT_VERSION" != "$PREV_VERSION" ]; then
             echo "should-release=true" >> $GITHUB_OUTPUT
             echo "Version changed: $PREV_VERSION -> $CURRENT_VERSION"
@@ -56,18 +56,18 @@ jobs:
         id: extract
         run: |
           VERSION="${{ needs.check-version.outputs.version }}"
-          
+
           # Extract section between [VERSION] and next version or EOF
           NOTES=$(awk "/## \[$VERSION\]/,/## \[/" CHANGELOG.md | sed '1d;$d' | sed '/^$/d')
-          
+
           if [ -z "$NOTES" ]; then
             echo "No changelog entry found for version $VERSION"
             NOTES="See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details."
           fi
-          
+
           # Save to file to handle multiline
           echo "$NOTES" > /tmp/notes.txt
-          
+
           # Set output using heredoc for multiline
           {
             echo 'notes<<EOF'
@@ -83,7 +83,7 @@ jobs:
             const version = '${{ needs.check-version.outputs.version }}'
             const notes = `${{ steps.extract.outputs.notes }}`
             const repo = '${{ github.repository }}'
-            
+
             const fullNotes = [
               `## Changes in v${version}`,
               '',
@@ -102,7 +102,7 @@ jobs:
               `- [CHANGELOG](https://github.com/${repo}/blob/main/CHANGELOG.md)`,
               `- [npm package](https://www.npmjs.com/package/@k67/kaitai-struct-ts/v/${version})`,
             ].join('\n')
-            
+
             // Check if release already exists
             let release
             try {
@@ -151,7 +151,7 @@ jobs:
             const version = '${{ needs.check-version.outputs.version }}'
             const repo = '${{ github.repository }}'
             const runId = '${{ github.run_id }}'
-            
+
             const issueBody = [
               `## Release v${version} Ready`,
               '',
@@ -202,11 +202,11 @@ jobs:
               state: 'open',
               labels: 'release',
             })
-            
+
             const existingIssue = issues.data.find(issue => 
               issue.title.includes(`Release v${version}`)
             )
-            
+
             if (existingIssue) {
               core.info(`Issue already exists: #${existingIssue.number}`)
             } else {
