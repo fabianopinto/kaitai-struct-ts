@@ -5,7 +5,6 @@
 
 import { describe, it, expect } from 'vitest'
 import { applyProcess } from '../../src/utils/process'
-import { ParseError } from '../../src/utils/errors'
 import { deflate } from 'pako'
 
 describe('Process Utilities', () => {

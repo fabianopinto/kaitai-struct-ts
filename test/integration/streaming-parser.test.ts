@@ -7,7 +7,9 @@ import { describe, it, expect } from 'vitest'
 import { parseStreaming, parseStreamingSimple } from '../../src/streaming'
 
 // Helper to create a ReadableStream from Uint8Array
+// eslint-disable-next-line no-undef
 function createStream(data: Uint8Array): ReadableStream<Uint8Array> {
+  // eslint-disable-next-line no-undef
   return new ReadableStream({
     start(controller) {
       controller.enqueue(data)

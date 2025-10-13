@@ -22,7 +22,7 @@ jobs:
         run: |
           git fetch origin ${{ github.base_ref }}
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          
+
           if echo "$CHANGED_FILES" | grep -q "CHANGELOG.md"; then
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "✅ CHANGELOG.md has been updated"
@@ -66,12 +66,12 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
             })
-            
+
             const botComment = comments.data.find(comment =>
               comment.user.type === 'Bot' &&
               comment.body.includes('Changelog Update Required')
             )
-            
+
             if (botComment) {
               // Update existing comment
               await github.rest.issues.updateComment({

@@ -8,11 +8,10 @@ import { StreamingKaitaiStream } from '../../src/stream/StreamingKaitaiStream'
 import { EOFError } from '../../src/utils/errors'
 
 // Helper to create a ReadableStream from Uint8Array
-function createStream(
-  data: Uint8Array,
-  chunkSize = 8
-): ReadableStream<Uint8Array> {
+// eslint-disable-next-line no-undef
+function createStream(data: Uint8Array, chunkSize = 8): ReadableStream<Uint8Array> {
   let offset = 0
+  // eslint-disable-next-line no-undef
   return new ReadableStream({
     pull(controller) {
       if (offset >= data.length) {
@@ -152,7 +151,7 @@ describe('StreamingKaitaiStream', () => {
 
   describe('String Reading', () => {
     it('should read fixed-length string', async () => {
-      const data = new TextEncoder().encode('Hello')
+      const data = new TextEncoder().encode('Hello') // eslint-disable-line no-undef
       const stream = new StreamingKaitaiStream(createStream(data))
 
       const str = await stream.readStr(5, 'utf-8')
