@@ -19,11 +19,74 @@
 export class KaitaiError extends Error {
   constructor(
     message: string,
-    public position?: number
+    public position?: number,
+    public context?: Uint8Array
   ) {
-    super(message)
+    super(KaitaiError.formatMessage(message, position, context))
     this.name = 'KaitaiError'
     Object.setPrototypeOf(this, KaitaiError.prototype)
+  }
+
+  /**
+   * Format error message with position and context.
+   * @private
+   */
+  private static formatMessage(
+    message: string,
+    position?: number,
+    context?: Uint8Array
+  ): string {
+    let formatted = message
+
+    if (position !== undefined) {
+      formatted += ` (at byte offset 0x${position.toString(16).toUpperCase()})`
+    }
+
+    if (context && context.length > 0) {
+      const hexContext = KaitaiError.formatHexContext(context, position)
+      formatted += `\n${hexContext}`
+    }
+
+    return formatted
+  }
+
+  /**
+   * Format hex dump context around error position.
+   * @private
+   */
+  private static formatHexContext(
+    data: Uint8Array,
+    position?: number
+  ): string {
+    const contextSize = 16 // Show 16 bytes before and after
+    const start = Math.max(0, (position ?? 0) - contextSize)
+    const end = Math.min(data.length, (position ?? 0) + contextSize)
+    const chunk = data.slice(start, end)
+
+    const lines: string[] = ['Context:']
+    let offset = start
+
+    for (let i = 0; i < chunk.length; i += 16) {
+      const lineBytes = chunk.slice(i, i + 16)
+      const hex = Array.from(lineBytes)
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join(' ')
+      const ascii = Array.from(lineBytes)
+        .map((b) => (b >= 32 && b <= 126 ? String.fromCharCode(b) : '.'))
+        .join('')
+
+      const offsetStr = `  ${(offset + i).toString(16).padStart(8, '0')}`
+      const marker =
+        position !== undefined &&
+        position >= offset + i &&
+        position < offset + i + lineBytes.length
+          ? ' <--'
+          : ''
+
+      lines.push(`${offsetStr}: ${hex.padEnd(48, ' ')} | ${ascii}${marker}`)
+    }
+
+    return lines.join('\n')
   }
 }
 
@@ -39,8 +102,8 @@ export class KaitaiError extends Error {
  * ```
  */
 export class ValidationError extends KaitaiError {
-  constructor(message: string, position?: number) {
-    super(message, position)
+  constructor(message: string, position?: number, context?: Uint8Array) {
+    super(message, position, context)
     this.name = 'ValidationError'
     Object.setPrototypeOf(this, ValidationError.prototype)
   }
@@ -58,8 +121,8 @@ export class ValidationError extends KaitaiError {
  * ```
  */
 export class ParseError extends KaitaiError {
-  constructor(message: string, position?: number) {
-    super(message, position)
+  constructor(message: string, position?: number, context?: Uint8Array) {
+    super(message, position, context)
     this.name = 'ParseError'
     Object.setPrototypeOf(this, ParseError.prototype)
   }
@@ -77,8 +140,12 @@ export class ParseError extends KaitaiError {
  * ```
  */
 export class EOFError extends KaitaiError {
-  constructor(message: string = 'Unexpected end of stream', position?: number) {
-    super(message, position)
+  constructor(
+    message: string = 'Unexpected end of stream',
+    position?: number,
+    context?: Uint8Array
+  ) {
+    super(message, position, context)
     this.name = 'EOFError'
     Object.setPrototypeOf(this, EOFError.prototype)
   }
