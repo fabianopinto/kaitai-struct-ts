@@ -51,14 +51,14 @@ jobs:
             }
 
             // Resolve main HEAD SHA to comply with rulesets
-            const { data: mainRef } = await github.git.getRef({
+            const { data: mainRef } = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: 'heads/main',
             })
             const sha = mainRef.object.sha
 
-            const { data: ref } = await github.git.createRef({
+            const { data: ref } = await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: `refs/tags/${tag}`,
