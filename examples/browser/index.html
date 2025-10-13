@@ -74,17 +74,14 @@
         This example parses a simple binary format with a magic header and
         integer values.
       </p>
-      <button onclick="runExample()">Run Example</button>
+      <button id="runButton">Run Example</button>
       <div id="output"></div>
     </div>
 
     <script type="module">
       import { parse } from '../../dist/browser/index.mjs'
 
-      // Make parse available globally for the button
-      window.parse = parse
-
-      window.runExample = function () {
+      function runExample() {
         const output = document.getElementById('output')
         output.innerHTML = '<p>⏳ Parsing...</p>'
 
@@ -157,6 +154,9 @@ seq:
         `
         }
       }
+
+      // Attach event listener
+      document.getElementById('runButton').addEventListener('click', runExample)
     </script>
 
     <div class="info">
