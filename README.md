@@ -25,7 +25,7 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 - 📦 **Zero dependencies** (runtime) - Only YAML parser for development
 - 🎯 **TypeScript native** - Full type safety and IntelliSense support
 - 🌐 **Universal** - Works in Node.js and browsers
-- 🧪 **Well tested** - 98 comprehensive tests
+- 🧪 **Well tested** - 283 comprehensive tests
 - 📖 **Well documented** - Clear API and examples
 
 ### Advanced Features
@@ -36,6 +36,7 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 - 🎨 **Enums** - Named constants with expression access
 - 🔁 **Conditional parsing** - if, repeat-expr, repeat-until
 - 📍 **Positioned reads** - Absolute positioning with pos attribute
+- 🌊 **Streaming API** - Parse large files progressively (v0.10.0)
 
 ## Installation
 
@@ -108,28 +109,37 @@ console.log(result.name)
 
 ## Current Status
 
-**Version:** 0.7.0  
+**Version:** 0.10.0  
 **Status:** Production Ready 🚀  
-**Completion:** ~95% toward v1.0.0
+**Latest:** Streaming API for large files
 
 ### ✅ Fully Implemented
 
 - **Core Runtime** - Complete binary stream reader with all primitive types
+- **Streaming API** - Parse files larger than RAM with progressive results (NEW in v0.10.0)
 - **KSY Parser** - Full YAML parser with schema validation
 - **Type Interpreter** - Execute schemas against binary data
 - **Expression Evaluator** - Complete Kaitai expression language support
 - **Advanced Features** - Conditionals, enums, repetitions, instances, switch/case
 - **CLI Tool** - Command-line utility for parsing binary files
-- **Testing** - 100+ comprehensive tests, all passing
+- **Testing** - 283 comprehensive tests, all passing
 - **Documentation** - Complete user and developer documentation
+
+### 🚀 What's New in v0.10.0
+
+- **Streaming API** - Parse large files without loading everything into memory
+  - `StreamingKaitaiStream` - Forward-only stream reader
+  - `parseStreaming()` - Event-based progressive parsing
+  - Memory-efficient for files larger than RAM
+  - See [docs/STREAMING_API_DESIGN.md](./docs/STREAMING_API_DESIGN.md)
 
 ### 🔄 Remaining for v1.0.0
 
-- Substream processing (zlib, encryption)
+- Processing implementations (zlib, encryption)
 - Type imports across files
 - Additional performance optimizations
 
-See [docs/development/PROGRESS.md](./docs/development/PROGRESS.md) for detailed progress tracking and [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture diagrams.
+See [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture details.
 
 ## API Documentation
 
@@ -226,47 +236,21 @@ pnpm format
 
 ## Roadmap
 
-### ✅ Phase 1: Foundation (v0.1.0) - Complete
+### ✅ Completed
 
-- ✅ Binary stream reader (KaitaiStream)
-- ✅ All primitive types (u1-u8, s1-s8, f4, f8)
-- ✅ String encoding (UTF-8, ASCII, Latin-1, UTF-16)
-- ✅ Byte arrays and positioning
-- ✅ Error handling system
+- **v0.1.0-v0.4.0** - Core runtime, KSY parser, type interpreter, expressions
+- **v0.5.0-v0.6.0** - Advanced features (switch/case, instances, parametric types)
+- **v0.7.0-v0.9.0** - CLI tool, production polish, expression-based endianness
+- **v0.10.0** - Streaming API for large files
 
-### ✅ Phase 2: Core Features (v0.2.0-v0.4.0) - Complete
+### 🔄 In Progress (v1.0.0)
 
-- ✅ KSY parser with validation
-- ✅ Type interpreter
-- ✅ Expression evaluator (full Kaitai expression language)
-- ✅ Conditionals (if attribute)
-- ✅ Enums with expression access
-- ✅ Repetitions (repeat-expr, repeat-until, repeat-eos)
-- ✅ Nested user-defined types
+- Processing implementations (zlib, encryption)
+- Type imports across files
+- Additional performance optimizations
+- Extended format testing
 
-### ✅ Phase 3: Advanced Features (v0.5.0-v0.6.0) - Complete
-
-- ✅ Switch/case type selection
-- ✅ Instances (lazy-evaluated fields with caching)
-- ✅ Parametric types
-- ✅ Positioned reads (pos attribute)
-- ✅ Sized substreams
-- ✅ Processing framework (ready for zlib/encryption)
-
-### ✅ Phase 4: CLI & Polish (v0.7.0) - Complete
-
-- ✅ Command-line interface
-- ✅ Documentation reorganization
-- ✅ Production-ready release
-
-### 🔄 Phase 5: v1.0.0 - Final Polish (In Progress)
-
-- ⏳ Processing implementations (zlib, encryption)
-- ⏳ Type imports across files
-- ⏳ Additional performance optimizations
-- ⏳ Extended format testing
-
-**Current Status:** Production-ready, ~95% complete toward v1.0.0
+**Current Status:** Production-ready, actively maintained
 
 ## Contributing
 

@@ -2,7 +2,8 @@
 
 This document tracks features that are not yet implemented, known limitations, and potential improvements for `@k67/kaitai-struct-ts`.
 
-**Last Updated:** 2025-10-13
+**Last Updated:** 2025-10-13  
+**Version:** 0.10.0
 
 ---
 
@@ -357,7 +358,7 @@ These features were recently implemented:
 | ROL/ROR group size > 1  | ❌     | Multi-byte rotation     |
 | Generic cast syntax     | ⚠️     | Stripped (not needed)   |
 | AES/advanced crypto     | ❌     | Would need external lib |
-| Streaming API           | ❌     | Future enhancement      |
+| ~~Streaming API~~       | ✅     | **COMPLETED v0.10.0**   |
 | Schema compilation      | ❌     | Code generation         |
 | Visual debugger         | ❌     | Separate tool           |
 
@@ -375,12 +376,13 @@ These features were recently implemented:
 
 1. ~~**Better error messages**~~ ✅ **COMPLETED**
 2. ~~**Expression-based endianness**~~ ✅ **COMPLETED**
+3. ~~**Streaming API**~~ ✅ **COMPLETED v0.10.0**
 
 ### Medium Priority
 
-3. ~~**Browser bundle optimization**~~ ✅ **COMPLETED**
-4. **Streaming API design** - Plan architecture
+4. ~~**Browser bundle optimization**~~ ✅ **COMPLETED**
 5. **Enhanced validation** - Better constraints
+6. **Processing implementations** - zlib, encryption
 
 ### Low Priority
 
