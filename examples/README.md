@@ -10,15 +10,25 @@ examples/
 ├── common/                 # Shared formats used by others
 │   └── riff.ksy            # RIFF container (imported by WAV)
 ├── media/                  # Media formats
+│   ├── README.md           # Media examples documentation
 │   ├── wav.ksy             # WAV format (imports /common/riff)
 │   └── wav/
 │       └── small.wav       # Sample WAV file
-└── hardware/               # Hardware-related formats
-    └── edid/
-        ├── edid.ksy        # EDID format definition
-        ├── edid-1.0.bin
-        ├── edid-1.1.bin
-        └── edid-1.2.bin
+├── hardware/               # Hardware-related formats
+│   ├── README.md           # Hardware examples documentation
+│   └── edid/
+│       ├── edid.ksy        # EDID format definition
+│       ├── edid-1.0.bin
+│       ├── edid-1.1.bin
+│       └── edid-1.2.bin
+├── archive/                # Archive formats
+│   ├── README.md           # Archive examples documentation
+│   ├── xar.ksy             # XAR format definition
+│   └── xar/                # Sample XAR files
+└── serialization/          # Serialization formats
+    ├── README.md           # Serialization examples documentation
+    ├── chrome_pak.ksy      # Chrome PAK format definition
+    └── pak/                # Sample PAK files
 ```
 
 ## 🎯 Examples
@@ -32,7 +42,7 @@ Parse Microsoft WAVE audio files. Demonstrates:
 - Nested structures
 - Enumerations
 
-**See:** [`wav/README.md`](./wav/README.md)
+**See:** [`media/README.md`](./media/README.md)
 
 ### EDID Display Identification
 
@@ -43,7 +53,29 @@ Parse VESA Enhanced Extended Display Identification Data. Demonstrates:
 - Calculated instances
 - Version handling
 
-**See:** [`edid/README.md`](./edid/README.md)
+**See:** [`hardware/README.md`](./hardware/README.md)
+
+### XAR Archive Format
+
+Parse XAR (eXtensible ARchive) files. Demonstrates:
+
+- Process algorithms (zlib decompression)
+- Enum value conversion (.to_i)
+- Complex conditional expressions
+- _sizeof and _root references
+
+**See:** [`archive/README.md`](./archive/README.md)
+
+### Chrome PAK Serialization
+
+Parse Chrome PAK resource files. Demonstrates:
+
+- Version-specific parsing
+- Instance-based repeat expressions
+- Parameterized types
+- Forward references in lazy evaluation
+
+**See:** [`serialization/README.md`](./serialization/README.md)
 
 ## 🚀 Quick Start
 
@@ -58,6 +90,12 @@ node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav
 
 # Parse EDID
 node dist/cli.js examples/hardware/edid/edid.ksy examples/hardware/edid/edid-1.0.bin
+
+# Parse XAR archive
+node dist/cli.js examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar
+
+# Parse Chrome PAK
+node dist/cli.js examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak
 
 # Output to a file
 node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav -o out.json
