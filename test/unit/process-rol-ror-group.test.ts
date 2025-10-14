@@ -184,7 +184,7 @@ describe('ROL/ROR with Group Size > 1', () => {
   describe('ROL/ROR relationship', () => {
     it('should satisfy: ROL(n) = ROR(group_bits - n)', () => {
       const input = new Uint8Array([0x12, 0x34])
-      const groupBits = 16 // 2 bytes * 8 bits
+      // const groupBits = 16 // 2 bytes * 8 bits
 
       const rol4 = applyProcess(input, {
         algorithm: 'rol',
