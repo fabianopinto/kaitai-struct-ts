@@ -60,7 +60,8 @@ function EditableHexByte({
     }
   }, [isEditing])
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent triggering onClick
     setIsEditing(true)
     setEditValue(byteToHex(value))
   }
