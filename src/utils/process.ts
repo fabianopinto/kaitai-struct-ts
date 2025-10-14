@@ -172,19 +172,61 @@ function processRol(
   const bits = amount ?? 1
   const groupSize = group ?? 1
 
-  if (bits < 0 || bits > 7) {
-    throw new ParseError('ROL amount must be between 0 and 7')
+  if (bits < 0) {
+    throw new ParseError('ROL amount must be non-negative')
   }
 
-  if (groupSize !== 1) {
-    throw new ParseError('ROL with group size > 1 not yet supported')
+  if (groupSize < 1) {
+    throw new ParseError('ROL group size must be at least 1')
+  }
+
+  if (data.length % groupSize !== 0) {
+    throw new ParseError(
+      `Data length ${data.length} is not aligned to group size ${groupSize}`
+    )
   }
 
   const result = new Uint8Array(data.length)
 
-  for (let i = 0; i < data.length; i++) {
-    const byte = data[i]
-    result[i] = ((byte << bits) | (byte >> (8 - bits))) & 0xff
+  // For single-byte groups, use optimized byte-level rotation
+  if (groupSize === 1) {
+    const normalizedBits = bits % 8
+    for (let i = 0; i < data.length; i++) {
+      const byte = data[i]
+      result[i] =
+        ((byte << normalizedBits) | (byte >> (8 - normalizedBits))) & 0xff
+    }
+    return result
+  }
+
+  // For multi-byte groups, rotate bits across the entire group
+  const totalBits = groupSize * 8
+  const normalizedBits = bits % totalBits
+
+  for (let groupStart = 0; groupStart < data.length; groupStart += groupSize) {
+    // Read the group as a big integer (bit array)
+    const groupBits: number[] = []
+    for (let i = 0; i < groupSize; i++) {
+      const byte = data[groupStart + i]
+      for (let bit = 7; bit >= 0; bit--) {
+        groupBits.push((byte >> bit) & 1)
+      }
+    }
+
+    // Rotate the bits
+    const rotatedBits = [
+      ...groupBits.slice(normalizedBits),
+      ...groupBits.slice(0, normalizedBits),
+    ]
+
+    // Write back to result
+    for (let i = 0; i < groupSize; i++) {
+      let byte = 0
+      for (let bit = 0; bit < 8; bit++) {
+        byte = (byte << 1) | rotatedBits[i * 8 + bit]
+      }
+      result[groupStart + i] = byte
+    }
   }
 
   return result
@@ -209,19 +251,61 @@ function processRor(
   const bits = amount ?? 1
   const groupSize = group ?? 1
 
-  if (bits < 0 || bits > 7) {
-    throw new ParseError('ROR amount must be between 0 and 7')
+  if (bits < 0) {
+    throw new ParseError('ROR amount must be non-negative')
   }
 
-  if (groupSize !== 1) {
-    throw new ParseError('ROR with group size > 1 not yet supported')
+  if (groupSize < 1) {
+    throw new ParseError('ROR group size must be at least 1')
+  }
+
+  if (data.length % groupSize !== 0) {
+    throw new ParseError(
+      `Data length ${data.length} is not aligned to group size ${groupSize}`
+    )
   }
 
   const result = new Uint8Array(data.length)
 
-  for (let i = 0; i < data.length; i++) {
-    const byte = data[i]
-    result[i] = ((byte >> bits) | (byte << (8 - bits))) & 0xff
+  // For single-byte groups, use optimized byte-level rotation
+  if (groupSize === 1) {
+    const normalizedBits = bits % 8
+    for (let i = 0; i < data.length; i++) {
+      const byte = data[i]
+      result[i] =
+        ((byte >> normalizedBits) | (byte << (8 - normalizedBits))) & 0xff
+    }
+    return result
+  }
+
+  // For multi-byte groups, rotate bits across the entire group
+  const totalBits = groupSize * 8
+  const normalizedBits = bits % totalBits
+
+  for (let groupStart = 0; groupStart < data.length; groupStart += groupSize) {
+    // Read the group as a big integer (bit array)
+    const groupBits: number[] = []
+    for (let i = 0; i < groupSize; i++) {
+      const byte = data[groupStart + i]
+      for (let bit = 7; bit >= 0; bit--) {
+        groupBits.push((byte >> bit) & 1)
+      }
+    }
+
+    // Rotate the bits (right rotation = move bits from end to start)
+    const rotatedBits = [
+      ...groupBits.slice(totalBits - normalizedBits),
+      ...groupBits.slice(0, totalBits - normalizedBits),
+    ]
+
+    // Write back to result
+    for (let i = 0; i < groupSize; i++) {
+      let byte = 0
+      for (let bit = 0; bit < 8; bit++) {
+        byte = (byte << 1) | rotatedBits[i * 8 + bit]
+      }
+      result[groupStart + i] = byte
+    }
   }
 
   return result

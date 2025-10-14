@@ -69,11 +69,18 @@ describe('Process Utilities', () => {
       expect(result).toEqual(new Uint8Array([0b00000011]))
     })
 
-    it('should throw on invalid rotation amount', () => {
+    it('should normalize rotation amount > 8 for single-byte groups', () => {
+      // ROL 8 on single byte = ROL 0 (no change)
+      const data = new Uint8Array([0b10101010])
+      const result = applyProcess(data, { algorithm: 'rol', amount: 8 })
+      expect(result).toEqual(new Uint8Array([0b10101010]))
+    })
+
+    it('should throw on negative rotation amount', () => {
       const data = new Uint8Array([0x00])
-      expect(() => applyProcess(data, { algorithm: 'rol', amount: 8 })).toThrow(
-        'ROL amount must be between 0 and 7'
-      )
+      expect(() =>
+        applyProcess(data, { algorithm: 'rol', amount: -1 })
+      ).toThrow('ROL amount must be non-negative')
     })
   })
 
@@ -96,11 +103,11 @@ describe('Process Utilities', () => {
       expect(result).toEqual(new Uint8Array([0b11000000]))
     })
 
-    it('should throw on invalid rotation amount', () => {
+    it('should throw on negative rotation amount', () => {
       const data = new Uint8Array([0x00])
       expect(() =>
         applyProcess(data, { algorithm: 'ror', amount: -1 })
-      ).toThrow('ROR amount must be between 0 and 7')
+      ).toThrow('ROR amount must be non-negative')
     })
   })
 

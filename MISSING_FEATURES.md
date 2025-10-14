@@ -352,15 +352,15 @@ These features were recently implemented:
 
 ### Advanced Features
 
-| Feature                 | Status | Notes                   |
-| ----------------------- | ------ | ----------------------- |
-| Expression-based endian | ❌     | Switch-on endianness    |
-| ROL/ROR group size > 1  | ❌     | Multi-byte rotation     |
-| Generic cast syntax     | ⚠️     | Stripped (not needed)   |
-| AES/advanced crypto     | ❌     | Would need external lib |
-| ~~Streaming API~~       | ✅     | **COMPLETED v0.10.0**   |
-| Schema compilation      | ❌     | Code generation         |
-| Visual debugger         | ❌     | Separate tool           |
+| Feature                     | Status | Notes                   |
+| --------------------------- | ------ | ----------------------- |
+| ~~Expression-based endian~~ | ✅     | **COMPLETED v0.9.0**    |
+| ~~ROL/ROR group size > 1~~  | ✅     | **COMPLETED v0.10.1**   |
+| Generic cast syntax         | ⚠️     | Stripped (not needed)   |
+| AES/advanced crypto         | ❌     | Would need external lib |
+| ~~Streaming API~~           | ✅     | **COMPLETED v0.10.0**   |
+| Schema compilation          | ❌     | Code generation         |
+| Visual debugger             | ❌     | Separate tool           |
 
 **Legend:**
 
@@ -386,7 +386,7 @@ These features were recently implemented:
 
 ### Low Priority
 
-6. **ROL/ROR group size** - Rare use case
+6. ~~**ROL/ROR group size**~~ ✅ **COMPLETED v0.10.1**
 7. **Schema compilation** - Performance optimization
 8. **Visual debugger** - Nice to have
 
