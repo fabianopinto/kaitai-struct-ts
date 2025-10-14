@@ -4,10 +4,16 @@ This document provides examples of using kaitai-struct-ts with real-world binary
 
 ## Table of Contents
 
-- [Quick Start](#quick-start-example)
+- [Quick Start Example](#quick-start-example)
 - [CLI Usage](#cli-usage)
 - [Working with Imports](#working-with-imports)
 - [Real-World Examples](#real-world-examples)
+  - [WAV Audio File](#wav-audio-file)
+  - [EDID Display Information](#edid-display-information)
+  - [XAR Archive Format](#xar-archive-format)
+  - [Chrome PAK Serialization](#chrome-pak-serialization)
+- [Example Files](#example-files)
+- [Common Format Examples](#common-format-examples)
 - [Advanced Features](#advanced-features)
 - [Format Gallery](#format-gallery)
 
@@ -197,6 +203,111 @@ console.log('Week/Year:', result.mfg_week, result.mfg_year)
 - Array literals and comparisons
 - Computed instances
 - Conditional parsing
+
+### XAR Archive Format
+
+The XAR (eXtensible ARchive) format demonstrates advanced features:
+
+```bash
+# CLI usage
+kaitai examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar
+```
+
+```typescript
+import { parse } from '@k67/kaitai-struct-ts'
+import { readFileSync } from 'fs'
+
+const xarKsy = readFileSync('examples/archive/xar.ksy', 'utf-8')
+const xarData = readFileSync('archive.xar')
+
+const result = parse(xarKsy, xarData)
+console.log('Magic:', result.header_prefix.magic)
+console.log('Version:', result.header_prefix.version)
+```
+
+**Features demonstrated:**
+
+- Process algorithms (zlib decompression)
+- Enum value conversion (`.to_i`)
+- Complex conditional expressions
+- `_sizeof` and `_root` references
+
+**See:** [examples/archive/README.md](./examples/archive/README.md)
+
+### Chrome PAK Serialization
+
+The Chrome PAK format demonstrates serialization and parameterized types:
+
+```bash
+# CLI usage
+kaitai examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak
+```
+
+```typescript
+import { parse } from '@k67/kaitai-struct-ts'
+import { readFileSync } from 'fs'
+
+const pakKsy = readFileSync('examples/serialization/chrome_pak.ksy', 'utf-8')
+const pakData = readFileSync('resources.pak')
+
+const result = parse(pakKsy, pakData)
+console.log('Version:', result.version)
+console.log('Resources:', result.num_resources)
+```
+
+**Features demonstrated:**
+
+- Version-specific parsing
+- Instance-based repeat expressions
+- Parametric types
+- Forward references in lazy evaluation
+
+**See:** [examples/serialization/README.md](./examples/serialization/README.md)
+
+## Example Files
+
+The [`examples/`](./examples/) directory contains working examples with sample files:
+
+### 📁 Directory Structure
+
+- **[examples/README.md](./examples/README.md)** - Complete examples documentation
+- **[examples/media/](./examples/media/)** - Media formats (WAV audio)
+  - [WAV format documentation](./examples/media/README.md)
+  - Sample WAV files for testing
+- **[examples/hardware/](./examples/hardware/)** - Hardware formats (EDID)
+  - [EDID format documentation](./examples/hardware/README.md)
+  - Multiple EDID versions (1.0, 1.1, 1.2)
+- **[examples/archive/](./examples/archive/)** - Archive formats (XAR)
+  - [XAR format documentation](./examples/archive/README.md)
+  - Sample XAR archive files
+- **[examples/serialization/](./examples/serialization/)** - Serialization formats (Chrome PAK)
+  - [Chrome PAK documentation](./examples/serialization/README.md)
+  - Sample PAK resource files
+- **[examples/browser/](./examples/browser/)** - Browser usage examples
+  - HTML examples for browser environments
+- **[examples/common/](./examples/common/)** - Shared format definitions
+  - RIFF container format (imported by WAV)
+
+### 🚀 Quick Start with Examples
+
+```bash
+# From project root
+pnpm build
+
+# Parse WAV audio file
+node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav
+
+# Parse EDID display data
+node dist/cli.js examples/hardware/edid/edid.ksy examples/hardware/edid/edid-1.0.bin
+
+# Parse XAR archive
+node dist/cli.js examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar
+
+# Parse Chrome PAK
+node dist/cli.js examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak
+```
+
+**See [examples/README.md](./examples/README.md) for detailed usage instructions.**
 
 ## Format Gallery
 
