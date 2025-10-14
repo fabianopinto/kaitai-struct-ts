@@ -104,6 +104,41 @@ function App() {
     }
   }
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
+  const handleSchemaDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const file = e.dataTransfer.files[0]
+    if (file) {
+      try {
+        await loadSchemaFile(file)
+        setError(null)
+      } catch (err) {
+        setError(`Failed to load schema: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      }
+    }
+  }
+
+  const handleBinaryDrop = async (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const file = e.dataTransfer.files[0]
+    if (file) {
+      try {
+        await loadBinaryFile(file)
+        setError(null)
+      } catch (err) {
+        setError(`Failed to load binary: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      }
+    }
+  }
+
   if (view === 'welcome') {
     return (
       <div className="h-screen flex flex-col bg-background">
@@ -157,12 +192,16 @@ function App() {
 
             <div className="grid grid-cols-2 gap-4">
               {/* Schema File Upload */}
-              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors">
+              <div
+                className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors"
+                onDragOver={handleDragOver}
+                onDrop={handleSchemaDrop}
+              >
                 <label htmlFor="schema-upload" className="cursor-pointer block">
                   <FileUp className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="font-medium mb-2">Upload Schema (.ksy)</p>
                   <p className="text-sm text-muted-foreground mb-4">
-                    {schemaContent ? '✓ Schema loaded' : 'Click to browse'}
+                    {schemaContent ? '✓ Schema loaded' : 'Click or drag & drop'}
                   </p>
                   <input
                     id="schema-upload"
@@ -178,12 +217,16 @@ function App() {
               </div>
 
               {/* Binary File Upload */}
-              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors">
+              <div
+                className="border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors"
+                onDragOver={handleDragOver}
+                onDrop={handleBinaryDrop}
+              >
                 <label htmlFor="binary-upload" className="cursor-pointer block">
                   <FileUp className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <p className="font-medium mb-2">Upload Binary File</p>
                   <p className="text-sm text-muted-foreground mb-4">
-                    {binaryData ? `✓ ${binaryData.length} bytes loaded` : 'Click to browse'}
+                    {binaryData ? `✓ ${binaryData.length} bytes loaded` : 'Click or drag & drop'}
                   </p>
                   <input
                     id="binary-upload"
