@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react'
-import { FileUp, Play, AlertCircle, Info, X } from 'lucide-react'
+import { FileUp, Play, AlertCircle, Info, X, RefreshCw } from 'lucide-react'
 import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
 import { SchemaEditor } from './components/SchemaEditor'
@@ -90,6 +90,17 @@ function App() {
 
   const handleBackToWelcome = () => {
     setView('welcome')
+  }
+
+  const handleReparse = async () => {
+    try {
+      setError(null)
+      // Reset debug state before re-parsing
+      reset()
+      await parseData()
+    } catch (err) {
+      setError(`Parse error: ${err instanceof Error ? err.message : 'Unknown error'}`)
+    }
   }
 
   if (view === 'welcome') {
@@ -254,13 +265,38 @@ function App() {
             <img src="logo.png" alt="Kaitai Struct" className="w-6 h-6" />
             <h1 className="text-lg font-bold">Kaitai Struct Debugger</h1>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleReparse}
+              className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors flex items-center gap-2"
+              title="Re-parse with current schema"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Re-parse
+            </button>
             <span className="text-xs text-muted-foreground">
               {binaryData?.length.toLocaleString()} bytes
             </span>
           </div>
         </div>
       </header>
+
+      {/* Error Display */}
+      {error && (
+        <div className="mx-4 mt-4 p-4 bg-destructive/10 border border-destructive rounded-lg flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-destructive">Parse Error</p>
+            <p className="text-sm text-destructive/80 mt-1">{error}</p>
+          </div>
+          <button
+            onClick={() => setError(null)}
+            className="text-destructive hover:text-destructive/80"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Debug Controls */}
       <DebugControls
