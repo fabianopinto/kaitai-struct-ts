@@ -70,24 +70,25 @@ docs/
 
 ## 📚 Documentation Files
 
-| File                                 | Purpose                            |
-| ------------------------------------ | ---------------------------------- |
-| `README.md`                          | Project overview and quick start   |
-| `CHANGELOG.md`                       | Version history and release notes  |
-| `CONTRIBUTING.md`                    | Development guidelines             |
-| `EXAMPLES.md`                        | Format examples and usage patterns |
-| `QUICKREF.md`                        | This file - quick reference        |
-| `docs/CLI.md`                        | Complete CLI documentation         |
-| `docs/ARCHITECTURE.md`               | Architecture with Mermaid diagrams |
-| `docs/development/PROJECT_DESIGN.md` | Complete design specification      |
-| `docs/development/PROGRESS.md`       | Detailed progress tracking         |
-| `docs/README.md`                     | Documentation index                |
+| File                           | Purpose                            |
+| ------------------------------ | ---------------------------------- |
+| `README.md`                    | Project overview and quick start   |
+| `CHANGELOG.md`                 | Version history and release notes  |
+| `CONTRIBUTING.md`              | Development guidelines             |
+| `EXAMPLES.md`                  | Format examples and usage patterns |
+| `QUICKREF.md`                  | This file - quick reference        |
+| `MISSING_FEATURES.md`          | Feature status and limitations     |
+| `docs/README.md`               | Documentation index                |
+| `docs/CLI.md`                  | Complete CLI documentation         |
+| `docs/ARCHITECTURE.md`         | Architecture with diagrams         |
+| `docs/STREAMING_API_DESIGN.md` | Streaming API for large files      |
+| `docs/RELEASE_GUIDE.md`        | Release process (maintainers)      |
 
 ## 🎯 Current Status
 
-**Version:** 0.7.0  
+**Version:** 0.10.0  
 **Status:** Production Ready 🚀  
-**Completion:** ~95% toward v1.0.0
+**Latest:** Streaming API for large files
 
 ### ✅ Completed
 
@@ -97,8 +98,9 @@ docs/
 - ✅ Expression Evaluator (complete Kaitai expression language)
 - ✅ Advanced Features (conditionals, enums, repetitions, instances, switch/case)
 - ✅ CLI Tool (command-line utility)
-- ✅ Testing (100+ comprehensive tests)
+- ✅ Testing (283 comprehensive tests)
 - ✅ Documentation (complete user and developer docs)
+- ✅ Streaming API (parse large files progressively - v0.10.0)
 
 ### ⏳ Remaining for v1.0.0
 

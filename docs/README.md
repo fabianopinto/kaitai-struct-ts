@@ -24,8 +24,6 @@ For developers using this library as an npm dependency.
 ### CLI Documentation
 
 - **[CLI.md](./CLI.md)** - Complete CLI documentation and examples
-- **[cli/CLI_QUICKREF.md](./cli/CLI_QUICKREF.md)** - CLI quick reference card
-- **[cli/CLI_GUIDE.md](./cli/CLI_GUIDE.md)** - CLI implementation guide
 
 ## 🔧 Contributor Documentation
 
@@ -38,17 +36,16 @@ For developers contributing to this project.
 
 ### Development
 
-- **[development/PROJECT_DESIGN.md](./development/PROJECT_DESIGN.md)** - Project design and roadmap
-- **[development/PROGRESS.md](./development/PROGRESS.md)** - Development progress tracking
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design
+- **[../CHANGELOG.md](../CHANGELOG.md)** - Version history and progress
 
 ### Release Process
 
 - **[RELEASE_GUIDE.md](./RELEASE_GUIDE.md)** - Step-by-step release instructions ⭐
-- **[RELEASE_PROCESS_ANALYSIS.md](./RELEASE_PROCESS_ANALYSIS.md)** - Release process improvements
 
 ### Archived Documentation
 
-- **[.archive/development/](./archive/development/)** - Historical phase reports and release notes
+- **[.archive/development/](./.archive/development/)** - Historical design docs, phase reports, and release notes
 
 ## Documentation Structure
 
@@ -67,44 +64,37 @@ docs/
 ├── ARCHITECTURE.md              # System architecture
 ├── STREAMING_API_DESIGN.md      # Streaming API design (v0.10.0)
 ├── CLI.md                       # Complete CLI documentation
-├── DOCUMENTATION_ORGANIZATION.md # Documentation structure guide
-│
 ├── RELEASE_GUIDE.md             # Release instructions (maintainers)
-├── RELEASE_PROCESS_ANALYSIS.md  # Release process analysis
-│
-├── cli/                         # CLI-specific documentation
-│   ├── CLI_GUIDE.md             # Implementation guide
-│   ├── CLI_QUICKREF.md          # Quick reference card
-│   ├── CLI_IMPLEMENTATION_SUMMARY.md
-│   └── CLI_TEST_RESULTS.md      # Test results
-│
-├── development/                 # Development documentation
-│   ├── PROJECT_DESIGN.md        # Project design and roadmap
-│   └── PROGRESS.md              # Development progress tracking
 │
 └── .archive/                    # Archived documentation
-    └── development/             # Historical phase reports and release notes
+    └── development/            # Historical design docs, phase reports, release notes
 ```
 
 ## Quick Links
 
-### 👤 For Users
+### 👤 For Library Users
 
-- [Installation & Quick Start](../README.md#installation)
+Start here if you're using kaitai-struct-ts as an npm dependency:
+
+- [Installation & Quick Start](../README.md#installation) ⭐
+- [API Documentation](../README.md#api-documentation)
+- [Streaming API](./STREAMING_API_DESIGN.md) - For large files (v0.10.0)
 - [CLI Usage](./CLI.md)
 - [Examples](../EXAMPLES.md)
-- [Quick Reference](../QUICKREF.md)
 
 ### 👨‍💻 For Contributors
 
-- [Contributing Guidelines](../CONTRIBUTING.md)
-- [Project Design](./development/PROJECT_DESIGN.md)
+Start here if you're contributing code:
+
+- [Contributing Guidelines](../CONTRIBUTING.md) ⭐
 - [Architecture](./ARCHITECTURE.md)
-- [Development Progress](./development/PROGRESS.md)
+- [Changelog](../CHANGELOG.md)
 
 ### 🔧 For Maintainers
 
-- [Release Guide](./RELEASE_GUIDE.md) ⭐ **Start here for releases**
-- [Release Process Analysis](./RELEASE_PROCESS_ANALYSIS.md)
+Start here for releases and maintenance:
+
+- [Release Guide](./RELEASE_GUIDE.md) ⭐
 - [Changelog](../CHANGELOG.md)
 - [Contributing](../CONTRIBUTING.md)
+```

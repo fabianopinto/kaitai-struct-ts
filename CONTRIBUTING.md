@@ -437,28 +437,19 @@ sequenceDiagram
    - Wait for maintainer approval
    - Maintainer will merge
 
-## Development Phases
+## Current Development Status
 
-We're currently in **Phase 1 (MVP)**. Contributions should align with the current phase:
+**Version:** 0.10.0  
+**Status:** Production Ready
 
-```mermaid
-gantt
-    title Development Roadmap
-    dateFormat YYYY-MM-DD
-    section Phase 1 - MVP
-    KaitaiStream           :active, 2025-10-01, 7d
-    KSY Parser            :2025-10-08, 7d
-    Type Interpreter      :2025-10-15, 7d
+The project is feature-complete for most use cases. Current focus:
 
-    section Phase 2 - Core
-    Expression Evaluator  :2025-10-22, 10d
-    Conditionals         :2025-11-01, 7d
+- Bug fixes and stability improvements
+- Performance optimizations
+- Additional format support
+- Community contributions
 
-    section Phase 3 - Advanced
-    Advanced Features    :2025-11-08, 14d
-```
-
-See [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) for detailed phase information.
+See [CHANGELOG.md](./CHANGELOG.md) for recent updates and [README.md](./README.md#roadmap) for the roadmap.
 
 ## Release Process
 
@@ -471,9 +462,9 @@ For maintainers with release permissions, see the [Release Guide](./docs/RELEASE
 
 ## Questions?
 
-- Check [docs/development/PROJECT_DESIGN.md](./docs/development/PROJECT_DESIGN.md) for architecture details
-- Check [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for diagrams
+- Check [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) for architecture and diagrams
 - Check [docs/RELEASE_GUIDE.md](./docs/RELEASE_GUIDE.md) for release process
+- Check [README.md](./README.md) for project overview
 - Open an issue for questions
 - Join discussions in existing issues
 
