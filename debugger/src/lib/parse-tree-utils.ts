@@ -1,5 +1,8 @@
 /**
- * Utility functions for parse tree manipulation
+ * @fileoverview Utility functions for parse tree manipulation
+ * @module debugger/lib/parse-tree-utils
+ * @author Fabiano Pinto
+ * @license MIT
  */
 
 import type { ParseTreeNode } from '@/types'

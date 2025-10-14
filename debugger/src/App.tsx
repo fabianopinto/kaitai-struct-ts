@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Main application component
+ * @module debugger/App
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { useState } from 'react'
 import { FileUp, Play, AlertCircle, Info, X } from 'lucide-react'
 import { HexViewer } from './components/HexViewer'
@@ -12,7 +19,14 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const { loadSchemaFile, loadBinaryFile } = useFileLoader()
   const { parseData, isReady } = useDebugger()
-  const { schemaContent, binaryData, parseResult, setSchemaContent, selectedField, setSelectedField } = useDebugStore()
+  const {
+    schemaContent,
+    binaryData,
+    parseResult,
+    setSchemaContent,
+    selectedField,
+    setSelectedField,
+  } = useDebugStore()
 
   const handleSchemaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -96,7 +110,10 @@ function App() {
                   <p className="text-sm font-medium text-destructive">Error</p>
                   <p className="text-sm text-destructive/90 mt-1">{error}</p>
                 </div>
-                <button onClick={() => setError(null)} className="text-destructive hover:text-destructive/80">
+                <button
+                  onClick={() => setError(null)}
+                  className="text-destructive hover:text-destructive/80"
+                >
                   <X className="w-4 h-4" />
                 </button>
               </div>
@@ -146,7 +163,7 @@ function App() {
             {/* Parse Button */}
             {isReady && (
               <div className="flex justify-center">
-                <button 
+                <button
                   onClick={handleStartDebugging}
                   className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 font-medium"
                 >
@@ -224,10 +241,7 @@ function App() {
       <main className="flex-1 grid grid-cols-2 grid-rows-2 gap-4 p-4 overflow-hidden">
         {/* Top Left: Schema Editor */}
         <div className="overflow-hidden">
-          <SchemaEditor
-            value={schemaContent || ''}
-            onChange={setSchemaContent}
-          />
+          <SchemaEditor value={schemaContent || ''} onChange={setSchemaContent} />
         </div>
 
         {/* Top Right: Hex Viewer */}

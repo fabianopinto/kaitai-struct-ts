@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Schema editor component with Monaco
+ * @module debugger/components/SchemaEditor/SchemaEditor
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { Suspense, lazy } from 'react'
 import { Loader2 } from 'lucide-react'
 

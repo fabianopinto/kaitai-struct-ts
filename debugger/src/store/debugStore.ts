@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Zustand store for debugger state
+ * @module debugger/store/debugStore
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { create } from 'zustand'
 
 export interface ParseEvent {
@@ -14,18 +21,18 @@ export interface DebugState {
   // Files
   schemaContent: string | null
   binaryData: Uint8Array | null
-  
+
   // Parse state
   parseResult: unknown | null
   parseEvents: ParseEvent[]
   currentStep: number
   isPlaying: boolean
-  
+
   // UI state
   selectedField: string | null
   hexViewOffset: number
   breakpoints: Set<string>
-  
+
   // Actions
   setSchemaContent: (content: string) => void
   setBinaryData: (data: Uint8Array) => void
@@ -55,24 +62,24 @@ export const useDebugStore = create<DebugState>((set) => ({
   ...initialState,
 
   setSchemaContent: (content) => set({ schemaContent: content }),
-  
+
   setBinaryData: (data) => set({ binaryData: data }),
-  
+
   setParseResult: (result) => set({ parseResult: result }),
-  
+
   addParseEvent: (event) =>
     set((state) => ({
       parseEvents: [...state.parseEvents, event],
     })),
-  
+
   setCurrentStep: (step) => set({ currentStep: step }),
-  
+
   setIsPlaying: (playing) => set({ isPlaying: playing }),
-  
+
   setSelectedField: (field) => set({ selectedField: field }),
-  
+
   setHexViewOffset: (offset) => set({ hexViewOffset: offset }),
-  
+
   toggleBreakpoint: (fieldName) =>
     set((state) => {
       const newBreakpoints = new Set(state.breakpoints)
@@ -83,6 +90,6 @@ export const useDebugStore = create<DebugState>((set) => ({
       }
       return { breakpoints: newBreakpoints }
     }),
-  
+
   reset: () => set(initialState),
 }))

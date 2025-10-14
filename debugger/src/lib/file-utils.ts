@@ -1,5 +1,8 @@
 /**
- * Utility functions for file handling
+ * @fileoverview Utility functions for file handling
+ * @module debugger/lib/file-utils
+ * @author Fabiano Pinto
+ * @license MIT
  */
 
 /**
@@ -33,7 +36,7 @@ export async function readFileAsBytes(file: File): Promise<Uint8Array> {
  * Download data as a file
  */
 export function downloadFile(data: string | Uint8Array, filename: string, mimeType: string) {
-  const blob = new Blob([data], { type: mimeType })
+  const blob = new Blob([data as BlobPart], { type: mimeType })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url

@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Hex viewer component with virtual scrolling
+ * @module debugger/components/HexViewer/HexViewer
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { useMemo } from 'react'
 import { Virtuoso } from 'react-virtuoso'
 import { HexRow } from './HexRow'
@@ -55,9 +62,7 @@ export function HexViewer({
         <div className="flex gap-4">
           <span className="w-20">Offset</span>
           <span className="flex-1">
-            {Array.from({ length: bytesPerRow }, (_, i) => i.toString(16).toUpperCase()).join(
-              ' '
-            )}
+            {Array.from({ length: bytesPerRow }, (_, i) => i.toString(16).toUpperCase()).join(' ')}
           </span>
           <span className="w-32">ASCII</span>
         </div>

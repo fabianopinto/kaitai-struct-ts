@@ -1,5 +1,12 @@
+/**
+ * @fileoverview Hex viewer row component
+ * @module debugger/components/HexViewer/HexRow
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { memo } from 'react'
-import { byteToHex, byteToAscii, offsetToHex, isOffsetHighlighted } from '@/lib/hex-utils'
+import { byteToHex, byteToAscii, offsetToHex } from '@/lib/hex-utils'
 import type { FieldHighlight } from '@/types'
 
 interface HexRowProps {
@@ -20,13 +27,10 @@ export const HexRow = memo(function HexRow({
   onOffsetClick,
 }: HexRowProps) {
   const offset = rowIndex * bytesPerRow
-  const endOffset = Math.min(offset + bytesPerRow, data.length)
 
   // Check which bytes are highlighted
   const getHighlightForOffset = (byteOffset: number): FieldHighlight | undefined => {
-    return highlights.find(
-      (h) => byteOffset >= h.offset && byteOffset < h.offset + h.size
-    )
+    return highlights.find((h) => byteOffset >= h.offset && byteOffset < h.offset + h.size)
   }
 
   const isCurrent = (byteOffset: number): boolean => {
@@ -44,7 +48,11 @@ export const HexRow = memo(function HexRow({
           {Array.from({ length: bytesPerRow }, (_, i) => {
             const byteOffset = offset + i
             if (byteOffset >= data.length) {
-              return <span key={i} className="w-6 text-center">  </span>
+              return (
+                <span key={i} className="w-6 text-center">
+                  {' '}
+                </span>
+              )
             }
 
             const byte = data[byteOffset]
@@ -78,7 +86,11 @@ export const HexRow = memo(function HexRow({
           {Array.from({ length: bytesPerRow }, (_, i) => {
             const byteOffset = offset + i
             if (byteOffset >= data.length) {
-              return <span key={i} className="w-2"> </span>
+              return (
+                <span key={i} className="w-2">
+                  {' '}
+                </span>
+              )
             }
 
             const byte = data[byteOffset]

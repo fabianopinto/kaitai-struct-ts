@@ -1,16 +1,17 @@
+/**
+ * @fileoverview Custom hook for debugger logic
+ * @module debugger/hooks/useDebugger
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { useCallback } from 'react'
 import { parse } from '@k67/kaitai-struct-ts'
 import { useDebugStore } from '@/store/debugStore'
 
 export function useDebugger() {
-  const {
-    schemaContent,
-    binaryData,
-    parseResult,
-    setParseResult,
-    addParseEvent,
-    reset,
-  } = useDebugStore()
+  const { schemaContent, binaryData, parseResult, setParseResult, addParseEvent, reset } =
+    useDebugStore()
 
   const parseData = useCallback(async () => {
     if (!schemaContent || !binaryData) {

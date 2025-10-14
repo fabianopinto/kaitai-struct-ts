@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Custom hook for file loading
+ * @module debugger/hooks/useFileLoader
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { useCallback } from 'react'
 import { readFileAsText, readFileAsBytes } from '@/lib/file-utils'
 import { useDebugStore } from '@/store/debugStore'

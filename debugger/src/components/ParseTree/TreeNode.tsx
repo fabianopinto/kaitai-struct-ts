@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Parse tree node component (recursive)
+ * @module debugger/components/ParseTree/TreeNode
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { useState, memo } from 'react'
 import { ChevronRight, ChevronDown } from 'lucide-react'
 import { formatValue, getNodeIcon } from '@/lib/parse-tree-utils'
@@ -69,9 +76,7 @@ export const TreeNode = memo(function TreeNode({
         <span className="text-xs text-muted-foreground">({node.type})</span>
 
         {/* Value */}
-        {!hasChildren && (
-          <span className="text-sm text-muted-foreground ml-2">{displayValue}</span>
-        )}
+        {!hasChildren && <span className="text-sm text-muted-foreground ml-2">{displayValue}</span>}
 
         {/* Metadata */}
         {node.offset !== undefined && (
@@ -80,9 +85,7 @@ export const TreeNode = memo(function TreeNode({
           </span>
         )}
         {node.size !== undefined && (
-          <span className="text-xs text-muted-foreground">
-            ({node.size} bytes)
-          </span>
+          <span className="text-xs text-muted-foreground">({node.size} bytes)</span>
         )}
       </div>
 

@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Parse tree component
+ * @module debugger/components/ParseTree/ParseTree
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 import { useMemo } from 'react'
 import { TreeNode } from './TreeNode'
 import { resultToTree } from '@/lib/parse-tree-utils'
@@ -19,9 +26,7 @@ export function ParseTree({ data, onFieldSelect, selectedField }: ParseTreeProps
       <div className="h-full flex items-center justify-center border border-border rounded-lg bg-muted/20">
         <div className="text-center space-y-2">
           <p className="text-muted-foreground">No parse result</p>
-          <p className="text-sm text-muted-foreground">
-            Parse a file to see the structure
-          </p>
+          <p className="text-sm text-muted-foreground">Parse a file to see the structure</p>
         </div>
       </div>
     )
@@ -37,12 +42,7 @@ export function ParseTree({ data, onFieldSelect, selectedField }: ParseTreeProps
       {/* Tree */}
       <div className="flex-1 overflow-auto p-2">
         {tree && (
-          <TreeNode
-            node={tree}
-            depth={0}
-            onSelect={onFieldSelect}
-            selectedPath={selectedField}
-          />
+          <TreeNode node={tree} depth={0} onSelect={onFieldSelect} selectedPath={selectedField} />
         )}
       </div>
     </div>

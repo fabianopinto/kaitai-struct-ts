@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Type definitions for debugger
+ * @module debugger/types
+ * @author Fabiano Pinto
+ * @license MIT
+ */
+
 export interface FieldHighlight {
   offset: number
   size: number

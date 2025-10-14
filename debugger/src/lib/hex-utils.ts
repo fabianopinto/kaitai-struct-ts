@@ -1,5 +1,8 @@
 /**
- * Utility functions for hex viewing and formatting
+ * @fileoverview Utility functions for hex viewing and formatting
+ * @module debugger/lib/hex-utils
+ * @author Fabiano Pinto
+ * @license MIT
  */
 
 /**
