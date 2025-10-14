@@ -11,8 +11,11 @@ import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
 import { SchemaEditor } from './components/SchemaEditor'
 import { Console } from './components/Console'
+import { DebugControls } from './components/DebugControls'
 import { useFileLoader } from './hooks/useFileLoader'
 import { useDebugger } from './hooks/useDebugger'
+import { useStepDebugger } from './hooks/useStepDebugger'
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useDebugStore } from './store/debugStore'
 
 /**
@@ -25,6 +28,8 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const { loadSchemaFile, loadBinaryFile } = useFileLoader()
   const { parseData, isReady } = useDebugger()
+  const { play, pause, stepForward, stepBack, reset, currentStep, totalSteps, isPlaying } =
+    useStepDebugger()
   const {
     schemaContent,
     binaryData,
@@ -33,7 +38,21 @@ function App() {
     selectedField,
     setSelectedField,
     parseEvents,
+    hexViewOffset,
   } = useDebugStore()
+
+  // Keyboard shortcuts (only active in debugger view)
+  useKeyboardShortcuts(
+    view === 'debugger'
+      ? {
+          onPlay: isPlaying ? pause : play,
+          onStepForward: stepForward,
+          onStepBack: stepBack,
+          onReset: reset,
+          onEscape: () => setSelectedField(null),
+        }
+      : {}
+  )
 
   const handleSchemaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -80,7 +99,7 @@ function App() {
         <header className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="Kaitai Struct" className="w-8 h-8" />
+              <img src="logo.png" alt="Kaitai Struct" className="w-8 h-8" />
               <div>
                 <h1 className="text-xl font-bold">Kaitai Struct Debugger</h1>
                 <p className="text-sm text-muted-foreground">
@@ -232,7 +251,7 @@ function App() {
               ← Back
             </button>
             <div className="h-6 w-px bg-border" />
-            <img src="/logo.png" alt="Kaitai Struct" className="w-6 h-6" />
+            <img src="logo.png" alt="Kaitai Struct" className="w-6 h-6" />
             <h1 className="text-lg font-bold">Kaitai Struct Debugger</h1>
           </div>
           <div className="flex items-center gap-2">
@@ -242,6 +261,18 @@ function App() {
           </div>
         </div>
       </header>
+
+      {/* Debug Controls */}
+      <DebugControls
+        isPlaying={isPlaying}
+        currentStep={currentStep}
+        totalSteps={totalSteps}
+        onPlay={play}
+        onPause={pause}
+        onStepForward={stepForward}
+        onStepBack={stepBack}
+        onReset={reset}
+      />
 
       {/* Main Content - 2x2 Grid */}
       <main className="flex-1 grid grid-cols-2 grid-rows-2 gap-4 p-4 overflow-hidden">
@@ -254,6 +285,7 @@ function App() {
         <div className="overflow-hidden">
           <HexViewer
             data={binaryData}
+            currentOffset={hexViewOffset}
             onOffsetClick={(offset) => console.log('Clicked offset:', offset)}
           />
         </div>
