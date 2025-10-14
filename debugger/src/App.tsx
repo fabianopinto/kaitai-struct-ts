@@ -80,9 +80,7 @@ function App() {
         <header className="border-b border-border px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">K</span>
-              </div>
+              <img src="/logo.png" alt="Kaitai Struct" className="w-8 h-8" />
               <div>
                 <h1 className="text-xl font-bold">Kaitai Struct Debugger</h1>
                 <p className="text-sm text-muted-foreground">
@@ -234,6 +232,7 @@ function App() {
               ← Back
             </button>
             <div className="h-6 w-px bg-border" />
+            <img src="/logo.png" alt="Kaitai Struct" className="w-6 h-6" />
             <h1 className="text-lg font-bold">Kaitai Struct Debugger</h1>
           </div>
           <div className="flex items-center gap-2">
