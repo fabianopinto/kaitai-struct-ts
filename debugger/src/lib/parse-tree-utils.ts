@@ -15,7 +15,11 @@ import type { ParseTreeNode } from '@/types'
  * @param path - Current path for nested nodes
  * @returns Parse tree node with children
  */
-export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeNode {
+export function resultToTree(
+  obj: unknown,
+  name = 'root',
+  path = ''
+): ParseTreeNode {
   const currentPath = path ? `${path}.${name}` : name
 
   if (obj === null || obj === undefined) {
@@ -28,6 +32,9 @@ export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeN
   }
 
   if (typeof obj !== 'object') {
+    // For primitive fields, we can't get individual field offsets
+    // The parser doesn't track them. We'll return without offset/size
+    // and rely on parent object highlighting instead.
     return {
       name,
       value: obj,
@@ -57,28 +64,37 @@ export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeN
   }
 
   // Regular object
-  const objRecord = obj as Record<string, unknown>
-
   // Extract metadata from parsed object
   let offset: number | undefined
   let size: number | undefined
 
-  // Try to get offset from _io stream
-  if (objRecord['_io'] && typeof objRecord['_io'] === 'object') {
-    const io = objRecord['_io'] as { pos?: number }
-    if (typeof io.pos === 'number') {
-      offset = io.pos
-    }
-  }
+  // NOTE: The kaitai-struct-ts parser doesn't track individual field positions.
+  // All objects share the same _io stream, so _io.pos is always the CURRENT position,
+  // not the position where this specific field was read.
+  // This means offset calculation is UNRELIABLE and will show wrong positions.
+  //
+  // TODO: Implement proper position tracking by:
+  // 1. Wrapping the parser to capture positions during parsing
+  // 2. Or modifying TypeInterpreter to store start position in each object
+  // 3. Or using a custom stream that tracks read positions per object
+  //
+  // For now, we mark objects as having NO offset/size to disable highlighting.
+  // This is better than showing incorrect highlights.
 
-  // Try to get size from _sizeof
-  if (typeof objRecord['_sizeof'] === 'number') {
-    size = objRecord['_sizeof']
-    // If we have size and end position, calculate start offset
-    if (offset !== undefined && size > 0) {
-      offset = offset - size
-    }
-  }
+  // Disable offset extraction - it's unreliable
+  // if (objRecord['_io'] && typeof objRecord['_io'] === 'object') {
+  //   const io = objRecord['_io'] as { pos?: number }
+  //   if (typeof io.pos === 'number') {
+  //     offset = io.pos
+  //   }
+  // }
+  //
+  // if (typeof objRecord['_sizeof'] === 'number') {
+  //   size = objRecord['_sizeof']
+  //   if (offset !== undefined && size > 0) {
+  //     offset = offset - size
+  //   }
+  // }
 
   const children: ParseTreeNode[] = []
   for (const [key, value] of Object.entries(obj)) {
@@ -169,9 +185,14 @@ export function findNodeByPath(tree: ParseTreeNode, path: string): ParseTreeNode
   const parts = path.split('.')
   let current: ParseTreeNode | undefined = tree
 
-  for (const part of parts) {
+  // Skip the first part if it matches the root node name
+  const startIndex = parts[0] === tree.name ? 1 : 0
+
+  for (let i = startIndex; i < parts.length; i++) {
+    const part = parts[i]
     if (!current || !current.children) return undefined
     current = current.children.find((child) => child.name === part)
+    if (!current) return undefined
   }
 
   return current

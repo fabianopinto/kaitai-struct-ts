@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { FileUp, Play, AlertCircle, Info, X, RefreshCw } from 'lucide-react'
 import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
@@ -98,35 +98,44 @@ function App() {
 
   // Create field highlights for hex viewer based on selected field
   const fieldHighlights = useMemo((): FieldHighlight[] => {
-    console.log('fieldHighlights memo - selectedField:', selectedField, 'parseResult:', !!parseResult)
-    
     if (!selectedField || !parseResult) return []
 
     const tree = resultToTree(parseResult, 'root')
-    console.log('Tree:', tree)
-    
-    const node = findNodeByPath(tree, selectedField)
-    console.log('Found node:', node)
+    let node = findNodeByPath(tree, selectedField)
+
+    // If node doesn't have offset/size (primitive field), try parent
+    if (node && (node.offset === undefined || node.size === undefined)) {
+      const parts = selectedField.split('.')
+      if (parts.length > 1) {
+        const parentPath = parts.slice(0, -1).join('.')
+        const parentNode = findNodeByPath(tree, parentPath)
+        if (parentNode && parentNode.offset !== undefined && parentNode.size !== undefined) {
+          node = parentNode
+        }
+      }
+    }
 
     if (!node || node.offset === undefined || node.size === undefined) {
-      console.log('Node missing offset/size')
       return []
     }
 
-    // Update hex view offset to scroll to the selected field
-    setHexViewOffset(node.offset)
+    return [
+      {
+        offset: node.offset,
+        size: node.size,
+        fieldName: node.name,
+        value: node.value,
+        color: 'bg-blue-200 dark:bg-blue-900',
+      },
+    ]
+  }, [selectedField, parseResult])
 
-    const highlight = {
-      offset: node.offset,
-      size: node.size,
-      fieldName: node.name,
-      value: node.value,
-      color: 'bg-blue-200 dark:bg-blue-900',
+  // Update hex view offset when field highlights change (scroll to field)
+  useEffect(() => {
+    if (fieldHighlights.length > 0) {
+      setHexViewOffset(fieldHighlights[0].offset)
     }
-    console.log('Created highlight:', highlight)
-
-    return [highlight]
-  }, [selectedField, parseResult, setHexViewOffset])
+  }, [fieldHighlights, setHexViewOffset])
 
   const handleReparse = async () => {
     try {
