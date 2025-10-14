@@ -10,14 +10,28 @@ import { ChevronRight, ChevronDown } from 'lucide-react'
 import { formatValue, getNodeIcon } from '@/lib/parse-tree-utils'
 import type { ParseTreeNode } from '@/types'
 
+/**
+ * Tree node component props
+ */
 interface TreeNodeProps {
+  /** Parse tree node data */
   node: ParseTreeNode
+  /** Nesting depth for indentation */
   depth: number
+  /** Callback when node is selected */
   onSelect?: (path: string) => void
+  /** Currently selected node path */
   selectedPath?: string | null
+  /** Parent node path */
   parentPath?: string
 }
 
+/**
+ * Recursive tree node component for displaying parse tree hierarchy
+ *
+ * @param props - Component props
+ * @returns Tree node component
+ */
 export const TreeNode = memo(function TreeNode({
   node,
   depth,

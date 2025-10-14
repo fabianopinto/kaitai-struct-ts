@@ -6,15 +6,27 @@
  */
 
 import { useMemo } from 'react'
-import { TreeNode } from './TreeNode'
+import { TreeNode } from './TreeNode.tsx'
 import { resultToTree } from '@/lib/parse-tree-utils'
 
+/**
+ * Parse tree component props
+ */
 interface ParseTreeProps {
+  /** Parsed data to display */
   data: unknown | null
+  /** Callback when field is selected */
   onFieldSelect?: (fieldName: string) => void
+  /** Currently selected field path */
   selectedField?: string | null
 }
 
+/**
+ * Parse tree component for displaying hierarchical parsed data
+ *
+ * @param props - Component props
+ * @returns Parse tree component
+ */
 export function ParseTree({ data, onFieldSelect, selectedField }: ParseTreeProps) {
   const tree = useMemo(() => {
     if (!data) return null

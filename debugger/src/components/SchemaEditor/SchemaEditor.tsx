@@ -10,12 +10,24 @@ import { Loader2 } from 'lucide-react'
 
 const Monaco = lazy(() => import('@monaco-editor/react'))
 
+/**
+ * Schema editor component props
+ */
 interface SchemaEditorProps {
+  /** Schema content (YAML) */
   value: string
+  /** Callback when content changes */
   onChange: (value: string) => void
+  /** Whether editor is read-only */
   readOnly?: boolean
 }
 
+/**
+ * Schema editor component with Monaco for YAML editing
+ *
+ * @param props - Component props
+ * @returns Schema editor component
+ */
 export function SchemaEditor({ value, onChange, readOnly = false }: SchemaEditorProps) {
   return (
     <div className="h-full border border-border rounded-lg bg-background overflow-hidden flex flex-col">
@@ -42,7 +54,7 @@ export function SchemaEditor({ value, onChange, readOnly = false }: SchemaEditor
             defaultLanguage="yaml"
             value={value}
             onChange={(newValue) => onChange(newValue || '')}
-            theme="vs-dark"
+            theme="vs-light"
             options={{
               readOnly,
               minimap: { enabled: false },
@@ -52,6 +64,7 @@ export function SchemaEditor({ value, onChange, readOnly = false }: SchemaEditor
               automaticLayout: true,
               tabSize: 2,
               wordWrap: 'on',
+              theme: 'vs-light',
             }}
           />
         </Suspense>

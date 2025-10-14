@@ -7,18 +7,32 @@
 
 import { useMemo } from 'react'
 import { Virtuoso } from 'react-virtuoso'
-import { HexRow } from './HexRow'
+import { HexRow } from './HexRow.tsx'
 import { calculateRowCount } from '@/lib/hex-utils'
 import type { FieldHighlight } from '@/types'
 
+/**
+ * Hex viewer component props
+ */
 interface HexViewerProps {
+  /** Binary data to display */
   data: Uint8Array | null
+  /** Field highlights */
   highlights?: FieldHighlight[]
+  /** Current offset to highlight */
   currentOffset?: number
+  /** Callback when offset is clicked */
   onOffsetClick?: (offset: number) => void
+  /** Number of bytes per row (default: 16) */
   bytesPerRow?: number
 }
 
+/**
+ * Hex viewer component with virtual scrolling for efficient rendering of large files
+ *
+ * @param props - Component props
+ * @returns Hex viewer component
+ */
 export function HexViewer({
   data,
   highlights = [],
@@ -61,8 +75,12 @@ export function HexViewer({
       <div className="border-b border-border bg-muted/30 px-4 py-1 font-mono text-xs text-muted-foreground">
         <div className="flex gap-4">
           <span className="w-20">Offset</span>
-          <span className="flex-1">
-            {Array.from({ length: bytesPerRow }, (_, i) => i.toString(16).toUpperCase()).join(' ')}
+          <span className="flex-1 flex gap-1">
+            {Array.from({ length: bytesPerRow }, (_, i) => (
+              <span key={i} className="w-6 text-center">
+                {i.toString(16).toUpperCase()}
+              </span>
+            ))}
           </span>
           <span className="w-32">ASCII</span>
         </div>

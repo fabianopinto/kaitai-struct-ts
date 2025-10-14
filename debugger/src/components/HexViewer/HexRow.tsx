@@ -9,15 +9,30 @@ import { memo } from 'react'
 import { byteToHex, byteToAscii, offsetToHex } from '@/lib/hex-utils'
 import type { FieldHighlight } from '@/types'
 
+/**
+ * Hex row component props
+ */
 interface HexRowProps {
+  /** Binary data */
   data: Uint8Array
+  /** Row index for virtualization */
   rowIndex: number
+  /** Number of bytes per row */
   bytesPerRow: number
+  /** Field highlights */
   highlights?: FieldHighlight[]
+  /** Current offset to highlight */
   currentOffset?: number
+  /** Callback when offset is clicked */
   onOffsetClick?: (offset: number) => void
 }
 
+/**
+ * Memoized hex row component for efficient rendering
+ *
+ * @param props - Component props
+ * @returns Hex row component
+ */
 export const HexRow = memo(function HexRow({
   data,
   rowIndex,

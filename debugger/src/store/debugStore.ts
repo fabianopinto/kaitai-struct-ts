@@ -71,6 +71,11 @@ const initialState = {
   breakpoints: new Set<string>(),
 }
 
+/**
+ * Zustand store for debugger state management
+ *
+ * @returns Debugger store hook
+ */
 export const useDebugStore = create<DebugState>((set) => ({
   ...initialState,
 

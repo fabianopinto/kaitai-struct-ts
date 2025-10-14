@@ -14,6 +14,11 @@ import { useFileLoader } from './hooks/useFileLoader'
 import { useDebugger } from './hooks/useDebugger'
 import { useDebugStore } from './store/debugStore'
 
+/**
+ * Main application component with two views: welcome and debugger
+ *
+ * @returns Application component
+ */
 function App() {
   const [view, setView] = useState<'welcome' | 'debugger'>('welcome')
   const [error, setError] = useState<string | null>(null)
