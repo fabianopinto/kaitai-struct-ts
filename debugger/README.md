@@ -1,60 +1,101 @@
 # Kaitai Struct Visual Debugger
 
-A visual debugger for Kaitai Struct binary format definitions. This tool helps you understand, debug, and visualize how binary data is parsed according to your `.ksy` schema files.
+> A modern, interactive visual debugger for Kaitai Struct binary format definitions
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3-61dafb)](https://react.dev/)
+
+## Overview
+
+The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debugging and visualizing binary format parsing. Built as a single-page application, it provides an intuitive interface for exploring how Kaitai Struct parses binary data according to your schema definitions.
+
+**Live Demo:** [Coming Soon - GitHub Pages]
 
 ## Features
 
-- 🔍 **Hex Viewer** - Visualize binary data with field highlighting
-- 🌳 **Parse Tree** - Navigate the parsed structure hierarchically
-- ✏️ **Schema Editor** - Edit `.ksy` files with syntax highlighting
-- ⏯️ **Step Debugging** - Step through parsing field by field
-- 🎯 **Breakpoints** - Pause parsing at specific fields
-- 💻 **Expression Console** - Evaluate expressions in parse context
-- 📊 **Error Visualization** - See exactly where and why parsing fails
+### Core Features
+
+- **Hex Viewer** - View binary data in hex and ASCII with virtual scrolling for large files
+- **Parse Tree** - Explore parsed structure hierarchically with expand/collapse
+- **Schema Editor** - Edit .ksy files with Monaco Editor and YAML syntax highlighting
+- **Step-by-Step Debugging** - Step through the parsing process event by event
+- **Console** - Real-time parsing events with timestamps and metadata
+- **Debug Controls** - Play, pause, step forward/back, and reset functionality
+
+### Advanced Features
+
+- **Keyboard Shortcuts** - Efficient debugging workflow (F5, F9, F10, etc.)
+- **Synchronized Highlighting** - Field selection syncs across all components
+- **Modern UI** - Clean, professional interface with Tailwind CSS
+- **High Performance** - Virtual scrolling handles files of any size
+- **Responsive Design** - Works on desktop and tablet devices
+- **Theme Support** - Light theme with CSS variables
 
 ## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ or compatible runtime
+- pnpm 8+ (recommended) or npm/yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/fabianopinto/kaitai-struct-ts.git
+cd kaitai-struct-ts/debugger
+
+# Install dependencies
+pnpm install
+```
 
 ### Development
 
 ```bash
-# Install dependencies (from project root)
-pnpm install
-
 # Start development server
-cd debugger
 pnpm dev
+
+# Open http://localhost:5173 in your browser
 ```
 
-The debugger will be available at `http://localhost:3000`
+The development server includes:
+- Hot Module Replacement (HMR)
+- Fast refresh
+- TypeScript type checking
+- ESLint integration
 
-### Build
+### Building for Production
 
 ```bash
-# Build for production
+# Build optimized production bundle
 pnpm build
 
-# Preview production build
+# Preview production build locally
 pnpm preview
 ```
 
-### Deploy
+### Code Quality
 
-The debugger is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+```bash
+# Type checking
+pnpm typecheck
 
-Live URL: `https://fabianopinto.github.io/kaitai-debugger/`
+# Linting
+pnpm lint
 
-## Usage
+# Format code
+pnpm format
+```
 
-1. **Upload Schema**: Click "Upload Schema (.ksy)" and select your Kaitai Struct definition file
-2. **Upload Binary**: Click "Upload Binary File" and select the file you want to parse
-3. **Start Debugging**: Click "Start Debugging" to begin the parsing process
-4. **Explore**: Use the hex viewer, parse tree, and controls to explore the parsed data
+## Usage Guide
 
-## Technology Stack
+### Basic Workflow
 
-- **React 18** - UI framework
-- **TypeScript** - Type safety
-- **Vite** - Build tool and dev server
+1. **Upload Schema** - Click "Upload Schema (.ksy)" and select your Kaitai Struct definition file
+2. **Upload Binary** - Click "Upload Binary File" and select the file you want to parse
+3. **Start Debugging** - Click "Start Debugging" to parse the file
+4. **Explore Results** - Use the debugger interface to explore the parsed data
 - **Tailwind CSS** - Styling
 - **Zustand** - State management
 - **Monaco Editor** - Code editor (VS Code)
