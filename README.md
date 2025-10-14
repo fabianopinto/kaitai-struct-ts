@@ -17,6 +17,19 @@
 
 Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definition file - no compilation step required!
 
+## 🎮 Visual Debugger
+
+**NEW in v0.11.0!** Try our interactive visual debugger:
+
+**[🚀 Launch Debugger](https://fabianopinto.github.io/kaitai-struct-ts/)** | [📚 Documentation](./debugger/README.md)
+
+Features:
+- 🔍 Hex viewer with virtual scrolling
+- 🌳 Interactive parse tree
+- ✏️ Monaco-based schema editor
+- 🐛 Step-by-step debugging
+- ⌨️ Keyboard shortcuts (F5, F9, F10)
+
 ## Features
 
 ### Core Features

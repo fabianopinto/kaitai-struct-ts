@@ -5,7 +5,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/kaitai-debugger/',
+  base: '/kaitai-struct-ts/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
