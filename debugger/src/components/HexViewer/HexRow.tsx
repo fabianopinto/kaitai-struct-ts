@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-import { memo } from 'react'
+import { memo, useState, useRef, useEffect } from 'react'
 import { byteToHex, byteToAscii, offsetToHex } from '@/lib/hex-utils'
 import type { FieldHighlight } from '@/types'
 
@@ -25,6 +25,100 @@ interface HexRowProps {
   currentOffset?: number
   /** Callback when offset is clicked */
   onOffsetClick?: (offset: number) => void
+  /** Whether edit mode is enabled */
+  isEditMode?: boolean
+  /** Callback when byte is edited */
+  onByteEdit?: (offset: number, newValue: number) => void
+}
+
+/**
+ * Editable hex byte component
+ */
+function EditableHexByte({
+  value,
+  offset,
+  highlight,
+  current,
+  onEdit,
+  onClick,
+}: {
+  value: number
+  offset: number
+  highlight?: FieldHighlight
+  current: boolean
+  onEdit: (newValue: number) => void
+  onClick?: () => void
+}) {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editValue, setEditValue] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus()
+      inputRef.current.select()
+    }
+  }, [isEditing])
+
+  const handleDoubleClick = () => {
+    setIsEditing(true)
+    setEditValue(byteToHex(value))
+  }
+
+  const handleBlur = () => {
+    if (editValue) {
+      const newValue = parseInt(editValue, 16)
+      if (!isNaN(newValue) && newValue >= 0 && newValue <= 255) {
+        onEdit(newValue)
+      }
+    }
+    setIsEditing(false)
+    setEditValue('')
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleBlur()
+    } else if (e.key === 'Escape') {
+      setIsEditing(false)
+      setEditValue('')
+    }
+  }
+
+  if (isEditing) {
+    return (
+      <input
+        ref={inputRef}
+        type="text"
+        value={editValue}
+        onChange={(e) => setEditValue(e.target.value.toUpperCase())}
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        className="w-6 text-center bg-amber-100 border border-amber-400 rounded font-mono text-xs"
+        maxLength={2}
+      />
+    )
+  }
+
+  return (
+    <span
+      className={`
+        w-6 text-center cursor-pointer rounded
+        ${highlight ? highlight.color || 'bg-accent' : ''}
+        ${current ? 'ring-2 ring-primary' : ''}
+        hover:bg-accent/50 transition-colors
+      `}
+      onClick={onClick}
+      onDoubleClick={handleDoubleClick}
+      title={
+        highlight
+          ? `${highlight.fieldName}: ${JSON.stringify(highlight.value)}`
+          : `Offset: 0x${offsetToHex(offset)} (double-click to edit)`
+      }
+    >
+      {byteToHex(value)}
+    </span>
+  )
 }
 
 /**
@@ -40,6 +134,8 @@ export const HexRow = memo(function HexRow({
   highlights = [],
   currentOffset,
   onOffsetClick,
+  isEditMode = false,
+  onByteEdit,
 }: HexRowProps) {
   const offset = rowIndex * bytesPerRow
 
@@ -73,6 +169,20 @@ export const HexRow = memo(function HexRow({
             const byte = data[byteOffset]
             const highlight = getHighlightForOffset(byteOffset)
             const current = isCurrent(byteOffset)
+
+            if (isEditMode) {
+              return (
+                <EditableHexByte
+                  key={i}
+                  value={byte}
+                  offset={byteOffset}
+                  highlight={highlight}
+                  current={current}
+                  onEdit={(newValue) => onByteEdit?.(byteOffset, newValue)}
+                  onClick={() => onOffsetClick?.(byteOffset)}
+                />
+              )
+            }
 
             return (
               <span

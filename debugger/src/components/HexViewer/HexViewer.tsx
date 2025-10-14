@@ -5,8 +5,9 @@
  * @license MIT
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Virtuoso } from 'react-virtuoso'
+import { Edit3, Check } from 'lucide-react'
 import { HexRow } from './HexRow.tsx'
 import { calculateRowCount } from '@/lib/hex-utils'
 import type { FieldHighlight } from '@/types'
@@ -23,6 +24,8 @@ interface HexViewerProps {
   currentOffset?: number
   /** Callback when offset is clicked */
   onOffsetClick?: (offset: number) => void
+  /** Callback when binary data is edited */
+  onDataChange?: (newData: Uint8Array) => void
   /** Number of bytes per row (default: 16) */
   bytesPerRow?: number
 }
@@ -38,11 +41,38 @@ export function HexViewer({
   highlights = [],
   currentOffset,
   onOffsetClick,
+  onDataChange,
   bytesPerRow = 16,
 }: HexViewerProps) {
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [editedData, setEditedData] = useState<Uint8Array | null>(null)
+
+  const currentData = editedData || data
+
   const rowCount = useMemo(() => {
-    return data ? calculateRowCount(data.length, bytesPerRow) : 0
-  }, [data, bytesPerRow])
+    return currentData ? calculateRowCount(currentData.length, bytesPerRow) : 0
+  }, [currentData, bytesPerRow])
+
+  const handleByteEdit = (offset: number, newValue: number) => {
+    if (!currentData) return
+
+    const newData = new Uint8Array(currentData)
+    newData[offset] = newValue
+    setEditedData(newData)
+  }
+
+  const handleApplyChanges = () => {
+    if (editedData && onDataChange) {
+      onDataChange(editedData)
+      setEditedData(null)
+      setIsEditMode(false)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setEditedData(null)
+    setIsEditMode(false)
+  }
 
   if (!data || data.length === 0) {
     return (
@@ -62,12 +92,40 @@ export function HexViewer({
         <div className="flex items-center gap-4">
           <span className="text-sm font-medium">Hex Viewer</span>
           <span className="text-xs text-muted-foreground">
-            {data.length.toLocaleString()} bytes
+            {currentData?.length.toLocaleString()} bytes
           </span>
+          {editedData && <span className="text-xs text-amber-600 font-medium">• Modified</span>}
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">Bytes per row:</span>
-          <span className="text-xs font-mono">{bytesPerRow}</span>
+          {!isEditMode ? (
+            <button
+              onClick={() => setIsEditMode(true)}
+              className="px-3 py-1 text-xs border border-border rounded hover:bg-accent flex items-center gap-1.5"
+              title="Enable edit mode"
+            >
+              <Edit3 className="w-3 h-3" />
+              Edit
+            </button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleApplyChanges}
+                disabled={!editedData}
+                className="px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Apply changes and re-parse"
+              >
+                <Check className="w-3 h-3" />
+                Apply
+              </button>
+              <button
+                onClick={handleCancelEdit}
+                className="px-3 py-1 text-xs border border-border rounded hover:bg-accent"
+                title="Cancel editing"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -92,12 +150,14 @@ export function HexViewer({
           totalCount={rowCount}
           itemContent={(index) => (
             <HexRow
-              data={data}
+              data={currentData!}
               rowIndex={index}
               bytesPerRow={bytesPerRow}
               highlights={highlights}
               currentOffset={currentOffset}
               onOffsetClick={onOffsetClick}
+              isEditMode={isEditMode}
+              onByteEdit={handleByteEdit}
             />
           )}
           style={{ height: '100%' }}

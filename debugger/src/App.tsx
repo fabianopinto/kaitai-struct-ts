@@ -35,6 +35,7 @@ function App() {
     binaryData,
     parseResult,
     setSchemaContent,
+    setBinaryData,
     selectedField,
     setSelectedField,
     parseEvents,
@@ -323,6 +324,11 @@ function App() {
             data={binaryData}
             currentOffset={hexViewOffset}
             onOffsetClick={(offset) => console.log('Clicked offset:', offset)}
+            onDataChange={(newData) => {
+              setBinaryData(newData)
+              // Automatically re-parse with new data
+              handleReparse()
+            }}
           />
         </div>
 
