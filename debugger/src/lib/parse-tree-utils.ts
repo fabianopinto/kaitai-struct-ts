@@ -57,6 +57,29 @@ export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeN
   }
 
   // Regular object
+  const objRecord = obj as Record<string, unknown>
+
+  // Extract metadata from parsed object
+  let offset: number | undefined
+  let size: number | undefined
+
+  // Try to get offset from _io stream
+  if (objRecord['_io'] && typeof objRecord['_io'] === 'object') {
+    const io = objRecord['_io'] as { pos?: number }
+    if (typeof io.pos === 'number') {
+      offset = io.pos
+    }
+  }
+
+  // Try to get size from _sizeof
+  if (typeof objRecord['_sizeof'] === 'number') {
+    size = objRecord['_sizeof']
+    // If we have size and end position, calculate start offset
+    if (offset !== undefined && size > 0) {
+      offset = offset - size
+    }
+  }
+
   const children: ParseTreeNode[] = []
   for (const [key, value] of Object.entries(obj)) {
     // Skip private/internal properties
@@ -68,6 +91,8 @@ export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeN
     name,
     value: `Object{${children.length}}`,
     type: 'object',
+    offset,
+    size,
     children,
   }
 }
@@ -129,4 +154,25 @@ export function getNodeIcon(type: string): string {
     undefined: '?',
   }
   return icons[type] || '•'
+}
+
+/**
+ * Find a node in the tree by its path
+ *
+ * @param tree - Root tree node
+ * @param path - Dot-separated path (e.g., "root.header.magic")
+ * @returns Found node or undefined
+ */
+export function findNodeByPath(tree: ParseTreeNode, path: string): ParseTreeNode | undefined {
+  if (!path) return undefined
+
+  const parts = path.split('.')
+  let current: ParseTreeNode | undefined = tree
+
+  for (const part of parts) {
+    if (!current || !current.children) return undefined
+    current = current.children.find((child) => child.name === part)
+  }
+
+  return current
 }

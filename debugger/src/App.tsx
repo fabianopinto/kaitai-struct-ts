@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { FileUp, Play, AlertCircle, Info, X, RefreshCw } from 'lucide-react'
 import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
@@ -17,6 +17,8 @@ import { useDebugger } from './hooks/useDebugger'
 import { useStepDebugger } from './hooks/useStepDebugger'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useDebugStore } from './store/debugStore'
+import { resultToTree, findNodeByPath } from './lib/parse-tree-utils'
+import type { FieldHighlight } from './types'
 
 /**
  * Main application component with two views: welcome and debugger
@@ -40,6 +42,7 @@ function App() {
     setSelectedField,
     parseEvents,
     hexViewOffset,
+    setHexViewOffset,
   } = useDebugStore()
 
   // Keyboard shortcuts (only active in debugger view)
@@ -92,6 +95,31 @@ function App() {
   const handleBackToWelcome = () => {
     setView('welcome')
   }
+
+  // Create field highlights for hex viewer based on selected field
+  const fieldHighlights = useMemo((): FieldHighlight[] => {
+    if (!selectedField || !parseResult) return []
+
+    const tree = resultToTree(parseResult, 'root')
+    const node = findNodeByPath(tree, selectedField)
+
+    if (!node || node.offset === undefined || node.size === undefined) {
+      return []
+    }
+
+    // Update hex view offset to scroll to the selected field
+    setHexViewOffset(node.offset)
+
+    return [
+      {
+        offset: node.offset,
+        size: node.size,
+        fieldName: node.name,
+        value: node.value,
+        color: 'bg-blue-200 dark:bg-blue-900',
+      },
+    ]
+  }, [selectedField, parseResult, setHexViewOffset])
 
   const handleReparse = async () => {
     try {
@@ -365,8 +393,9 @@ function App() {
         <div className="overflow-hidden">
           <HexViewer
             data={binaryData}
+            highlights={fieldHighlights}
             currentOffset={hexViewOffset}
-            onOffsetClick={(offset) => console.log('Clicked offset:', offset)}
+            onOffsetClick={(offset) => setHexViewOffset(offset)}
             onDataChange={(newData) => {
               setBinaryData(newData)
               // Automatically re-parse with new data
