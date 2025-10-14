@@ -96,7 +96,10 @@ export class TypeInterpreter {
     context.current = result
 
     // Track starting position for _sizeof calculation
-    const startPos = stream.pos
+    // If this is a substream with _parentPos, use that as the real position
+    const startPos = (stream as any)._parentPos !== undefined 
+      ? (stream as any)._parentPos 
+      : stream.pos
 
     // Expose current stream for use in expressions (e.g., slot._io)
     ;(result as Record<string, unknown>)['_io'] = stream
@@ -501,12 +504,15 @@ export class TypeInterpreter {
         }
       } else {
         // Sized substream for complex type
+        const startPos = stream.pos  // Capture position before reading
         let data = stream.readBytes(size)
         // Apply processing if specified
         if (attr.process) {
           data = this.applyProcessing(data, attr.process)
         }
         const substream = new KaitaiStream(data)
+        // Store the original position in the substream for correct _startPos
+        ;(substream as any)._parentPos = startPos
         return this.parseType(type, substream, context, attr['type-args'])
       }
     }

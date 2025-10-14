@@ -104,6 +104,7 @@ function App() {
     let node = findNodeByPath(tree, selectedField)
 
     // If node doesn't have offset/size (primitive field), try parent
+    // Note: Parser only tracks positions for objects, not individual fields
     if (node && (node.offset === undefined || node.size === undefined)) {
       const parts = selectedField.split('.')
       if (parts.length > 1) {
@@ -425,10 +426,7 @@ function App() {
           <ParseTree
             data={parseResult}
             selectedField={selectedField}
-            onFieldSelect={(field) => {
-              console.log('Field selected:', field)
-              setSelectedField(field)
-            }}
+            onFieldSelect={setSelectedField}
           />
         </div>
 
