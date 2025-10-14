@@ -124,40 +124,39 @@ debugger/
 └── vite.config.ts       # Vite configuration
 ```
 
-## Development Roadmap
+## What's Included
 
-### Phase 1: MVP (Current)
+### ✅ Completed Features (v0.11.0)
 
-- [x] Project setup
-- [x] Basic UI layout
-- [x] File upload functionality
-- [ ] Basic parsing integration
-- [ ] Simple hex viewer
-- [ ] Parse tree display
+**Core Components:**
+- [x] HexViewer with virtual scrolling for large files
+- [x] ParseTree with hierarchical data explorer
+- [x] SchemaEditor with Monaco (VS Code) integration
+- [x] Console with real-time event logging
+- [x] DebugControls with step-by-step debugging
 
-### Phase 2: Core Features
+**Advanced Features:**
+- [x] Step-by-step debugging (play, pause, step forward/back)
+- [x] Field highlighting synchronized across all components
+- [x] Keyboard shortcuts (F5, F9, F10, Ctrl+Shift+R, Esc)
+- [x] Virtual scrolling for performance
+- [x] Error visualization with detailed messages
+- [x] Professional UI with Tailwind CSS
+- [x] Complete TypeScript types and JSDoc
+- [x] Production-ready code quality
 
-- [ ] Step-by-step debugging
-- [ ] Breakpoints
-- [ ] Field highlighting in hex view
-- [ ] Expression console
-- [ ] Error visualization
+### 🎯 Future Enhancements
 
-### Phase 3: Advanced Features
-
-- [ ] Virtual scrolling for large files
-- [ ] Keyboard shortcuts
-- [ ] Save/load sessions
-- [ ] Example files
-- [ ] Export functionality
-
-### Phase 4: Polish
-
-- [ ] Performance optimization
-- [ ] Responsive design
-- [ ] Documentation
-- [ ] User guide
+**Potential Additions:**
+- [ ] Breakpoint system (UI ready, logic pending)
+- [ ] Expression console/REPL
+- [ ] Save/load debug sessions
+- [ ] Export parse results to JSON
+- [ ] Example files (GIF, WAV, PNG)
+- [ ] Theme customization
 - [ ] Video tutorials
+
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development history and future plans.
 
 ## Contributing
 
