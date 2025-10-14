@@ -126,7 +126,7 @@ function App() {
         size: node.size,
         fieldName: node.name,
         value: node.value,
-        color: 'bg-blue-200 dark:bg-blue-900',
+        color: 'bg-yellow-200/80 dark:bg-yellow-600/40',
       },
     ]
   }, [selectedField, parseResult])
