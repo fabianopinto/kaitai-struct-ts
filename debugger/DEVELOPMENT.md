@@ -18,6 +18,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
 **Status:** ✅ Complete
 
 **Completed:**
+
 - [x] Project structure and configuration
 - [x] Technology stack setup (React + TypeScript + Vite)
 - [x] Tailwind CSS configuration
@@ -27,6 +28,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
 - [x] pnpm workspace configuration
 
 **Deliverables:**
+
 - Professional landing page
 - File upload interface
 - Development environment
@@ -38,6 +40,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
 **Status:** 🚧 In Progress
 
 **Tasks:**
+
 - [ ] Implement HexViewer component
   - [ ] Hex/ASCII display
   - [ ] Virtual scrolling for large files
@@ -59,6 +62,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
   - [ ] Error handling
 
 **Deliverables:**
+
 - Working hex viewer
 - Interactive parse tree
 - Schema editor
@@ -70,6 +74,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
 **Status:** 📋 Planned
 
 **Tasks:**
+
 - [ ] Implement InstrumentedParser
   - [ ] Wrap TypeInterpreter to emit events
   - [ ] Track parsing progress
@@ -89,6 +94,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
   - [ ] Autocomplete
 
 **Deliverables:**
+
 - Step debugging
 - Breakpoint system
 - Expression console
@@ -100,6 +106,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
 **Status:** 📋 Planned
 
 **Tasks:**
+
 - [ ] Performance optimization
   - [ ] Virtual scrolling optimization
   - [ ] Lazy loading
@@ -122,6 +129,7 @@ The Kaitai Struct Visual Debugger is a single-page application (SPA) built to pr
   - [ ] API documentation
 
 **Deliverables:**
+
 - Optimized performance
 - Keyboard shortcuts
 - Session management
@@ -161,18 +169,18 @@ interface DebugState {
   // Files
   schemaContent: string | null
   binaryData: Uint8Array | null
-  
+
   // Parse state
   parseResult: unknown | null
   parseEvents: ParseEvent[]
   currentStep: number
   isPlaying: boolean
-  
+
   // UI state
   selectedField: string | null
   hexViewOffset: number
   breakpoints: Set<string>
-  
+
   // Actions
   setSchemaContent: (content: string) => void
   setBinaryData: (data: Uint8Array) => void
@@ -238,6 +246,7 @@ pnpm lint
 ### Deployment
 
 Automatic deployment to GitHub Pages:
+
 - Push to `main` branch
 - GitHub Actions builds and deploys
 - Available at: https://fabianopinto.github.io/kaitai-debugger/
@@ -270,6 +279,7 @@ Automatic deployment to GitHub Pages:
 ### Virtual Scrolling
 
 For large files, use virtual scrolling:
+
 - Only render visible rows
 - Use `react-virtuoso` library
 - Maintain scroll position
@@ -277,6 +287,7 @@ For large files, use virtual scrolling:
 ### Code Splitting
 
 Split large components:
+
 ```typescript
 const MonacoEditor = lazy(() => import('@monaco-editor/react'))
 ```
@@ -284,6 +295,7 @@ const MonacoEditor = lazy(() => import('@monaco-editor/react'))
 ### Memoization
 
 Use React.memo for expensive components:
+
 ```typescript
 export const HexRow = React.memo(({ data, offset }) => {
   // ...

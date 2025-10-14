@@ -86,6 +86,7 @@ debugger/
 ## Development Roadmap
 
 ### Phase 1: MVP (Current)
+
 - [x] Project setup
 - [x] Basic UI layout
 - [x] File upload functionality
@@ -94,6 +95,7 @@ debugger/
 - [ ] Parse tree display
 
 ### Phase 2: Core Features
+
 - [ ] Step-by-step debugging
 - [ ] Breakpoints
 - [ ] Field highlighting in hex view
@@ -101,6 +103,7 @@ debugger/
 - [ ] Error visualization
 
 ### Phase 3: Advanced Features
+
 - [ ] Virtual scrolling for large files
 - [ ] Keyboard shortcuts
 - [ ] Save/load sessions
@@ -108,6 +111,7 @@ debugger/
 - [ ] Export functionality
 
 ### Phase 4: Polish
+
 - [ ] Performance optimization
 - [ ] Responsive design
 - [ ] Documentation

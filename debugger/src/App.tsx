@@ -10,6 +10,7 @@ import { FileUp, Play, AlertCircle, Info, X } from 'lucide-react'
 import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
 import { SchemaEditor } from './components/SchemaEditor'
+import { Console } from './components/Console'
 import { useFileLoader } from './hooks/useFileLoader'
 import { useDebugger } from './hooks/useDebugger'
 import { useDebugStore } from './store/debugStore'
@@ -31,6 +32,7 @@ function App() {
     setSchemaContent,
     selectedField,
     setSelectedField,
+    parseEvents,
   } = useDebugStore()
 
   const handleSchemaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -266,12 +268,9 @@ function App() {
           />
         </div>
 
-        {/* Bottom Right: Console (Placeholder) */}
-        <div className="overflow-hidden border border-border rounded-lg bg-background flex items-center justify-center">
-          <div className="text-center text-muted-foreground">
-            <p>Console</p>
-            <p className="text-sm">(Coming in Phase 3)</p>
-          </div>
+        {/* Bottom Right: Console */}
+        <div className="overflow-hidden">
+          <Console events={parseEvents} />
         </div>
       </main>
     </div>
