@@ -9,6 +9,11 @@ import type { ParseTreeNode } from '@/types'
 
 /**
  * Convert a parsed result to a tree structure
+ *
+ * @param obj - Parsed object to convert
+ * @param name - Node name (default: 'root')
+ * @param path - Current path for nested nodes
+ * @returns Parse tree node with children
  */
 export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeNode {
   const currentPath = path ? `${path}.${name}` : name
@@ -69,6 +74,9 @@ export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeN
 
 /**
  * Get a human-readable type name
+ *
+ * @param value - Value to get type name for
+ * @returns Human-readable type name
  */
 export function getTypeName(value: unknown): string {
   if (value === null) return 'null'
@@ -81,6 +89,9 @@ export function getTypeName(value: unknown): string {
 
 /**
  * Format a value for display
+ *
+ * @param value - Value to format
+ * @returns Formatted string representation
  */
 export function formatValue(value: unknown): string {
   if (value === null) return 'null'
@@ -102,6 +113,9 @@ export function formatValue(value: unknown): string {
 
 /**
  * Get an icon for a node type
+ *
+ * @param type - Node type (object, array, string, etc.)
+ * @returns Emoji icon for the type
  */
 export function getNodeIcon(type: string): string {
   const icons: Record<string, string> = {

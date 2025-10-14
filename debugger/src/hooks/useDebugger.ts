@@ -9,6 +9,18 @@ import { useCallback } from 'react'
 import { parse } from '@k67/kaitai-struct-ts'
 import { useDebugStore } from '@/store/debugStore'
 
+/**
+ * Custom hook for debugger logic and parsing
+ *
+ * @returns Debugger state and actions
+ * @example
+ * ```typescript
+ * const { parseData, isReady, parseResult } = useDebugger()
+ * if (isReady) {
+ *   await parseData()
+ * }
+ * ```
+ */
 export function useDebugger() {
   const { schemaContent, binaryData, parseResult, setParseResult, addParseEvent, reset } =
     useDebugStore()

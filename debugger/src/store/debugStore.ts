@@ -7,16 +7,29 @@
 
 import { create } from 'zustand'
 
+/**
+ * Parse event emitted during parsing
+ */
 export interface ParseEvent {
+  /** Event type */
   type: 'field' | 'error' | 'complete'
+  /** Field name being parsed */
   fieldName?: string
+  /** Byte offset in stream */
   offset?: number
+  /** Field size in bytes */
   size?: number
+  /** Parsed value */
   value?: unknown
+  /** Error if type is 'error' */
   error?: Error
+  /** Event timestamp */
   timestamp: number
 }
 
+/**
+ * Debugger state interface
+ */
 export interface DebugState {
   // Files
   schemaContent: string | null

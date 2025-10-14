@@ -9,6 +9,17 @@ import { useCallback } from 'react'
 import { readFileAsText, readFileAsBytes } from '@/lib/file-utils'
 import { useDebugStore } from '@/store/debugStore'
 
+/**
+ * Custom hook for file loading operations
+ *
+ * @returns File loading functions
+ * @example
+ * ```typescript
+ * const { loadSchemaFile, loadBinaryFile } = useFileLoader()
+ * await loadSchemaFile(schemaFile)
+ * await loadBinaryFile(binaryFile)
+ * ```
+ */
 export function useFileLoader() {
   const { setSchemaContent, setBinaryData } = useDebugStore()
 

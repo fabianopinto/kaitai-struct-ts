@@ -7,6 +7,10 @@
 
 /**
  * Read a file as text
+ *
+ * @param file - File to read
+ * @returns Promise resolving to file content as string
+ * @throws Error if file reading fails
  */
 export async function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -19,6 +23,10 @@ export async function readFileAsText(file: File): Promise<string> {
 
 /**
  * Read a file as Uint8Array
+ *
+ * @param file - File to read
+ * @returns Promise resolving to file content as Uint8Array
+ * @throws Error if file reading fails
  */
 export async function readFileAsBytes(file: File): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
@@ -34,6 +42,10 @@ export async function readFileAsBytes(file: File): Promise<Uint8Array> {
 
 /**
  * Download data as a file
+ *
+ * @param data - Data to download (string or Uint8Array)
+ * @param filename - Name for the downloaded file
+ * @param mimeType - MIME type of the file
  */
 export function downloadFile(data: string | Uint8Array, filename: string, mimeType: string) {
   const blob = new Blob([data as BlobPart], { type: mimeType })
@@ -49,6 +61,9 @@ export function downloadFile(data: string | Uint8Array, filename: string, mimeTy
 
 /**
  * Format file size for display
+ *
+ * @param bytes - File size in bytes
+ * @returns Formatted file size string (e.g., '1.5 MB')
  */
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes'
@@ -60,6 +75,9 @@ export function formatFileSize(bytes: number): string {
 
 /**
  * Validate if a file is a valid .ksy schema
+ *
+ * @param filename - Filename to validate
+ * @returns True if filename has .ksy, .yaml, or .yml extension
  */
 export function isValidKsyFile(filename: string): boolean {
   return filename.endsWith('.ksy') || filename.endsWith('.yaml') || filename.endsWith('.yml')
