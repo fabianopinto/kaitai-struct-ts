@@ -70,19 +70,19 @@ docs/
 
 ## 📚 Documentation Files
 
-| File                           | Purpose                            |
-| ------------------------------ | ---------------------------------- |
-| `README.md`                    | Project overview and quick start   |
-| `CHANGELOG.md`                 | Version history and release notes  |
-| `CONTRIBUTING.md`              | Development guidelines             |
-| `EXAMPLES.md`                  | Format examples and usage patterns |
-| `QUICKREF.md`                  | This file - quick reference        |
-| `MISSING_FEATURES.md`          | Feature status and limitations     |
-| `docs/README.md`               | Documentation index                |
-| `docs/CLI.md`                  | Complete CLI documentation         |
-| `docs/ARCHITECTURE.md`         | Architecture with diagrams         |
-| `docs/STREAMING_API_DESIGN.md` | Streaming API for large files      |
-| `docs/RELEASE_GUIDE.md`        | Release process (maintainers)      |
+| File                    | Purpose                            |
+| ----------------------- | ---------------------------------- |
+| `README.md`             | Project overview and quick start   |
+| `CHANGELOG.md`          | Version history and release notes  |
+| `CONTRIBUTING.md`       | Development guidelines             |
+| `EXAMPLES.md`           | Format examples and usage patterns |
+| `QUICKREF.md`           | This file - quick reference        |
+| `MISSING_FEATURES.md`   | Feature status and limitations     |
+| `docs/README.md`        | Documentation index                |
+| `docs/CLI.md`           | Complete CLI documentation         |
+| `docs/ARCHITECTURE.md`  | Architecture with diagrams         |
+| `docs/STREAMING.md`     | Streaming API for large files      |
+| `docs/RELEASE_GUIDE.md` | Release process (maintainers)      |
 
 ## 🎯 Current Status
 

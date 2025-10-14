@@ -131,7 +131,7 @@ console.log(result.name)
   - `StreamingKaitaiStream` - Forward-only stream reader
   - `parseStreaming()` - Event-based progressive parsing
   - Memory-efficient for files larger than RAM
-  - See [docs/STREAMING_API_DESIGN.md](./docs/STREAMING_API_DESIGN.md)
+  - See [docs/STREAMING.md](./docs/STREAMING.md)
 
 ### 🔄 Remaining for v1.0.0
 
