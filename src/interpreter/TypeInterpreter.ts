@@ -143,6 +143,7 @@ export class TypeInterpreter {
     // Calculate and store _sizeof (number of bytes consumed)
     const endPos = stream.pos
     ;(result as Record<string, unknown>)['_sizeof'] = endPos - startPos
+    ;(result as Record<string, unknown>)['_startPos'] = startPos
 
     return result
   }

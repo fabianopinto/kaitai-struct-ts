@@ -64,37 +64,21 @@ export function resultToTree(
   }
 
   // Regular object
+  const objRecord = obj as Record<string, unknown>
+
   // Extract metadata from parsed object
   let offset: number | undefined
   let size: number | undefined
 
-  // NOTE: The kaitai-struct-ts parser doesn't track individual field positions.
-  // All objects share the same _io stream, so _io.pos is always the CURRENT position,
-  // not the position where this specific field was read.
-  // This means offset calculation is UNRELIABLE and will show wrong positions.
-  //
-  // TODO: Implement proper position tracking by:
-  // 1. Wrapping the parser to capture positions during parsing
-  // 2. Or modifying TypeInterpreter to store start position in each object
-  // 3. Or using a custom stream that tracks read positions per object
-  //
-  // For now, we mark objects as having NO offset/size to disable highlighting.
-  // This is better than showing incorrect highlights.
+  // Get start position from _startPos (added by TypeInterpreter)
+  if (typeof objRecord['_startPos'] === 'number') {
+    offset = objRecord['_startPos']
+  }
 
-  // Disable offset extraction - it's unreliable
-  // if (objRecord['_io'] && typeof objRecord['_io'] === 'object') {
-  //   const io = objRecord['_io'] as { pos?: number }
-  //   if (typeof io.pos === 'number') {
-  //     offset = io.pos
-  //   }
-  // }
-  //
-  // if (typeof objRecord['_sizeof'] === 'number') {
-  //   size = objRecord['_sizeof']
-  //   if (offset !== undefined && size > 0) {
-  //     offset = offset - size
-  //   }
-  // }
+  // Get size from _sizeof
+  if (typeof objRecord['_sizeof'] === 'number') {
+    size = objRecord['_sizeof']
+  }
 
   const children: ParseTreeNode[] = []
   for (const [key, value] of Object.entries(obj)) {
