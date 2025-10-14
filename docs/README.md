@@ -17,6 +17,7 @@ For developers using this library as an npm dependency.
 
 ### Features & API
 
+- **[API.md](./API.md)** - Complete API reference
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design
 - **[STREAMING.md](./STREAMING.md)** - Streaming API for large files (v0.10.0)
 - **[../MISSING_FEATURES.md](../MISSING_FEATURES.md)** - Feature status and limitations
@@ -61,6 +62,7 @@ Root Level (User-Facing)
 
 docs/
 ├── README.md                    # This file - Documentation index
+├── API.md                       # Complete API reference
 ├── ARCHITECTURE.md              # System architecture
 ├── STREAMING.md                 # Streaming API for large files (v0.10.0)
 ├── CLI.md                       # Complete CLI documentation
@@ -77,7 +79,7 @@ docs/
 Start here if you're using kaitai-struct-ts as an npm dependency:
 
 - [Installation & Quick Start](../README.md#installation) ⭐
-- [API Documentation](../README.md#api-documentation)
+- [API Documentation](./API.md) - Complete API reference
 - [Streaming API](./STREAMING.md) - For large files (v0.10.0)
 - [CLI Usage](./CLI.md)
 - [Examples](../EXAMPLES.md)

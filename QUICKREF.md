@@ -79,6 +79,7 @@ docs/
 | `QUICKREF.md`           | This file - quick reference        |
 | `MISSING_FEATURES.md`   | Feature status and limitations     |
 | `docs/README.md`        | Documentation index                |
+| `docs/API.md`           | Complete API reference             |
 | `docs/CLI.md`           | Complete CLI documentation         |
 | `docs/ARCHITECTURE.md`  | Architecture with diagrams         |
 | `docs/STREAMING.md`     | Streaming API for large files      |

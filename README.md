@@ -173,7 +173,7 @@ const stream = new KaitaiStream(buffer)
 const value = stream.readU4le() // Read 4-byte unsigned little-endian integer
 ```
 
-See [API Documentation](./docs/api.md) for complete reference (coming soon).
+See [API Documentation](./docs/API.md) for complete reference.
 
 ## CLI Reference
 

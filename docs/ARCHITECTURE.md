@@ -8,30 +8,44 @@
 graph TD
     A[User Application] --> B[Public API Layer]
     B --> C[parse function]
-    B --> D[KaitaiStream class]
+    B --> D[parseStreaming function]
+    B --> E[KaitaiStream class]
 
-    C --> E[KSY Parser<br/>YAML → AST]
-    C --> F[Type Interpreter<br/>Execute Schema]
+    C --> F[KSY Parser<br/>YAML → AST]
+    C --> G[Type Interpreter<br/>Execute Schema]
+    D --> F
+    D --> H[Streaming Interpreter<br/>Progressive Parsing]
 
-    E --> G[Type Registry<br/>Schema Store]
-    G <--> F
+    F --> I[Type Registry<br/>Schema Store]
+    I <--> G
+    I <--> H
 
-    F --> H[Binary Parser<br/>Stream Reader]
-    F --> I[Expression Evaluator]
-    F --> J[Result Builder<br/>Object Creation]
+    G --> J[Binary Parser<br/>Stream Reader]
+    G --> K[Expression Evaluator]
+    G --> L[Result Builder<br/>Object Creation]
 
-    H --> D
+    H --> M[Streaming Stream<br/>Async Reader]
+    H --> K
+    H --> N[Event Emitter<br/>Progress Events]
+
+    J --> E
+    M --> O[ReadableStream<br/>AsyncIterable]
 
     style A fill:#e1f5ff
     style B fill:#b3e5fc
     style C fill:#81d4fa
     style D fill:#81d4fa
-    style E fill:#4fc3f7
+    style E fill:#81d4fa
     style F fill:#4fc3f7
-    style G fill:#29b6f6
-    style H fill:#03a9f4
-    style I fill:#039be5
-    style J fill:#0288d1
+    style G fill:#4fc3f7
+    style H fill:#4fc3f7
+    style I fill:#29b6f6
+    style J fill:#03a9f4
+    style K fill:#039be5
+    style L fill:#0288d1
+    style M fill:#03a9f4
+    style N fill:#0288d1
+    style O fill:#e1f5ff
 ```
 
 ### Component Relationships
@@ -47,10 +61,22 @@ classDiagram
         +readU4be() number
         +readStr() string
         +seek() void
+        +isEof() boolean
+    }
+
+    class StreamingKaitaiStream {
+        -source: ReadableStream
+        -buffer: Uint8Array
+        -pos: number
+        +readU1() Promise~number~
+        +readU2le() Promise~number~
+        +readStr() Promise~string~
+        +close() Promise~void~
     }
 
     class KsyParser {
         +parse(yaml: string) KsySchema
+        +parseWithImports() KsySchema
         +validate(schema: KsySchema) boolean
     }
 
@@ -60,6 +86,12 @@ classDiagram
         +parse() any
         +parseAttribute() any
         +parseType() any
+    }
+
+    class StreamingTypeInterpreter {
+        -schema: KsySchema
+        -stream: StreamingKaitaiStream
+        +parseStreaming() AsyncGenerator~ParseEvent~
     }
 
     class ExpressionEvaluator {
@@ -74,9 +106,13 @@ classDiagram
     }
 
     TypeInterpreter --> KaitaiStream : uses
+    StreamingTypeInterpreter --> StreamingKaitaiStream : uses
     TypeInterpreter --> ExpressionEvaluator : uses
+    StreamingTypeInterpreter --> ExpressionEvaluator : uses
     TypeInterpreter --> Context : creates
+    StreamingTypeInterpreter --> Context : creates
     KsyParser --> TypeInterpreter : provides schema
+    KsyParser --> StreamingTypeInterpreter : provides schema
 ```
 
 ## Data Flow
@@ -141,11 +177,12 @@ graph LR
     A --> C[parser/]
     A --> D[interpreter/]
     A --> E[expression/]
-    A --> F[types/]
+    A --> F[streaming/]
     A --> G[utils/]
 
     B --> B1[KaitaiStream.ts]
-    B --> B2[index.ts]
+    B --> B2[StreamingKaitaiStream.ts]
+    B --> B3[index.ts]
 
     C --> C1[KsyParser.ts]
     C --> C2[schema.ts]
@@ -162,7 +199,7 @@ graph LR
     E --> E5[Token.ts]
     E --> E6[index.ts]
 
-    F --> F1[primitives.ts]
+    F --> F1[StreamingTypeInterpreter.ts]
     F --> F2[index.ts]
 
     G --> G1[errors.ts]
@@ -174,7 +211,7 @@ graph LR
     style C fill:#bbf
     style D fill:#bbf
     style E fill:#bbf
-    style F fill:#bbf
+    style F fill:#bfb
     style G fill:#bbf
 ```
 
@@ -266,39 +303,34 @@ graph TD
     J --> K[User Catches]
 ```
 
-## Phase Implementation Roadmap
+## Development Timeline
 
 ```mermaid
 gantt
-    title Development Phases
+    title Project Development Timeline
     dateFormat YYYY-MM-DD
-    section Phase 1 - MVP
-    Project Setup           :done, p1_1, 2025-10-01, 1d
-    KaitaiStream           :active, p1_2, 2025-10-01, 3d
-    KSY Parser (Basic)     :p1_3, after p1_2, 4d
-    Type Interpreter       :p1_4, after p1_3, 5d
-    Basic Tests            :p1_5, after p1_2, 10d
-    Documentation          :p1_6, after p1_4, 3d
 
-    section Phase 2 - Core
-    Expression Evaluator   :p2_1, after p1_6, 7d
-    Conditionals & Enums   :p2_2, after p2_1, 5d
-    Repetitions            :p2_3, after p2_2, 5d
-    Instances              :p2_4, after p2_3, 4d
-    Comprehensive Tests    :p2_5, after p2_1, 14d
+    section Core Features (v0.1-0.6)
+    KaitaiStream & Parser      :done, 2025-10-01, 2025-10-05
+    Type Interpreter           :done, 2025-10-05, 2025-10-08
+    Expression Evaluator       :done, 2025-10-08, 2025-10-10
+    Advanced Features          :done, 2025-10-10, 2025-10-12
 
-    section Phase 3 - Advanced
-    Substreams             :done, p3_1, after p2_5, 5d
-    Processing (Basic)     :done, p3_2, after p3_1, 7d
-    Bit-sized Integers     :done, p3_3, after p3_2, 4d
-    Imports                :done, p3_4, after p3_3, 5d
-    CLI Tool               :done, p3_5, after p3_4, 7d
+    section Production (v0.7-0.9)
+    CLI Tool                   :done, 2025-10-12, 2025-10-13
+    Expression Endianness      :done, 2025-10-13, 2025-10-13
+    Production Polish          :done, 2025-10-13, 2025-10-13
 
-    section Phase 4 - Production
-    Custom IO Streams      :done, p4_1, after p3_5, 3d
-    Array Literals         :done, p4_2, after p4_1, 2d
-    Binary Literals        :done, p4_3, after p4_1, 1d
-    Real-world Testing     :done, p4_4, after p4_2, 3d
+    section Streaming (v0.10.0)
+    Streaming API Design       :done, 2025-10-13, 2025-10-13
+    StreamingKaitaiStream      :done, 2025-10-13, 2025-10-13
+    Streaming Interpreter      :done, 2025-10-13, 2025-10-13
+    Streaming Tests            :done, 2025-10-13, 2025-10-13
+
+    section Future (v1.0.0)
+    Processing (zlib)          :2025-10-14, 7d
+    Type Imports               :2025-10-21, 5d
+    Performance Optimization   :2025-10-26, 5d
 ```
 
 ## Performance Considerations
@@ -330,7 +362,7 @@ flowchart TD
 ## Testing Strategy
 
 ```mermaid
-graph TD
+graph LR
     A[Test Suite] --> B[Unit Tests]
     A --> C[Integration Tests]
     A --> D[Performance Tests]

@@ -267,5 +267,5 @@ kaitai format.ksy data.bin --field data --quiet > extracted.bin
 
 - [Main README](../README.md) - Project overview and quick start
 - [Examples](../EXAMPLES.md) - Format examples and usage patterns
-- [API Documentation](../README.md#api-documentation) - Library API reference
+- [API Documentation](./API.md) - Complete API reference
 - [Streaming API](./STREAMING.md) - Parse large files progressively
