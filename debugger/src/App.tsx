@@ -98,27 +98,34 @@ function App() {
 
   // Create field highlights for hex viewer based on selected field
   const fieldHighlights = useMemo((): FieldHighlight[] => {
+    console.log('fieldHighlights memo - selectedField:', selectedField, 'parseResult:', !!parseResult)
+    
     if (!selectedField || !parseResult) return []
 
     const tree = resultToTree(parseResult, 'root')
+    console.log('Tree:', tree)
+    
     const node = findNodeByPath(tree, selectedField)
+    console.log('Found node:', node)
 
     if (!node || node.offset === undefined || node.size === undefined) {
+      console.log('Node missing offset/size')
       return []
     }
 
     // Update hex view offset to scroll to the selected field
     setHexViewOffset(node.offset)
 
-    return [
-      {
-        offset: node.offset,
-        size: node.size,
-        fieldName: node.name,
-        value: node.value,
-        color: 'bg-blue-200 dark:bg-blue-900',
-      },
-    ]
+    const highlight = {
+      offset: node.offset,
+      size: node.size,
+      fieldName: node.name,
+      value: node.value,
+      color: 'bg-blue-200 dark:bg-blue-900',
+    }
+    console.log('Created highlight:', highlight)
+
+    return [highlight]
   }, [selectedField, parseResult, setHexViewOffset])
 
   const handleReparse = async () => {
@@ -409,7 +416,10 @@ function App() {
           <ParseTree
             data={parseResult}
             selectedField={selectedField}
-            onFieldSelect={setSelectedField}
+            onFieldSelect={(field) => {
+              console.log('Field selected:', field)
+              setSelectedField(field)
+            }}
           />
         </div>
 
