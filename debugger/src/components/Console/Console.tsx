@@ -14,7 +14,7 @@ import { formatValue } from '@/lib/expression-evaluator'
 /**
  * Unified console entry (parse event or expression output)
  */
-type ConsoleEntry = 
+type ConsoleEntry =
   | { type: 'event'; data: ParseEvent }
   | { type: 'expression'; data: ConsoleOutput }
 
@@ -48,8 +48,8 @@ export function Console({ events, outputs, onEvaluate, onClear, autoScroll = tru
 
   // Merge and sort entries by timestamp
   const entries: ConsoleEntry[] = [
-    ...events.map(e => ({ type: 'event' as const, data: e })),
-    ...outputs.map(o => ({ type: 'expression' as const, data: o }))
+    ...events.map((e) => ({ type: 'event' as const, data: e })),
+    ...outputs.map((o) => ({ type: 'expression' as const, data: o })),
   ].sort((a, b) => {
     const timeA = a.type === 'event' ? a.data.timestamp : a.data.timestamp
     const timeB = b.type === 'event' ? b.data.timestamp : b.data.timestamp
@@ -57,7 +57,7 @@ export function Console({ events, outputs, onEvaluate, onClear, autoScroll = tru
   })
 
   // Build history from outputs
-  const history = outputs.map(o => o.expression)
+  const history = outputs.map((o) => o.expression)
 
   // Auto-scroll to bottom when new entries arrive
   useEffect(() => {
@@ -187,10 +187,7 @@ export function Console({ events, outputs, onEvaluate, onClear, autoScroll = tru
                           </span>
                         )}
                         {entry.data.size !== undefined && (
-                          <span className="text-muted-foreground">
-                            {' '}
-                            ({entry.data.size} bytes)
-                          </span>
+                          <span className="text-muted-foreground"> ({entry.data.size} bytes)</span>
                         )}
                         {entry.data.value !== undefined && (
                           <span className="text-muted-foreground">

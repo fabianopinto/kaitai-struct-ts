@@ -448,7 +448,7 @@ sequenceDiagram
 
 The project is feature-complete for most use cases. Current focus:
 
-- Visual debugger enhancements (v0.6.0)
+- Visual debugger enhancements (v0.8.0)
 - Expression console/REPL for interactive debugging
 - Bug fixes and stability improvements
 - Performance optimizations
@@ -457,7 +457,7 @@ The project is feature-complete for most use cases. Current focus:
 
 ### Recent Major Features
 
-- **Visual Debugger** (v0.6.0): Interactive web-based debugger with hex viewer, parse tree, step-by-step debugging, and expression console
+- **Visual Debugger** (v0.8.0): Interactive web-based debugger with hex viewer, parse tree, step-by-step debugging, and expression console
 - **Expression Console/REPL**: Evaluate JavaScript expressions against parsed data with helper functions
 - **Step Debugger**: Navigate through parsing events with play/pause/step controls
 - **Example Selector**: Built-in examples (GIF, PNG, WAV, EDID) for quick testing

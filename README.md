@@ -1,7 +1,7 @@
 <div align="center">
   <img src=".github/logo.png" alt="kaitai-struct-ts" width="200"/>
 
-  # kaitai-struct-ts
+# kaitai-struct-ts
 
 [![npm version](https://badge.fury.io/js/%40k67%2Fkaitai-struct-ts.svg)](https://www.npmjs.com/package/@k67/kaitai-struct-ts)
 [![CI](https://github.com/fabianopinto/kaitai-struct-ts/workflows/CI/badge.svg)](https://github.com/fabianopinto/kaitai-struct-ts/actions)
@@ -265,7 +265,7 @@ pnpm format
 **Version:** 0.12.0
 **Status:** Production-ready, actively maintained
 
-The library is feature-complete for most use cases with comprehensive test coverage (283 tests). The visual debugger (v0.6.0) provides an interactive development experience for working with binary formats.
+The library is feature-complete for most use cases with comprehensive test coverage (283 tests). The visual debugger (v0.8.0) provides an interactive development experience for working with binary formats.
 
 ## Roadmap
 

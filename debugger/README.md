@@ -12,9 +12,10 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 
 **Live Demo:** [https://fabianopinto.github.io/kaitai-struct-ts/](https://fabianopinto.github.io/kaitai-struct-ts/)
 
-## What's New in v0.6.0
+## What's New in v0.8.0
 
 🎉 **Expression Console/REPL** - The debugger now includes an interactive JavaScript console:
+
 - Evaluate expressions against parsed data in real-time
 - Access context variables: `root`, `_` (selected field), `data` (binary)
 - Use helper functions: `hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`
@@ -149,7 +150,7 @@ debugger/
 
 ### ✅ Completed Features
 
-**v0.6.0 (Current)**
+**v0.8.0 (Current)**
 
 **Core Components:**
 
