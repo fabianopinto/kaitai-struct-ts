@@ -96,10 +96,14 @@ export class TypeInterpreter {
     context.current = result
 
     // Track starting position for _sizeof calculation
-    // If this is a substream with _parentPos, use that as the real position
+    // For substreams, _parentPos is the position in the parent stream (for _startPos)
+    // For regular streams, use current position
     const startPos = (stream as any)._parentPos !== undefined 
       ? (stream as any)._parentPos 
       : stream.pos
+    
+    // Track the starting position in THIS stream for _sizeof calculation
+    const streamStartPos = stream.pos
 
     // Expose current stream for use in expressions (e.g., slot._io)
     ;(result as Record<string, unknown>)['_io'] = stream
@@ -143,9 +147,11 @@ export class TypeInterpreter {
       }
     }
 
-    // Calculate and store _sizeof (number of bytes consumed)
-    const endPos = stream.pos
-    ;(result as Record<string, unknown>)['_sizeof'] = endPos - startPos
+    // Calculate and store _sizeof (number of bytes consumed in THIS stream)
+    const streamEndPos = stream.pos
+    const bytesConsumed = streamEndPos - streamStartPos
+    
+    ;(result as Record<string, unknown>)['_sizeof'] = bytesConsumed
     ;(result as Record<string, unknown>)['_startPos'] = startPos
 
     return result
