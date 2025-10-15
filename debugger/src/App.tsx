@@ -47,7 +47,6 @@ function App() {
     setHexViewOffset,
     consoleOutputs,
     addConsoleOutput,
-    clearConsoleOutputs,
   } = useDebugStore()
 
   // Keyboard shortcuts (only active in debugger view)
@@ -469,7 +468,6 @@ function App() {
             events={parseEvents}
             outputs={consoleOutputs}
             onEvaluate={handleEvaluateExpression}
-            onClear={clearConsoleOutputs}
           />
         </div>
       </main>

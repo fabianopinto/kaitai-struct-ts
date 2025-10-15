@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useRef, KeyboardEvent } from 'react'
-import { AlertCircle, CheckCircle, Info, Play, Clock, Trash2 } from 'lucide-react'
+import { AlertCircle, CheckCircle, Info, Play, Clock } from 'lucide-react'
 import type { ParseEvent } from '@/store/debugStore'
 import type { ConsoleOutput } from '@/lib/expression-evaluator'
 import { formatValue } from '@/lib/expression-evaluator'
@@ -28,8 +28,6 @@ interface ConsoleProps {
   outputs: ConsoleOutput[]
   /** Callback to evaluate expression */
   onEvaluate: (expression: string) => void
-  /** Callback to clear console */
-  onClear: () => void
   /** Whether to auto-scroll to latest event */
   autoScroll?: boolean
 }
@@ -40,7 +38,7 @@ interface ConsoleProps {
  * @param props - Component props
  * @returns Console component
  */
-export function Console({ events, outputs, onEvaluate, onClear, autoScroll = true }: ConsoleProps) {
+export function Console({ events, outputs, onEvaluate, autoScroll = true }: ConsoleProps) {
   const [input, setInput] = useState('')
   const [historyIndex, setHistoryIndex] = useState(-1)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -139,19 +137,7 @@ export function Console({ events, outputs, onEvaluate, onClear, autoScroll = tru
       {/* Header */}
       <div className="border-b border-border bg-muted/50 px-4 py-2 flex items-center justify-between">
         <span className="text-sm font-medium">Console</span>
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-muted-foreground">{entries.length} entries</span>
-          {entries.length > 0 && (
-            <button
-              onClick={onClear}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-              title="Clear console"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              Clear
-            </button>
-          )}
-        </div>
+        <span className="text-xs text-muted-foreground">{entries.length} entries</span>
       </div>
 
       {/* Console Output */}
@@ -177,7 +163,13 @@ export function Console({ events, outputs, onEvaluate, onClear, autoScroll = tru
                     {formatTimestamp(entry.data.timestamp)}
                   </span>
                   <span className={`flex-1 ${getEventColor(entry.data)}`}>
-                    {entry.data.fieldName && (
+                    {entry.data.type === 'complete' ? (
+                      <span className="font-semibold">Parsing completed successfully</span>
+                    ) : entry.data.type === 'error' ? (
+                      <span className="text-destructive">
+                        Error: {entry.data.error?.message || 'Unknown error'}
+                      </span>
+                    ) : entry.data.fieldName ? (
                       <>
                         <span className="font-semibold">{entry.data.fieldName}</span>
                         {entry.data.offset !== undefined && (
@@ -196,10 +188,7 @@ export function Console({ events, outputs, onEvaluate, onClear, autoScroll = tru
                           </span>
                         )}
                       </>
-                    )}
-                    {entry.data.error && (
-                      <span className="text-destructive">{entry.data.error.message}</span>
-                    )}
+                    ) : null}
                   </span>
                 </div>
               ) : (
