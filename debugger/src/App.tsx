@@ -11,7 +11,6 @@ import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
 import { SchemaEditor } from './components/SchemaEditor'
 import { Console } from './components/Console'
-import { ExpressionConsole } from './components/ExpressionConsole'
 import { DebugControls } from './components/DebugControls'
 import { ExampleSelector } from './components/ExampleSelector/ExampleSelector'
 import { useFileLoader } from './hooks/useFileLoader'
@@ -31,7 +30,6 @@ import type { FieldHighlight } from './types'
 function App() {
   const [view, setView] = useState<'welcome' | 'debugger'>('welcome')
   const [error, setError] = useState<string | null>(null)
-  const [consoleTab, setConsoleTab] = useState<'events' | 'expression'>('events')
   const { loadSchemaFile, loadBinaryFile } = useFileLoader()
   const { parseData, isReady } = useDebugger()
   const { play, pause, stepForward, stepBack, reset, currentStep, totalSteps, isPlaying } =
@@ -465,44 +463,14 @@ function App() {
           />
         </div>
 
-        {/* Bottom Right: Console with Tabs */}
-        <div className="overflow-hidden flex flex-col">
-          {/* Tab Headers */}
-          <div className="flex border-b border-border bg-muted/30">
-            <button
-              onClick={() => setConsoleTab('events')}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                consoleTab === 'events'
-                  ? 'border-b-2 border-primary text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Parse Events
-            </button>
-            <button
-              onClick={() => setConsoleTab('expression')}
-              className={`px-4 py-2 text-sm font-medium transition-colors ${
-                consoleTab === 'expression'
-                  ? 'border-b-2 border-primary text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Expression Console
-            </button>
-          </div>
-
-          {/* Tab Content */}
-          <div className="flex-1 overflow-hidden">
-            {consoleTab === 'events' ? (
-              <Console events={parseEvents} />
-            ) : (
-              <ExpressionConsole
-                outputs={consoleOutputs}
-                onEvaluate={handleEvaluateExpression}
-                onClear={clearConsoleOutputs}
-              />
-            )}
-          </div>
+        {/* Bottom Right: Unified Console */}
+        <div className="overflow-hidden">
+          <Console
+            events={parseEvents}
+            outputs={consoleOutputs}
+            onEvaluate={handleEvaluateExpression}
+            onClear={clearConsoleOutputs}
+          />
         </div>
       </main>
     </div>

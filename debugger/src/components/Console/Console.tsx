@@ -5,9 +5,18 @@
  * @license MIT
  */
 
-import { useEffect, useRef } from 'react'
-import { AlertCircle, CheckCircle, Info } from 'lucide-react'
+import { useState, useEffect, useRef, KeyboardEvent } from 'react'
+import { AlertCircle, CheckCircle, Info, Play, Clock, Trash2 } from 'lucide-react'
 import type { ParseEvent } from '@/store/debugStore'
+import type { ConsoleOutput } from '@/lib/expression-evaluator'
+import { formatValue } from '@/lib/expression-evaluator'
+
+/**
+ * Unified console entry (parse event or expression output)
+ */
+type ConsoleEntry = 
+  | { type: 'event'; data: ParseEvent }
+  | { type: 'expression'; data: ConsoleOutput }
 
 /**
  * Console component props
@@ -15,6 +24,12 @@ import type { ParseEvent } from '@/store/debugStore'
 interface ConsoleProps {
   /** Parse events to display */
   events: ParseEvent[]
+  /** Expression outputs to display */
+  outputs: ConsoleOutput[]
+  /** Callback to evaluate expression */
+  onEvaluate: (expression: string) => void
+  /** Callback to clear console */
+  onClear: () => void
   /** Whether to auto-scroll to latest event */
   autoScroll?: boolean
 }
@@ -25,15 +40,65 @@ interface ConsoleProps {
  * @param props - Component props
  * @returns Console component
  */
-export function Console({ events, autoScroll = true }: ConsoleProps) {
+export function Console({ events, outputs, onEvaluate, onClear, autoScroll = true }: ConsoleProps) {
+  const [input, setInput] = useState('')
+  const [historyIndex, setHistoryIndex] = useState(-1)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
-  // Auto-scroll to bottom when new events arrive
+  // Merge and sort entries by timestamp
+  const entries: ConsoleEntry[] = [
+    ...events.map(e => ({ type: 'event' as const, data: e })),
+    ...outputs.map(o => ({ type: 'expression' as const, data: o }))
+  ].sort((a, b) => {
+    const timeA = a.type === 'event' ? a.data.timestamp : a.data.timestamp
+    const timeB = b.type === 'event' ? b.data.timestamp : b.data.timestamp
+    return timeA - timeB
+  })
+
+  // Build history from outputs
+  const history = outputs.map(o => o.expression)
+
+  // Auto-scroll to bottom when new entries arrive
   useEffect(() => {
     if (autoScroll && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
-  }, [events, autoScroll])
+  }, [entries.length, autoScroll])
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    // Execute on Enter (Shift+Enter for new line)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      if (input.trim()) {
+        onEvaluate(input.trim())
+        setInput('')
+        setHistoryIndex(-1)
+      }
+    }
+
+    // Navigate history with up/down arrows
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (history.length > 0) {
+        const newIndex = historyIndex < history.length - 1 ? historyIndex + 1 : historyIndex
+        setHistoryIndex(newIndex)
+        setInput(history[history.length - 1 - newIndex])
+      }
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1
+        setHistoryIndex(newIndex)
+        setInput(history[history.length - 1 - newIndex])
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1)
+        setInput('')
+      }
+    }
+  }
 
   const getEventIcon = (event: ParseEvent) => {
     switch (event.type) {
@@ -74,63 +139,134 @@ export function Console({ events, autoScroll = true }: ConsoleProps) {
       {/* Header */}
       <div className="border-b border-border bg-muted/50 px-4 py-2 flex items-center justify-between">
         <span className="text-sm font-medium">Console</span>
-        <span className="text-xs text-muted-foreground">{events.length} events</span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-muted-foreground">{entries.length} entries</span>
+          {entries.length > 0 && (
+            <button
+              onClick={onClear}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              title="Clear console"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Console Output */}
-      <div ref={scrollRef} className="flex-1 overflow-auto p-2 font-mono text-xs">
-        {events.length === 0 ? (
+      <div ref={scrollRef} className="flex-1 overflow-auto p-2 font-mono text-xs space-y-2">
+        {entries.length === 0 ? (
           <div className="h-full flex items-center justify-center text-muted-foreground">
-            <p>No events yet. Parse a file to see output.</p>
+            <div className="text-center">
+              <p className="mb-2">Parse a file or evaluate expressions</p>
+              <p className="text-xs">
+                Try: <code className="bg-muted px-1 rounded">root</code>,{' '}
+                <code className="bg-muted px-1 rounded">hex(42)</code>
+              </p>
+            </div>
           </div>
         ) : (
-          <div className="space-y-1">
-            {events.map((event, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-2 px-2 py-1 hover:bg-muted/50 rounded"
-              >
-                {/* Icon */}
-                <div className="flex-shrink-0 mt-0.5">{getEventIcon(event)}</div>
-
-                {/* Timestamp */}
-                <span className="text-muted-foreground flex-shrink-0">
-                  {formatTimestamp(event.timestamp)}
-                </span>
-
-                {/* Message */}
-                <div className={`flex-1 ${getEventColor(event)}`}>
-                  {event.type === 'error' ? (
-                    <span className="font-semibold">
-                      Error: {event.error?.message || 'Unknown error'}
+          entries.map((entry, index) => (
+            <div key={index}>
+              {entry.type === 'event' ? (
+                // Parse Event
+                <div className="flex items-start gap-2 px-2 py-1 hover:bg-muted/50 rounded">
+                  <div className="flex-shrink-0 mt-0.5">{getEventIcon(entry.data)}</div>
+                  <span className="text-muted-foreground flex-shrink-0">
+                    {formatTimestamp(entry.data.timestamp)}
+                  </span>
+                  <span className={`flex-1 ${getEventColor(entry.data)}`}>
+                    {entry.data.fieldName && (
+                      <>
+                        <span className="font-semibold">{entry.data.fieldName}</span>
+                        {entry.data.offset !== undefined && (
+                          <span className="text-muted-foreground">
+                            {' '}
+                            @ 0x{entry.data.offset.toString(16).toUpperCase()}
+                          </span>
+                        )}
+                        {entry.data.size !== undefined && (
+                          <span className="text-muted-foreground">
+                            {' '}
+                            ({entry.data.size} bytes)
+                          </span>
+                        )}
+                        {entry.data.value !== undefined && (
+                          <span className="text-muted-foreground">
+                            {' '}
+                            = {JSON.stringify(entry.data.value)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    {entry.data.error && (
+                      <span className="text-destructive">{entry.data.error.message}</span>
+                    )}
+                  </span>
+                </div>
+              ) : (
+                // Expression Output
+                <div className="space-y-1">
+                  <div className="flex items-start gap-2">
+                    <span className="text-blue-600 dark:text-blue-400">&gt;</span>
+                    <span className="flex-1 text-foreground">{entry.data.expression}</span>
+                    <span className="text-xs text-muted-foreground flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {entry.data.executionTime.toFixed(1)}ms
                     </span>
-                  ) : event.type === 'complete' ? (
-                    <span className="font-semibold">Parsing completed successfully</span>
+                  </div>
+                  {entry.data.error ? (
+                    <div className="flex items-start gap-2 pl-4 text-destructive">
+                      <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <div className="font-semibold">{entry.data.error.name}</div>
+                        <div>{entry.data.error.message}</div>
+                      </div>
+                    </div>
                   ) : (
-                    <div>
-                      <span className="font-semibold">{event.fieldName}</span>
-                      {event.offset !== undefined && (
-                        <span className="text-muted-foreground">
-                          {' '}
-                          @ 0x{event.offset.toString(16).toUpperCase()}
-                        </span>
-                      )}
-                      {event.size !== undefined && (
-                        <span className="text-muted-foreground"> ({event.size} bytes)</span>
-                      )}
-                      {event.value !== undefined && (
-                        <span className="text-muted-foreground">
-                          {' '}
-                          = {JSON.stringify(event.value)}
-                        </span>
-                      )}
+                    <div className="flex items-start gap-2 pl-4">
+                      <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-green-600" />
+                      <div className="flex-1 text-muted-foreground break-all">
+                        {formatValue(entry.data.result)}
+                      </div>
                     </div>
                   )}
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          ))
         )}
+      </div>
+
+      {/* Input Area */}
+      <div className="border-t border-border bg-muted/30 p-2">
+        <div className="flex items-start gap-2">
+          <span className="text-blue-600 dark:text-blue-400 mt-2">&gt;</span>
+          <textarea
+            ref={inputRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Enter expression... (Enter to execute, ↑↓ for history)"
+            className="flex-1 bg-transparent border-none outline-none resize-none font-mono text-sm min-h-[24px] max-h-[120px]"
+            rows={1}
+          />
+          <button
+            onClick={() => {
+              if (input.trim()) {
+                onEvaluate(input.trim())
+                setInput('')
+                setHistoryIndex(-1)
+              }
+            }}
+            disabled={!input.trim()}
+            className="p-1.5 rounded hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Execute (Enter)"
+          >
+            <Play className="w-4 h-4" />
+          </button>
+        </div>
       </div>
     </div>
   )
