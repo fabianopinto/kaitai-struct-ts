@@ -17,20 +17,6 @@
 
 Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definition file - no compilation step required!
 
-## 🎮 Visual Debugger
-
-**NEW in v0.11.0!** Try our interactive visual debugger:
-
-**[🚀 Launch Debugger](https://fabianopinto.github.io/kaitai-struct-ts/)** | [📚 Documentation](./debugger/README.md)
-
-Features:
-
-- 🔍 Hex viewer with virtual scrolling
-- 🌳 Interactive parse tree
-- ✏️ Monaco-based schema editor
-- 🐛 Step-by-step debugging
-- ⌨️ Keyboard shortcuts (F5, F9, F10)
-
 ## Features
 
 ### Core Features
@@ -51,6 +37,23 @@ Features:
 - 🔁 **Conditional parsing** - if, repeat-expr, repeat-until
 - 📍 **Positioned reads** - Absolute positioning with pos attribute
 - 🌊 **Streaming API** - Parse large files progressively (v0.10.0)
+
+### Visual Debugger
+
+**[🚀 Launch Debugger](https://fabianopinto.github.io/kaitai-struct-ts/)** | **[📚 Documentation](./debugger/README.md)**
+
+Interactive web-based debugger for visualizing and stepping through binary parsing:
+
+- 🔍 **Hex Viewer** - Virtual scrolling with field highlighting and tooltips
+- 🌳 **Parse Tree** - Interactive tree view with expandable nodes
+- ✏️ **Schema Editor** - Monaco-based .ksy editor with syntax highlighting
+- 🐛 **Step Debugger** - Play/pause/step controls with breakpoints
+- 💻 **Expression Console** - REPL for evaluating expressions against parsed data
+  - Context variables: `root`, `_` (selected field), `data` (binary)
+  - Helper functions: `hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`
+  - Command history with ↑↓ navigation
+- 📦 **Built-in Examples** - GIF, PNG, WAV, EDID formats ready to test
+- ⌨️ **Keyboard Shortcuts** - F5 (run), F9 (breakpoint), F10 (step), F11 (step in)
 
 ## Installation
 
@@ -248,6 +251,13 @@ pnpm lint
 pnpm format
 ```
 
+## Current Status
+
+**Version:** 0.12.0  
+**Status:** Production-ready, actively maintained
+
+The library is feature-complete for most use cases with comprehensive test coverage (283 tests). The visual debugger (v0.6.0) provides an interactive development experience for working with binary formats.
+
 ## Roadmap
 
 ### ✅ Completed
@@ -256,6 +266,8 @@ pnpm format
 - **v0.5.0-v0.6.0** - Advanced features (switch/case, instances, parametric types)
 - **v0.7.0-v0.9.0** - CLI tool, production polish, expression-based endianness
 - **v0.10.0** - Streaming API for large files
+- **v0.11.0** - Visual debugger with hex viewer, parse tree, and step debugging
+- **v0.12.0** - Expression console/REPL, unified console, debugger enhancements
 
 ### 🔄 In Progress (v1.0.0)
 
@@ -263,8 +275,7 @@ pnpm format
 - Type imports across files
 - Additional performance optimizations
 - Extended format testing
-
-**Current Status:** Production-ready, actively maintained
+- Debugger improvements (performance, UX enhancements)
 
 ## Contributing
 
