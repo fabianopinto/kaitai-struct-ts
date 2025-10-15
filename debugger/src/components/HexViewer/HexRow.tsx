@@ -113,7 +113,7 @@ function EditableHexByte({
       onDoubleClick={handleDoubleClick}
       title={
         highlight
-          ? `Field: ${highlight.fieldName}\nOffset: 0x${offsetToHex(highlight.offset)}\nSize: ${highlight.size} bytes\n(double-click to edit)`
+          ? `${highlight.fieldName} @ 0x${offsetToHex(highlight.offset)} (${highlight.size} bytes)\n(double-click to edit)`
           : `Offset: 0x${offsetToHex(offset)} (double-click to edit)`
       }
     >
@@ -197,7 +197,7 @@ export const HexRow = memo(function HexRow({
                 onClick={() => onOffsetClick?.(byteOffset)}
                 title={
                   highlight
-                    ? `Field: ${highlight.fieldName}\nOffset: 0x${offsetToHex(highlight.offset)}\nSize: ${highlight.size} bytes`
+                    ? `${highlight.fieldName} @ 0x${offsetToHex(highlight.offset)} (${highlight.size} bytes)`
                     : `Offset: 0x${offsetToHex(byteOffset)}`
                 }
               >

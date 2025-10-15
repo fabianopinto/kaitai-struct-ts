@@ -125,7 +125,7 @@ function App() {
       {
         offset: node.offset,
         size: node.size,
-        fieldName: node.name,
+        fieldName: selectedField, // Use full path instead of just node.name
         value: node.value,
         color: 'bg-yellow-200/80 dark:bg-yellow-600/40',
       },
