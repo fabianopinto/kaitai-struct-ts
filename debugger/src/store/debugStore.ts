@@ -6,6 +6,7 @@
  */
 
 import { create } from 'zustand'
+import type { ConsoleOutput } from '@/lib/expression-evaluator'
 
 /**
  * Parse event emitted during parsing
@@ -46,6 +47,9 @@ export interface DebugState {
   hexViewOffset: number
   breakpoints: Set<string>
 
+  // Expression console
+  consoleOutputs: ConsoleOutput[]
+
   // Actions
   setSchemaContent: (content: string) => void
   setBinaryData: (data: Uint8Array) => void
@@ -57,6 +61,8 @@ export interface DebugState {
   setSelectedField: (field: string | null) => void
   setHexViewOffset: (offset: number) => void
   toggleBreakpoint: (fieldName: string) => void
+  addConsoleOutput: (output: ConsoleOutput) => void
+  clearConsoleOutputs: () => void
   reset: () => void
 }
 
@@ -70,6 +76,7 @@ const initialState = {
   selectedField: null,
   hexViewOffset: 0,
   breakpoints: new Set<string>(),
+  consoleOutputs: [],
 }
 
 /**
@@ -111,6 +118,13 @@ export const useDebugStore = create<DebugState>((set) => ({
       }
       return { breakpoints: newBreakpoints }
     }),
+
+  addConsoleOutput: (output) =>
+    set((state) => ({
+      consoleOutputs: [...state.consoleOutputs, output],
+    })),
+
+  clearConsoleOutputs: () => set({ consoleOutputs: [] }),
 
   reset: () => set(initialState),
 }))

@@ -11,6 +11,7 @@ import { HexViewer } from './components/HexViewer'
 import { ParseTree } from './components/ParseTree'
 import { SchemaEditor } from './components/SchemaEditor'
 import { Console } from './components/Console'
+import { ExpressionConsole } from './components/ExpressionConsole'
 import { DebugControls } from './components/DebugControls'
 import { ExampleSelector } from './components/ExampleSelector/ExampleSelector'
 import { useFileLoader } from './hooks/useFileLoader'
@@ -19,6 +20,7 @@ import { useStepDebugger } from './hooks/useStepDebugger'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useDebugStore } from './store/debugStore'
 import { resultToTree, findNodeByPath } from './lib/parse-tree-utils'
+import { createEvaluationContext, evaluateExpression } from './lib/expression-evaluator'
 import type { FieldHighlight } from './types'
 
 /**
@@ -29,6 +31,7 @@ import type { FieldHighlight } from './types'
 function App() {
   const [view, setView] = useState<'welcome' | 'debugger'>('welcome')
   const [error, setError] = useState<string | null>(null)
+  const [consoleTab, setConsoleTab] = useState<'events' | 'expression'>('events')
   const { loadSchemaFile, loadBinaryFile } = useFileLoader()
   const { parseData, isReady } = useDebugger()
   const { play, pause, stepForward, stepBack, reset, currentStep, totalSteps, isPlaying } =
@@ -44,6 +47,9 @@ function App() {
     parseEvents,
     hexViewOffset,
     setHexViewOffset,
+    consoleOutputs,
+    addConsoleOutput,
+    clearConsoleOutputs,
   } = useDebugStore()
 
   // Keyboard shortcuts (only active in debugger view)
@@ -148,6 +154,25 @@ function App() {
     } catch (err) {
       setError(`Parse error: ${err instanceof Error ? err.message : 'Unknown error'}`)
     }
+  }
+
+  const handleEvaluateExpression = async (expression: string) => {
+    const tree = parseResult ? resultToTree(parseResult, 'root') : null
+    const selectedNode = selectedField && tree ? findNodeByPath(tree, selectedField) : null
+
+    const context = createEvaluationContext(
+      parseResult,
+      selectedNode?.value,
+      binaryData,
+      (path: string) => {
+        if (!tree) return null
+        const node = findNodeByPath(tree, path)
+        return node ? { offset: node.offset, size: node.size } : null
+      }
+    )
+
+    const output = await evaluateExpression(expression, context)
+    addConsoleOutput(output)
   }
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -440,9 +465,44 @@ function App() {
           />
         </div>
 
-        {/* Bottom Right: Console */}
-        <div className="overflow-hidden">
-          <Console events={parseEvents} />
+        {/* Bottom Right: Console with Tabs */}
+        <div className="overflow-hidden flex flex-col">
+          {/* Tab Headers */}
+          <div className="flex border-b border-border bg-muted/30">
+            <button
+              onClick={() => setConsoleTab('events')}
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                consoleTab === 'events'
+                  ? 'border-b-2 border-primary text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Parse Events
+            </button>
+            <button
+              onClick={() => setConsoleTab('expression')}
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
+                consoleTab === 'expression'
+                  ? 'border-b-2 border-primary text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Expression Console
+            </button>
+          </div>
+
+          {/* Tab Content */}
+          <div className="flex-1 overflow-hidden">
+            {consoleTab === 'events' ? (
+              <Console events={parseEvents} />
+            ) : (
+              <ExpressionConsole
+                outputs={consoleOutputs}
+                onEvaluate={handleEvaluateExpression}
+                onClear={clearConsoleOutputs}
+              />
+            )}
+          </div>
         </div>
       </main>
     </div>

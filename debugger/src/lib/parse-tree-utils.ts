@@ -15,11 +15,7 @@ import type { ParseTreeNode } from '@/types'
  * @param path - Current path for nested nodes
  * @returns Parse tree node with children
  */
-export function resultToTree(
-  obj: unknown,
-  name = 'root',
-  path = ''
-): ParseTreeNode {
+export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeNode {
   const currentPath = path ? `${path}.${name}` : name
 
   if (obj === null || obj === undefined) {

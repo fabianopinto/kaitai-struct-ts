@@ -106,10 +106,11 @@ export class TypeInterpreter {
     // For substreams, _parentPos is the position in the parent stream (for _startPos)
     // For regular streams, use current position
     const streamWithParent = stream as KaitaiStreamWithParent
-    const startPos = streamWithParent._parentPos !== undefined 
-      ? streamWithParent._parentPos 
-      : stream.pos
-    
+    const startPos =
+      streamWithParent._parentPos !== undefined
+        ? streamWithParent._parentPos
+        : stream.pos
+
     // Track the starting position in THIS stream for _sizeof calculation
     const streamStartPos = stream.pos
 
@@ -158,7 +159,7 @@ export class TypeInterpreter {
     // Calculate and store _sizeof (number of bytes consumed in THIS stream)
     const streamEndPos = stream.pos
     const bytesConsumed = streamEndPos - streamStartPos
-    
+
     ;(result as Record<string, unknown>)['_sizeof'] = bytesConsumed
     ;(result as Record<string, unknown>)['_startPos'] = startPos
 
@@ -518,7 +519,7 @@ export class TypeInterpreter {
         }
       } else {
         // Sized substream for complex type
-        const startPos = stream.pos  // Capture position before reading
+        const startPos = stream.pos // Capture position before reading
         let data = stream.readBytes(size)
         // Apply processing if specified
         if (attr.process) {

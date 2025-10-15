@@ -68,9 +68,7 @@ export function ExampleSelector() {
           </option>
         ))}
       </select>
-      {isLoading && (
-        <span className="text-sm text-gray-500">Loading...</span>
-      )}
+      {isLoading && <span className="text-sm text-gray-500">Loading...</span>}
     </div>
   )
 }

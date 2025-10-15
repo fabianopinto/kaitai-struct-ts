@@ -60,6 +60,7 @@ pnpm dev
 ```
 
 The development server includes:
+
 - Hot Module Replacement (HMR)
 - Fast refresh
 - TypeScript type checking
@@ -96,6 +97,7 @@ pnpm format
 2. **Upload Binary** - Click "Upload Binary File" and select the file you want to parse
 3. **Start Debugging** - Click "Start Debugging" to parse the file
 4. **Explore Results** - Use the debugger interface to explore the parsed data
+
 - **Tailwind CSS** - Styling
 - **Zustand** - State management
 - **Monaco Editor** - Code editor (VS Code)
@@ -129,6 +131,7 @@ debugger/
 ### ✅ Completed Features (v0.11.0)
 
 **Core Components:**
+
 - [x] HexViewer with virtual scrolling for large files
 - [x] ParseTree with hierarchical data explorer
 - [x] SchemaEditor with Monaco (VS Code) integration
@@ -136,6 +139,7 @@ debugger/
 - [x] DebugControls with step-by-step debugging
 
 **Advanced Features:**
+
 - [x] Step-by-step debugging (play, pause, step forward/back)
 - [x] Field highlighting synchronized across all components
 - [x] Keyboard shortcuts (F5, F9, F10, Ctrl+Shift+R, Esc)
@@ -148,6 +152,7 @@ debugger/
 ### 🎯 Future Enhancements
 
 **Potential Additions:**
+
 - [ ] Breakpoint system (UI ready, logic pending)
 - [ ] Expression console/REPL
 - [ ] Save/load debug sessions

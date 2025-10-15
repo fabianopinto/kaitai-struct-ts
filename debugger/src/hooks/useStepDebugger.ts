@@ -53,13 +53,13 @@ export function useStepDebugger() {
       setSelectedField(null)
       return
     }
-    
+
     // Clamp currentStep to valid range
     if (currentStep >= parseEvents.length) {
       setCurrentStep(parseEvents.length - 1)
       return
     }
-    
+
     if (currentStep >= 0 && currentStep < parseEvents.length) {
       const event = parseEvents[currentStep]
       if (event.fieldName) {

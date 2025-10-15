@@ -5,24 +5,28 @@ This folder contains example binary files and their corresponding `.ksy` schema 
 ## Available Examples
 
 ### 1. GIF (Graphics Interchange Format)
+
 - **Schema**: `gif.ksy`
 - **Sample**: `sample.gif`
 - **Description**: 1x1 pixel GIF image with basic structure
 - **Features**: Header, logical screen descriptor, color table, image data blocks
 
 ### 2. PNG (Portable Network Graphics)
+
 - **Schema**: `png.ksy`
 - **Sample**: `sample.png`
 - **Description**: 1x1 pixel PNG image
 - **Features**: PNG signature, IHDR chunk, IDAT chunk, IEND chunk
 
 ### 3. WAV (Waveform Audio File Format)
+
 - **Schema**: `wav-simple.ksy`
 - **Sample**: `small.wav`
 - **Description**: Minimal WAV audio file
 - **Features**: RIFF header, fmt chunk, data chunk
 
 ### 4. EDID (Extended Display Identification Data)
+
 - **Schema**: `edid-simple.ksy`
 - **Sample**: `edid-1.0.bin`
 - **Description**: Display identification data (EDID 1.0)

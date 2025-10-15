@@ -24,6 +24,7 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 **[🚀 Launch Debugger](https://fabianopinto.github.io/kaitai-struct-ts/)** | [📚 Documentation](./debugger/README.md)
 
 Features:
+
 - 🔍 Hex viewer with virtual scrolling
 - 🌳 Interactive parse tree
 - ✏️ Monaco-based schema editor
