@@ -223,10 +223,15 @@ function App() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="px-4 py-2 text-sm border border-border rounded hover:bg-accent">
+              <a
+                className="px-4 py-2 text-sm border border-border rounded hover:bg-accent"
+                href="https://github.com/fabianopinto/kaitai-struct-ts/blob/main/debugger/README.md"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Info className="w-4 h-4 inline mr-2" />
                 Help
-              </button>
+              </a>
             </div>
           </div>
         </header>

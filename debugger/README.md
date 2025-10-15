@@ -30,7 +30,7 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 
 ### Core Features
 
-- **Hex Viewer** - View binary data in hex and ASCII with virtual scrolling for large files
+- **Hex Viewer** - Editable hex view with virtual scrolling, highlighting, and ASCII display
 - **Parse Tree** - Explore parsed structure hierarchically with expand/collapse
 - **Schema Editor** - Edit .ksy files with Monaco Editor and YAML syntax highlighting
 - **Step-by-Step Debugging** - Step through the parsing process event by event

@@ -44,7 +44,7 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 
 Interactive web-based debugger for visualizing and stepping through binary parsing:
 
-- 🔍 **Hex Viewer** - Virtual scrolling with field highlighting and tooltips
+- 🔍 **Hex Viewer** - Editable hex view with virtual scrolling, and field highlighting
 - 🌳 **Parse Tree** - Interactive tree view with expandable nodes
 - ✏️ **Schema Editor** - Monaco-based .ksy editor with syntax highlighting
 - 🐛 **Step Debugger** - Play/pause/step controls with breakpoints
@@ -95,7 +95,7 @@ kaitai --help
 ### Library Usage
 
 ```typescript
-import { parse, KaitaiStream } from '@k67/kaitai-struct-ts'
+import { parse } from '@k67/kaitai-struct-ts'
 import { readFileSync } from 'fs'
 
 // Load your .ksy definition
@@ -195,6 +195,8 @@ console.log(result.fieldName)
 Low-level binary stream reader.
 
 ```typescript
+import { KaitaiStream } from '@k67/kaitai-struct-ts'
+
 const stream = new KaitaiStream(buffer)
 const value = stream.readU4le() // Read 4-byte unsigned little-endian integer
 ```
@@ -263,9 +265,10 @@ pnpm format
 ## Current Status
 
 **Version:** 0.12.0
+**Debugger Version:** 0.8.0
 **Status:** Production-ready, actively maintained
 
-The library is feature-complete for most use cases with comprehensive test coverage (283 tests). The visual debugger (v0.8.0) provides an interactive development experience for working with binary formats.
+The library is feature-complete for most use cases with comprehensive test coverage (283 tests). The visual debugger provides an interactive development experience with real-time parsing visualization, expression evaluation, and step-by-step debugging capabilities.
 
 ## Roadmap
 
@@ -281,7 +284,6 @@ The library is feature-complete for most use cases with comprehensive test cover
 ### 🔄 In Progress (v1.0.0)
 
 - Processing implementations (zlib, encryption)
-- Type imports across files
 - Additional performance optimizations
 - Extended format testing
 - Debugger improvements (performance, UX enhancements)
