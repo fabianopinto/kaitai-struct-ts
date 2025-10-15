@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1
+
+### Patch Changes
+
+- Fix \_sizeof calculation for sized substreams. Previously, \_sizeof incorrectly mixed positions from parent and substreams, causing incorrect byte range calculations in the debugger's hex viewer and parse tree.
+
 ## 0.11.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@k67/kaitai-debugger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Visual debugger for Kaitai Struct binary format definitions",
   "type": "module",
   "scripts": {
