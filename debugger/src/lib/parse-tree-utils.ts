@@ -16,7 +16,12 @@ import type { ParseTreeNode } from '@/types'
  * @returns Parse tree node with children
  */
 export function resultToTree(obj: unknown, name = 'root', path = ''): ParseTreeNode {
-  const currentPath = path ? `${path}.${name}` : name
+  // Don't add dot before array indices (e.g., [0], [1])
+  const currentPath = path 
+    ? name.startsWith('[') 
+      ? `${path}${name}` 
+      : `${path}.${name}` 
+    : name
 
   if (obj === null || obj === undefined) {
     return {
