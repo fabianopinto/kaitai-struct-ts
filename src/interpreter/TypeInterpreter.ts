@@ -24,6 +24,13 @@ import { ParseError, ValidationError } from '../utils/errors'
 import { applyProcess } from '../utils/process'
 
 /**
+ * Extended KaitaiStream type with optional _parentPos for substreams
+ */
+interface KaitaiStreamWithParent extends KaitaiStream {
+  _parentPos?: number
+}
+
+/**
  * Interprets Kaitai Struct schemas and parses binary data.
  * Executes schema definitions against binary streams to produce structured objects.
  *
@@ -98,8 +105,9 @@ export class TypeInterpreter {
     // Track starting position for _sizeof calculation
     // For substreams, _parentPos is the position in the parent stream (for _startPos)
     // For regular streams, use current position
-    const startPos = (stream as any)._parentPos !== undefined 
-      ? (stream as any)._parentPos 
+    const streamWithParent = stream as KaitaiStreamWithParent
+    const startPos = streamWithParent._parentPos !== undefined 
+      ? streamWithParent._parentPos 
       : stream.pos
     
     // Track the starting position in THIS stream for _sizeof calculation
@@ -516,9 +524,9 @@ export class TypeInterpreter {
         if (attr.process) {
           data = this.applyProcessing(data, attr.process)
         }
-        const substream = new KaitaiStream(data)
+        const substream = new KaitaiStream(data) as KaitaiStreamWithParent
         // Store the original position in the substream for correct _startPos
-        ;(substream as any)._parentPos = startPos
+        substream._parentPos = startPos
         return this.parseType(type, substream, context, attr['type-args'])
       }
     }
