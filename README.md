@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" alt="kaitai-struct-ts" width="200"/>
+  <img src=".github/logo.png" alt="kaitai-struct-ts" width="200"/>
   
   # kaitai-struct-ts
 
