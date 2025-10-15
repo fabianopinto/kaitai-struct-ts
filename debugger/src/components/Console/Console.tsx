@@ -28,14 +28,17 @@ interface ConsoleProps {
  */
 export function Console({ events, autoScroll = true }: ConsoleProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const { clearParseEvents } = useDebugStore()
+  const { consoleHidden, clearConsoleDisplay } = useDebugStore()
+
+  // Filter events based on consoleHidden flag
+  const visibleEvents = consoleHidden ? [] : events
 
   // Auto-scroll to bottom when new events arrive
   useEffect(() => {
     if (autoScroll && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
-  }, [events, autoScroll])
+  }, [visibleEvents, autoScroll])
 
   const getEventIcon = (event: ParseEvent) => {
     switch (event.type) {
@@ -78,11 +81,11 @@ export function Console({ events, autoScroll = true }: ConsoleProps) {
         <span className="text-sm font-medium">Console</span>
         <div className="flex items-center gap-3">
           <span className="text-xs text-muted-foreground">{events.length} events</span>
-          {events.length > 0 && (
+          {events.length > 0 && !consoleHidden && (
             <button
-              onClick={clearParseEvents}
+              onClick={clearConsoleDisplay}
               className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-              title="Clear console"
+              title="Clear console display (events kept for debugging)"
             >
               <Trash2 className="w-3.5 h-3.5" />
               Clear
@@ -93,13 +96,13 @@ export function Console({ events, autoScroll = true }: ConsoleProps) {
 
       {/* Console Output */}
       <div ref={scrollRef} className="flex-1 overflow-auto p-2 font-mono text-xs">
-        {events.length === 0 ? (
+        {visibleEvents.length === 0 ? (
           <div className="h-full flex items-center justify-center text-muted-foreground">
             <p>No events yet. Parse a file to see output.</p>
           </div>
         ) : (
           <div className="space-y-1">
-            {events.map((event, index) => (
+            {visibleEvents.map((event, index) => (
               <div
                 key={index}
                 className="flex items-start gap-2 px-2 py-1 hover:bg-muted/50 rounded"

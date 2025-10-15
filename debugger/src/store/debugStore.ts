@@ -45,6 +45,7 @@ export interface DebugState {
   selectedField: string | null
   hexViewOffset: number
   breakpoints: Set<string>
+  consoleHidden: boolean
 
   // Actions
   setSchemaContent: (content: string) => void
@@ -52,6 +53,7 @@ export interface DebugState {
   setParseResult: (result: unknown) => void
   addParseEvent: (event: ParseEvent) => void
   clearParseEvents: () => void
+  clearConsoleDisplay: () => void
   setCurrentStep: (step: number) => void
   setIsPlaying: (playing: boolean) => void
   setSelectedField: (field: string | null) => void
@@ -70,6 +72,7 @@ const initialState = {
   selectedField: null,
   hexViewOffset: 0,
   breakpoints: new Set<string>(),
+  consoleHidden: false,
 }
 
 /**
@@ -89,9 +92,12 @@ export const useDebugStore = create<DebugState>((set) => ({
   addParseEvent: (event) =>
     set((state) => ({
       parseEvents: [...state.parseEvents, event],
+      consoleHidden: false, // Show console when new events are added
     })),
 
-  clearParseEvents: () => set({ parseEvents: [], currentStep: 0, isPlaying: false }),
+  clearParseEvents: () => set({ parseEvents: [], currentStep: 0, isPlaying: false, consoleHidden: false }),
+
+  clearConsoleDisplay: () => set({ consoleHidden: true }),
 
   setCurrentStep: (step) => set({ currentStep: step }),
 
