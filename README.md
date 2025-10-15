@@ -149,7 +149,7 @@ console.log(result.name)
   - **Unified Console** - Parse events and expressions in single chronological view
   - **Enhanced Debugger** - Better error display, execution timing, improved UX
   - Try [Visual Debugger](https://fabianopinto.github.io/kaitai-struct-ts/) in your browser
-  - See [./debugger/README.md](./debugger/README.md)
+  - See [debugger/README.md](./debugger/README.md)
 
 ### 🚀 What's New in v0.10.0
 
