@@ -1,6 +1,6 @@
 <div align="center">
   <img src=".github/logo.png" alt="kaitai-struct-ts" width="200"/>
-  
+
   # kaitai-struct-ts
 
 [![npm version](https://badge.fury.io/js/%40k67%2Fkaitai-struct-ts.svg)](https://www.npmjs.com/package/@k67/kaitai-struct-ts)
@@ -126,8 +126,8 @@ console.log(result.name)
 
 ## Current Status
 
-**Version:** 0.10.0  
-**Status:** Production Ready 🚀  
+**Version:** 0.10.0
+**Status:** Production Ready 🚀
 **Latest:** Streaming API for large files
 
 ### ✅ Fully Implemented
@@ -141,6 +141,15 @@ console.log(result.name)
 - **CLI Tool** - Command-line utility for parsing binary files
 - **Testing** - 283 comprehensive tests, all passing
 - **Documentation** - Complete user and developer documentation
+
+### 🎉 What's New in v0.12.0
+
+- **Visual Debugger** - Interactive debugger with hex viewer, parse tree, and step debugging
+  - **Expression Console/REPL** - Interactive JavaScript console in the debugger
+  - **Unified Console** - Parse events and expressions in single chronological view
+  - **Enhanced Debugger** - Better error display, execution timing, improved UX
+  - Try [Visual Debugger](https://fabianopinto.github.io/kaitai-struct-ts/) in your browser
+  - See [./debugger/README.md](./debugger/README.md)
 
 ### 🚀 What's New in v0.10.0
 
@@ -253,7 +262,7 @@ pnpm format
 
 ## Current Status
 
-**Version:** 0.12.0  
+**Version:** 0.12.0
 **Status:** Production-ready, actively maintained
 
 The library is feature-complete for most use cases with comprehensive test coverage (283 tests). The visual debugger (v0.6.0) provides an interactive development experience for working with binary formats.
