@@ -6,7 +6,8 @@
  */
 
 import { useEffect, useRef } from 'react'
-import { AlertCircle, CheckCircle, Info } from 'lucide-react'
+import { AlertCircle, CheckCircle, Info, Trash2 } from 'lucide-react'
+import { useDebugStore } from '@/store/debugStore'
 import type { ParseEvent } from '@/store/debugStore'
 
 /**
@@ -27,6 +28,7 @@ interface ConsoleProps {
  */
 export function Console({ events, autoScroll = true }: ConsoleProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const { clearParseEvents } = useDebugStore()
 
   // Auto-scroll to bottom when new events arrive
   useEffect(() => {
@@ -74,7 +76,19 @@ export function Console({ events, autoScroll = true }: ConsoleProps) {
       {/* Header */}
       <div className="border-b border-border bg-muted/50 px-4 py-2 flex items-center justify-between">
         <span className="text-sm font-medium">Console</span>
-        <span className="text-xs text-muted-foreground">{events.length} events</span>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-muted-foreground">{events.length} events</span>
+          {events.length > 0 && (
+            <button
+              onClick={clearParseEvents}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              title="Clear console"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Console Output */}

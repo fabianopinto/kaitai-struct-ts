@@ -10,12 +10,13 @@ import { useDebugStore } from '@/store/debugStore'
 export function ExampleSelector() {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedExample, setSelectedExample] = useState<string>('')
-  const { setSchemaContent, setBinaryData, setParseResult } = useDebugStore()
+  const { setSchemaContent, setBinaryData, setParseResult, clearParseEvents } = useDebugStore()
 
   const loadExample = async (example: Example) => {
     setIsLoading(true)
     // Clear previous parse state
     setParseResult(null)
+    clearParseEvents()
 
     try {
       // Load schema file

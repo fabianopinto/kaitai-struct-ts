@@ -33,11 +33,13 @@ export function useStepDebugger() {
     if (!isPlaying) return
 
     const interval = setInterval(() => {
-      if (currentStep >= parseEvents.length - 1) {
+      const nextStep = currentStep + 1
+      if (nextStep >= parseEvents.length) {
+        // Would go past the last step, stop playing
         setIsPlaying(false)
         return
       }
-      setCurrentStep(currentStep + 1)
+      setCurrentStep(nextStep)
     }, 500) // 500ms between steps
 
     return () => clearInterval(interval)
@@ -45,6 +47,19 @@ export function useStepDebugger() {
 
   // Update selected field and hex offset based on current step
   useEffect(() => {
+    // Reset if currentStep is out of bounds
+    if (parseEvents.length === 0) {
+      setCurrentStep(0)
+      setSelectedField(null)
+      return
+    }
+    
+    // Clamp currentStep to valid range
+    if (currentStep >= parseEvents.length) {
+      setCurrentStep(parseEvents.length - 1)
+      return
+    }
+    
     if (currentStep >= 0 && currentStep < parseEvents.length) {
       const event = parseEvents[currentStep]
       if (event.fieldName) {
@@ -54,7 +69,7 @@ export function useStepDebugger() {
         setHexViewOffset(event.offset)
       }
     }
-  }, [currentStep, parseEvents, setSelectedField, setHexViewOffset])
+  }, [currentStep, parseEvents, setSelectedField, setHexViewOffset, setCurrentStep])
 
   const play = useCallback(() => {
     if (currentStep >= parseEvents.length - 1) {
@@ -70,8 +85,8 @@ export function useStepDebugger() {
   const stepForward = useCallback(() => {
     if (currentStep < parseEvents.length - 1) {
       setCurrentStep(currentStep + 1)
-      setIsPlaying(false)
     }
+    setIsPlaying(false)
   }, [currentStep, parseEvents.length, setCurrentStep, setIsPlaying])
 
   const stepBack = useCallback(() => {

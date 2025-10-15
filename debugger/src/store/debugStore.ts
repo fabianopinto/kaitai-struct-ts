@@ -51,6 +51,7 @@ export interface DebugState {
   setBinaryData: (data: Uint8Array) => void
   setParseResult: (result: unknown) => void
   addParseEvent: (event: ParseEvent) => void
+  clearParseEvents: () => void
   setCurrentStep: (step: number) => void
   setIsPlaying: (playing: boolean) => void
   setSelectedField: (field: string | null) => void
@@ -89,6 +90,8 @@ export const useDebugStore = create<DebugState>((set) => ({
     set((state) => ({
       parseEvents: [...state.parseEvents, event],
     })),
+
+  clearParseEvents: () => set({ parseEvents: [], currentStep: 0, isPlaying: false }),
 
   setCurrentStep: (step) => set({ currentStep: step }),
 

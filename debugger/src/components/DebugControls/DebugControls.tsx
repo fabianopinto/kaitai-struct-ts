@@ -104,13 +104,13 @@ export function DebugControls({
         {/* Progress Info */}
         <div className="flex items-center gap-4">
           <span className="text-sm text-muted-foreground">
-            Step {currentStep} / {totalSteps}
+            Step {currentStep + 1} / {totalSteps}
           </span>
           {totalSteps > 0 && (
             <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
               <div
                 className="h-full bg-primary transition-all duration-200"
-                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
               />
             </div>
           )}
