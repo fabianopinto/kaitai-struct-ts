@@ -57,11 +57,12 @@ instances:
     value: mfg_year_mod + 1990
   gamma:
     value: (gamma_mod + 100) / 100.0
-  mfg_str:
-    value: >
-      ((mfg_id >> 10) & 0x1f) + 0x40,
-      ((mfg_id >> 5) & 0x1f) + 0x40,
-      (mfg_id & 0x1f) + 0x40
+  mfg_char1:
+    value: ((mfg_id >> 10) & 0x1f) + 0x40
+  mfg_char2:
+    value: ((mfg_id >> 5) & 0x1f) + 0x40
+  mfg_char3:
+    value: (mfg_id & 0x1f) + 0x40
 types:
   std_timing:
     seq:

@@ -31,8 +31,9 @@ types:
         type:
           switch-on: chunk_id
           cases:
-            '"fmt "': fmt_chunk
-            '"data"': data_chunk
+            "fmt ": fmt_chunk
+            "data": data_chunk
+            _: raw_chunk
       - id: padding
         size: chunk_size % 2
   fmt_chunk:
@@ -51,6 +52,10 @@ types:
       - id: bits_per_sample
         type: u2
   data_chunk:
+    seq:
+      - id: data
+        size-eos: true
+  raw_chunk:
     seq:
       - id: data
         size-eos: true

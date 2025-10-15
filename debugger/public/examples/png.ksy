@@ -25,8 +25,10 @@ types:
         type:
           switch-on: type
           cases:
-            '"IHDR"': ihdr_chunk
-            '"PLTE"': plte_chunk
+            IHDR: ihdr_chunk
+            PLTE: plte_chunk
+            IDAT: raw_chunk
+            IEND: raw_chunk
       - id: crc
         type: u4
   ihdr_chunk:
@@ -59,6 +61,10 @@ types:
         type: u1
       - id: b
         type: u1
+  raw_chunk:
+    seq:
+      - id: data
+        size-eos: true
 enums:
   color_type:
     0: greyscale

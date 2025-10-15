@@ -12,6 +12,7 @@ import { ParseTree } from './components/ParseTree'
 import { SchemaEditor } from './components/SchemaEditor'
 import { Console } from './components/Console'
 import { DebugControls } from './components/DebugControls'
+import { ExampleSelector } from './components/ExampleSelector/ExampleSelector'
 import { useFileLoader } from './hooks/useFileLoader'
 import { useDebugger } from './hooks/useDebugger'
 import { useStepDebugger } from './hooks/useStepDebugger'
@@ -282,6 +283,15 @@ function App() {
                   <span className="text-xs text-muted-foreground">Any binary file format</span>
                 </label>
               </div>
+            </div>
+
+            {/* Example Selector */}
+            <div className="border border-border rounded-lg p-6 bg-card">
+              <h3 className="font-semibold mb-3">Or try an example</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Load a pre-configured example to see the debugger in action
+              </p>
+              <ExampleSelector />
             </div>
 
             {/* Parse Button */}
