@@ -83,7 +83,7 @@ export function DebugControls({
             <button
               onClick={onPlay}
               disabled={currentStep >= totalSteps}
-              className="p-2 rounded hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-2 rounded hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
               title="Play (F5)"
             >
               <Play className="w-4 h-4" />
