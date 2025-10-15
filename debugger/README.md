@@ -12,6 +12,19 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 
 **Live Demo:** [https://fabianopinto.github.io/kaitai-struct-ts/](https://fabianopinto.github.io/kaitai-struct-ts/)
 
+## What's New in v0.6.0
+
+🎉 **Expression Console/REPL** - The debugger now includes an interactive JavaScript console:
+- Evaluate expressions against parsed data in real-time
+- Access context variables: `root`, `_` (selected field), `data` (binary)
+- Use helper functions: `hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`
+- Navigate command history with ↑↓ arrows
+- See execution timing for each expression
+
+🔄 **Unified Console** - Parse events and expression evaluations now appear together in chronological order, providing better context during debugging.
+
+📦 **Example Selector** - Built-in examples (GIF, PNG, WAV, EDID) let you start debugging immediately without uploading files.
+
 ## Features
 
 ### Core Features
@@ -20,17 +33,23 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 - **Parse Tree** - Explore parsed structure hierarchically with expand/collapse
 - **Schema Editor** - Edit .ksy files with Monaco Editor and YAML syntax highlighting
 - **Step-by-Step Debugging** - Step through the parsing process event by event
-- **Console** - Real-time parsing events with timestamps and metadata
+- **Unified Console** - Parse events and expression evaluations in chronological order
+- **Expression Console/REPL** - Interactive JavaScript console for evaluating expressions
 - **Debug Controls** - Play, pause, step forward/back, and reset functionality
+- **Example Selector** - Built-in examples (GIF, PNG, WAV, EDID) for quick testing
 
 ### Advanced Features
 
-- **Keyboard Shortcuts** - Efficient debugging workflow (F5, F9, F10, etc.)
+- **Expression Evaluation** - Evaluate JavaScript against parsed data with helper functions
+  - Context variables: `root`, `_` (selected field), `data` (binary)
+  - Helpers: `hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`
+  - Command history with ↑↓ navigation
+- **Keyboard Shortcuts** - Efficient debugging workflow (F5, F9, F10, F11, etc.)
 - **Synchronized Highlighting** - Field selection syncs across all components
 - **Modern UI** - Clean, professional interface with Tailwind CSS
 - **High Performance** - Virtual scrolling handles files of any size
 - **Responsive Design** - Works on desktop and tablet devices
-- **Theme Support** - Light theme with CSS variables
+- **Theme Support** - Light and dark themes with CSS variables
 
 ## Getting Started
 
@@ -128,23 +147,30 @@ debugger/
 
 ## What's Included
 
-### ✅ Completed Features (v0.11.0)
+### ✅ Completed Features
+
+**v0.6.0 (Current)**
 
 **Core Components:**
 
 - [x] HexViewer with virtual scrolling for large files
 - [x] ParseTree with hierarchical data explorer
 - [x] SchemaEditor with Monaco (VS Code) integration
-- [x] Console with real-time event logging
+- [x] Unified Console with parse events and expression REPL
+- [x] Expression Console/REPL with JavaScript evaluation
 - [x] DebugControls with step-by-step debugging
+- [x] ExampleSelector with built-in format examples
 
 **Advanced Features:**
 
+- [x] Expression evaluation with context and helper functions
 - [x] Step-by-step debugging (play, pause, step forward/back)
 - [x] Field highlighting synchronized across all components
-- [x] Keyboard shortcuts (F5, F9, F10, Ctrl+Shift+R, Esc)
+- [x] Keyboard shortcuts (F5, F9, F10, F11, Ctrl+Shift+R, Esc)
 - [x] Virtual scrolling for performance
 - [x] Error visualization with detailed messages
+- [x] Command history navigation
+- [x] Execution timing display
 - [x] Professional UI with Tailwind CSS
 - [x] Complete TypeScript types and JSDoc
 - [x] Production-ready code quality
@@ -153,13 +179,14 @@ debugger/
 
 **Potential Additions:**
 
-- [ ] Breakpoint system (UI ready, logic pending)
-- [ ] Expression console/REPL
+- [ ] Enhanced breakpoint system with conditions
 - [ ] Save/load debug sessions
 - [ ] Export parse results to JSON
-- [ ] Example files (GIF, WAV, PNG)
-- [ ] Theme customization
+- [ ] More built-in examples
+- [ ] Dark theme improvements
+- [ ] Performance optimizations for very large files
 - [ ] Video tutorials
+- [ ] Proper array path notation (root.chunks[0] vs root.chunks.[0])
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development history and future plans.
 
