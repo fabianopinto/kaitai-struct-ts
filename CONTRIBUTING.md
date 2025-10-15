@@ -73,6 +73,10 @@ flowchart TD
 pnpm dev              # Build in watch mode
 pnpm build            # Build for production
 
+# Debugger Development
+pnpm --dir debugger dev      # Run debugger dev server
+pnpm --dir debugger build    # Build debugger for production
+
 # Testing
 pnpm test             # Run tests
 pnpm test:ui          # Run tests with UI
@@ -439,15 +443,24 @@ sequenceDiagram
 
 ## Current Development Status
 
-**Version:** 0.10.0  
+**Version:** 0.12.0  
 **Status:** Production Ready
 
 The project is feature-complete for most use cases. Current focus:
 
+- Visual debugger enhancements (v0.6.0)
+- Expression console/REPL for interactive debugging
 - Bug fixes and stability improvements
 - Performance optimizations
 - Additional format support
 - Community contributions
+
+### Recent Major Features
+
+- **Visual Debugger** (v0.6.0): Interactive web-based debugger with hex viewer, parse tree, step-by-step debugging, and expression console
+- **Expression Console/REPL**: Evaluate JavaScript expressions against parsed data with helper functions
+- **Step Debugger**: Navigate through parsing events with play/pause/step controls
+- **Example Selector**: Built-in examples (GIF, PNG, WAV, EDID) for quick testing
 
 See [CHANGELOG.md](./CHANGELOG.md) for recent updates and [README.md](./README.md#roadmap) for the roadmap.
 
@@ -459,6 +472,78 @@ For maintainers with release permissions, see the [Release Guide](./docs/RELEASE
 - Version management with changesets
 - Publishing to NPM
 - Creating GitHub releases
+
+## Debugger Development
+
+The visual debugger is located in the `debugger/` directory and is a separate React + Vite application.
+
+### Debugger Structure
+
+```
+debugger/
+├── src/
+│   ├── components/      # React components
+│   │   ├── Console/     # Unified console with parse events & REPL
+│   │   ├── HexViewer/   # Hex editor with field highlighting
+│   │   ├── ParseTree/   # Interactive parse tree viewer
+│   │   ├── SchemaEditor/# Monaco-based .ksy editor
+│   │   └── DebugControls/ # Step debugger controls
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utilities and helpers
+│   │   ├── expression-evaluator.ts  # REPL evaluation engine
+│   │   └── parse-tree-utils.ts      # Tree manipulation
+│   ├── store/           # Zustand state management
+│   └── types/           # TypeScript type definitions
+└── public/              # Static assets and examples
+```
+
+### Key Features to Test
+
+When contributing to the debugger:
+
+1. **Parse Events Console**
+   - Events display with timestamps
+   - Field names, offsets, sizes, and values
+   - Error handling and display
+
+2. **Expression Console/REPL**
+   - Expression evaluation with context (`root`, `_`, `data`)
+   - Helper functions (`hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`)
+   - History navigation (↑↓ arrows)
+   - Error messages and execution timing
+
+3. **Step Debugger**
+   - Play/pause/step forward/back controls
+   - Breakpoints on fields
+   - Current step indicator
+   - Bounds checking
+
+4. **Hex Viewer**
+   - Field highlighting with tooltips
+   - Byte selection and navigation
+   - Offset display
+   - ASCII view
+
+5. **Parse Tree**
+   - Expandable/collapsible nodes
+   - Field selection synchronization
+   - Type icons and value display
+
+### Debugger Testing
+
+```bash
+# Run dev server
+pnpm --dir debugger dev
+
+# Build for production
+pnpm --dir debugger build
+
+# Type check
+pnpm --dir debugger typecheck
+
+# Preview production build
+pnpm --dir debugger preview
+```
 
 ## Questions?
 
