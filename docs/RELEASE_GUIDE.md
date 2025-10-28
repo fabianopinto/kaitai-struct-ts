@@ -12,9 +12,87 @@ This guide explains how to release a new version of `@k67/kaitai-struct-ts`.
 
 ## Release Process
 
-### 1. Ensure Clean State
+There are two workflows: **PR-based** (recommended) and **Direct to main** (for maintainers with bypass permissions).
 
-Make sure you're on the latest `main` branch with no uncommitted changes:
+### Option A: PR-Based Workflow (Recommended)
+
+This is the standard workflow that works for all contributors and follows best practices.
+
+#### 1. Create a Branch with Your Fix
+
+```bash
+git checkout -b fix/your-fix-name
+# Make your changes
+git add .
+git commit -m "fix: description of fix"
+```
+
+#### 2. Add a Changeset
+
+```bash
+pnpm changeset
+# Select type: patch/minor/major
+# Describe the changes
+git add .changeset
+git commit -m "chore: add changeset"
+```
+
+#### 3. Create and Merge PR
+
+```bash
+# Push branch
+git push -u origin fix/your-fix-name
+
+# Create PR
+gh pr create --title "fix: description" --body "Details of the fix"
+
+# After review and CI passes, merge
+gh pr merge --squash --delete-branch
+```
+
+#### 4. Version and Publish (on main)
+
+```bash
+# Switch to main and pull merged changes
+git checkout main
+git pull origin main
+
+# Run changeset version (bumps version, updates CHANGELOG)
+pnpm changeset version
+
+# Commit version changes
+git add .
+git commit -m "chore: version packages"
+git push origin main
+
+# Build
+pnpm run build
+
+# Publish to npm (creates and pushes tags automatically)
+pnpm changeset publish
+
+# Push tags
+git push --follow-tags
+```
+
+#### 5. Verify Publication
+
+**Check NPM:**
+```bash
+npm view @k67/kaitai-struct-ts version
+```
+
+**Check GitHub Release:**
+- Go to [Releases](https://github.com/fabianopinto/kaitai-struct-ts/releases)
+- Verify the new release was created
+
+---
+
+### Option B: Direct to Main (Requires Bypass Permission)
+
+For maintainers with bypass permissions who need to release quickly.
+
+#### 1. Ensure Clean State
 
 ```bash
 git checkout main
@@ -22,123 +100,80 @@ git pull origin main
 git status  # Should show "nothing to commit, working tree clean"
 ```
 
-### 2. Run Changeset Version
+#### 2. Run Changeset Version
 
-This command will:
+```bash
+pnpm changeset version
+```
 
+This will:
 - Consume all changeset files in `.changeset/`
 - Update `package.json` version
 - Update `CHANGELOG.md` with all changes
 - Delete processed changeset files
 
-```bash
-pnpm changeset:version
-```
-
-**Review the changes:**
-
-- Check the new version in `package.json`
-- Review the `CHANGELOG.md` entries
-- Verify changeset files were removed
-
-### 3. Commit Version Bump
+#### 3. Commit and Publish
 
 ```bash
-# Stage all changes
+# Commit version changes
 git add .
+git commit -m "chore: version packages"
+git push origin main
 
-# Commit with version number
-git commit -m "chore: release v$(node -p "require('./package.json').version")"
+# Build
+pnpm run build
 
-# Or manually specify version
-git commit -m "chore: release v0.x.x"
+# Publish (creates and pushes tags)
+pnpm changeset publish
+
+# Push tags
+git push --follow-tags
 ```
 
-### 4. Create and Push Tag
+#### 4. Verify Publication
 
-```bash
-# Get the version from package.json
-VERSION=$(node -p "require('./package.json').version")
-
-# Create tag
-git tag "v${VERSION}"
-
-# Push commit and tag together
-git push origin main "v${VERSION}"
-```
-
-**Alternative (manual version):**
-
-```bash
-git tag v0.x.x
-git push origin main v0.x.x
-```
-
-### 5. Monitor the Release
-
-The tag push will automatically trigger the publish workflow:
-
-1. Go to [Actions → Publish to NPM](https://github.com/fabianopinto/kaitai-struct-ts/actions/workflows/publish.yml)
-2. Watch the workflow run
-3. Verify all steps pass:
-   - ✅ Branch validation (ensures tag is on main)
-   - ✅ Lint
-   - ✅ Type check
-   - ✅ Tests
-   - ✅ Build
-   - ✅ Publish to NPM
-   - ✅ Create GitHub Release
-
-### 6. Verify Publication
-
-After the workflow completes:
-
-**Check NPM:**
-
-```bash
-npm view @k67/kaitai-struct-ts version
-# Should show the new version
-```
-
-**Check GitHub Release:**
-
-- Go to [Releases](https://github.com/fabianopinto/kaitai-struct-ts/releases)
-- Verify the new release was created with correct version and changelog
-
-**Test Installation:**
-
-```bash
-npm install @k67/kaitai-struct-ts@latest
-```
+Same as Option A step 5 above.
 
 ---
 
-## Complete Example
+## Complete Example (PR-Based)
 
-Here's a complete example for releasing version `0.8.1`:
+Here's a complete example for releasing a patch fix:
 
 ```bash
-# 1. Clean state
+# 1. Create branch and make changes
+git checkout -b fix/instance-if-condition
+# ... make your changes ...
+git add .
+git commit -m "fix: check if condition before evaluating value instances"
+
+# 2. Add changeset
+pnpm changeset
+# Select: patch
+# Description: Fix if condition check for value instances
+git add .changeset
+git commit -m "chore: add changeset"
+
+# 3. Create and merge PR
+git push -u origin fix/instance-if-condition
+gh pr create --title "fix: check if condition before evaluating value instances" \
+  --body "Fixes debugger error when enumerating properties"
+gh pr merge --squash --delete-branch
+
+# 4. Version and publish
 git checkout main
 git pull origin main
-
-# 2. Version bump
-pnpm changeset:version
-# Review changes in package.json and CHANGELOG.md
-
-# 3. Commit
+pnpm changeset version
 git add .
-git commit -m "chore: release v0.8.1"
+git commit -m "chore: version packages"
+git push origin main
+pnpm run build
+pnpm changeset publish
+git push --follow-tags
 
-# 4. Tag and push
-git tag v0.8.1
-git push origin main v0.8.1
-
-# 5. Monitor
-# Open: https://github.com/fabianopinto/kaitai-struct-ts/actions
-
-# 6. Verify
+# 5. Verify
 npm view @k67/kaitai-struct-ts version
+# Should show: 0.12.1 (or whatever the new version is)
 ```
 
 ---
