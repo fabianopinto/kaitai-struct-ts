@@ -219,6 +219,14 @@ export class TypeInterpreter {
     stream: KaitaiStream,
     context: Context
   ): unknown {
+    // Check conditional before evaluating any instance
+    if (instance.if) {
+      const condition = this.evaluateValue(instance.if, context)
+      if (!condition) {
+        return undefined
+      }
+    }
+
     // Handle value instances (calculated fields)
     if ('value' in instance) {
       return this.evaluateValue(
