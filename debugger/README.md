@@ -189,7 +189,7 @@ debugger/
 - [ ] Video tutorials
 - [ ] Proper array path notation (root.chunks[0] vs root.chunks.[0])
 
-See [DEVELOPMENT.md](./DEVELOPMENT.md) for detailed development history and future plans.
+For development history and contribution guidelines, please see the main project's [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Contributing
 

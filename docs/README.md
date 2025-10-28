@@ -20,7 +20,6 @@ For developers using this library as an npm dependency.
 - **[API.md](./API.md)** - Complete API reference
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture and design
 - **[STREAMING.md](./STREAMING.md)** - Streaming API for large files (v0.10.0)
-- **[../MISSING_FEATURES.md](../MISSING_FEATURES.md)** - Feature status and limitations
 
 ### CLI Documentation
 

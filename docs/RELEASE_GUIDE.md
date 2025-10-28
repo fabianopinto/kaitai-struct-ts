@@ -78,11 +78,13 @@ git push --follow-tags
 #### 5. Verify Publication
 
 **Check NPM:**
+
 ```bash
 npm view @k67/kaitai-struct-ts version
 ```
 
 **Check GitHub Release:**
+
 - Go to [Releases](https://github.com/fabianopinto/kaitai-struct-ts/releases)
 - Verify the new release was created
 
@@ -107,6 +109,7 @@ pnpm changeset version
 ```
 
 This will:
+
 - Consume all changeset files in `.changeset/`
 - Update `package.json` version
 - Update `CHANGELOG.md` with all changes
