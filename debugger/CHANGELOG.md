@@ -1,5 +1,12 @@
 # @k67/kaitai-debugger
 
+## 0.8.2
+
+### Patch Changes
+
+- Updated dependencies [016d96b]
+  - @k67/kaitai-struct-ts@0.13.0
+
 ## 0.8.1
 
 ### Patch Changes
