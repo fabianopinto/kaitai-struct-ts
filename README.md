@@ -153,7 +153,7 @@ const result = parse(compiled, binaryData)
 
 ## Current Status
 
-**Version:** 0.13.0
+**Version:** 0.14.0
 **Status:** Production Ready 🚀
 **Latest:** Schema Compilation API for performance optimization
 
@@ -169,7 +169,7 @@ const result = parse(compiled, binaryData)
 - **Testing** - 283 comprehensive tests, all passing
 - **Documentation** - Complete user and developer documentation
 
-### 🎉 What's New in v0.13.0
+### 🎉 What's New in v0.14.0
 
 - **Schema Compilation API** - Pre-compile schemas for optimal performance (NEW)
   - `compileSchema()` - Compile .ksy schemas once for reuse
