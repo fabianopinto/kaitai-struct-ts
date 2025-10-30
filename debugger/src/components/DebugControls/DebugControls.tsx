@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-import { Play, Pause, SkipForward, SkipBack, RotateCcw } from 'lucide-react'
+import { Play, Pause, SkipForward, SkipBack, RotateCcw, FastForward, Circle } from 'lucide-react'
 
 /**
  * Debug controls component props
@@ -17,6 +17,8 @@ interface DebugControlsProps {
   currentStep: number
   /** Total number of steps */
   totalSteps: number
+  /** Whether there are any breakpoints set */
+  hasBreakpoints?: boolean
   /** Callback to start/resume playback */
   onPlay: () => void
   /** Callback to pause playback */
@@ -27,6 +29,8 @@ interface DebugControlsProps {
   onStepBack: () => void
   /** Callback to reset to beginning */
   onReset: () => void
+  /** Callback to continue to next breakpoint */
+  onContinue?: () => void
 }
 
 /**
@@ -39,11 +43,13 @@ export function DebugControls({
   isPlaying,
   currentStep,
   totalSteps,
+  hasBreakpoints = false,
   onPlay,
   onPause,
   onStepForward,
   onStepBack,
   onReset,
+  onContinue,
 }: DebugControlsProps) {
   return (
     <div className="border-b border-border bg-muted/30 px-4 py-2">
@@ -65,7 +71,7 @@ export function DebugControls({
             onClick={onStepBack}
             disabled={currentStep === 0}
             className="p-2 rounded hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Step Back (F9)"
+            title="Step Back (F8)"
           >
             <SkipBack className="w-4 h-4" />
           </button>
@@ -99,6 +105,22 @@ export function DebugControls({
           >
             <SkipForward className="w-4 h-4" />
           </button>
+
+          {/* Continue to Next Breakpoint */}
+          {hasBreakpoints && onContinue && (
+            <>
+              <div className="w-px h-6 bg-border mx-1" />
+              <button
+                onClick={onContinue}
+                disabled={currentStep >= totalSteps}
+                className="p-2 rounded hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                title="Continue to Next Breakpoint (F11)"
+              >
+                <FastForward className="w-4 h-4" />
+                <Circle className="w-2 h-2 fill-red-500 text-red-500" />
+              </button>
+            </>
+          )}
         </div>
 
         {/* Progress Info */}

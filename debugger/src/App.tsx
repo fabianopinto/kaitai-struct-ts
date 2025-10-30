@@ -32,7 +32,7 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const { loadSchemaFile, loadBinaryFile } = useFileLoader()
   const { parseData, isReady } = useDebugger()
-  const { play, pause, stepForward, stepBack, reset, currentStep, totalSteps, isPlaying } =
+  const { play, pause, stepForward, stepBack, reset, continueToNextBreakpoint, currentStep, totalSteps, isPlaying, hasBreakpoints } =
     useStepDebugger()
   const {
     schemaContent,
@@ -47,6 +47,7 @@ function App() {
     setHexViewOffset,
     consoleOutputs,
     addConsoleOutput,
+    toggleBreakpoint,
   } = useDebugStore()
 
   // Keyboard shortcuts (only active in debugger view)
@@ -57,6 +58,8 @@ function App() {
           onStepForward: stepForward,
           onStepBack: stepBack,
           onReset: reset,
+          onToggleBreakpoint: () => selectedField && toggleBreakpoint(selectedField),
+          onContinue: continueToNextBreakpoint,
           onEscape: () => setSelectedField(null),
         }
       : {}
@@ -218,7 +221,7 @@ function App() {
               <div>
                 <h1 className="text-xl font-bold">Kaitai Struct Debugger</h1>
                 <p className="text-sm text-muted-foreground">
-                  Visual binary format debugger v0.8.0
+                  Visual binary format debugger v0.9.0
                 </p>
               </div>
             </div>
@@ -429,11 +432,13 @@ function App() {
         isPlaying={isPlaying}
         currentStep={currentStep}
         totalSteps={totalSteps}
+        hasBreakpoints={hasBreakpoints}
         onPlay={play}
         onPause={pause}
         onStepForward={stepForward}
         onStepBack={stepBack}
         onReset={reset}
+        onContinue={continueToNextBreakpoint}
       />
 
       {/* Main Content - 2x2 Grid */}

@@ -22,13 +22,14 @@ export function useStepDebugger() {
     parseEvents,
     currentStep,
     isPlaying,
+    breakpoints,
     setCurrentStep,
     setIsPlaying,
     setSelectedField,
     setHexViewOffset,
   } = useDebugStore()
 
-  // Auto-play functionality
+  // Auto-play functionality with breakpoint detection
   useEffect(() => {
     if (!isPlaying) return
 
@@ -39,11 +40,21 @@ export function useStepDebugger() {
         setIsPlaying(false)
         return
       }
+
+      // Check if next step hits a breakpoint
+      const nextEvent = parseEvents[nextStep]
+      if (nextEvent.fieldName && breakpoints.has(nextEvent.fieldName)) {
+        // Hit a breakpoint, pause execution
+        setCurrentStep(nextStep)
+        setIsPlaying(false)
+        return
+      }
+
       setCurrentStep(nextStep)
     }, 500) // 500ms between steps
 
     return () => clearInterval(interval)
-  }, [isPlaying, currentStep, parseEvents.length, setCurrentStep, setIsPlaying])
+  }, [isPlaying, currentStep, parseEvents, breakpoints, setCurrentStep, setIsPlaying])
 
   // Update selected field and hex offset based on current step
   useEffect(() => {
@@ -89,6 +100,21 @@ export function useStepDebugger() {
     setIsPlaying(false)
   }, [currentStep, parseEvents.length, setCurrentStep, setIsPlaying])
 
+  const continueToNextBreakpoint = useCallback(() => {
+    // Find next breakpoint after current step
+    for (let i = currentStep + 1; i < parseEvents.length; i++) {
+      const event = parseEvents[i]
+      if (event.fieldName && breakpoints.has(event.fieldName)) {
+        setCurrentStep(i)
+        return
+      }
+    }
+    // No breakpoint found, go to end
+    if (parseEvents.length > 0) {
+      setCurrentStep(parseEvents.length - 1)
+    }
+  }, [currentStep, parseEvents, breakpoints, setCurrentStep])
+
   const stepBack = useCallback(() => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1)
@@ -109,8 +135,10 @@ export function useStepDebugger() {
     stepForward,
     stepBack,
     reset,
+    continueToNextBreakpoint,
     currentStep,
     totalSteps: parseEvents.length,
     isPlaying,
+    hasBreakpoints: breakpoints.size > 0,
   }
 }

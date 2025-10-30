@@ -12,9 +12,19 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 
 **Live Demo:** [https://fabianopinto.github.io/kaitai-struct-ts/](https://fabianopinto.github.io/kaitai-struct-ts/)
 
+## What's New in v0.9.0
+
+🔴 **Breakpoint System** - Full breakpoint support for advanced debugging:
+
+- Click the circle icon next to any field in the parse tree to toggle breakpoints
+- Execution automatically pauses when hitting a breakpoint during playback
+- Continue to next breakpoint with F11 or the continue button
+- Visual indicators show which fields have breakpoints (red circles)
+- Keyboard shortcut F9 toggles breakpoint on selected field
+
 ## What's New in v0.8.0
 
-🎉 **Expression Console/REPL** - The debugger now includes an interactive JavaScript console:
+🎉 **Expression Console/REPL** - Interactive JavaScript console:
 
 - Evaluate expressions against parsed data in real-time
 - Access context variables: `root`, `_` (selected field), `data` (binary)
@@ -22,9 +32,9 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 - Navigate command history with ↑↓ arrows
 - See execution timing for each expression
 
-🔄 **Unified Console** - Parse events and expression evaluations now appear together in chronological order, providing better context during debugging.
+🔄 **Unified Console** - Parse events and expression evaluations in chronological order
 
-📦 **Example Selector** - Built-in examples (GIF, PNG, WAV, EDID) let you start debugging immediately without uploading files.
+📦 **Example Selector** - Built-in examples (GIF, PNG, WAV, EDID) for quick testing
 
 ## Features
 
@@ -34,9 +44,10 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
 - **Parse Tree** - Explore parsed structure hierarchically with expand/collapse
 - **Schema Editor** - Edit .ksy files with Monaco Editor and YAML syntax highlighting
 - **Step-by-Step Debugging** - Step through the parsing process event by event
+- **Breakpoint System** - Set breakpoints on fields and pause execution automatically
 - **Unified Console** - Parse events and expression evaluations in chronological order
 - **Expression Console/REPL** - Interactive JavaScript console for evaluating expressions
-- **Debug Controls** - Play, pause, step forward/back, and reset functionality
+- **Debug Controls** - Play, pause, step forward/back, continue, and reset functionality
 - **Example Selector** - Built-in examples (GIF, PNG, WAV, EDID) for quick testing
 
 ### Advanced Features
@@ -45,7 +56,14 @@ The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debuggin
   - Context variables: `root`, `_` (selected field), `data` (binary)
   - Helpers: `hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`
   - Command history with ↑↓ navigation
-- **Keyboard Shortcuts** - Efficient debugging workflow (F5, F9, F10, F11, etc.)
+- **Keyboard Shortcuts** - Efficient debugging workflow:
+  - `F5` - Play/Pause
+  - `F8` - Step Back
+  - `F9` - Toggle Breakpoint (on selected field)
+  - `F10` - Step Forward
+  - `F11` - Continue to Next Breakpoint
+  - `Ctrl+Shift+R` - Reset
+  - `Esc` - Clear selection
 - **Synchronized Highlighting** - Field selection syncs across all components
 - **Modern UI** - Clean, professional interface with Tailwind CSS
 - **High Performance** - Virtual scrolling handles files of any size

@@ -6,9 +6,10 @@
  */
 
 import { useState, memo } from 'react'
-import { ChevronRight, ChevronDown } from 'lucide-react'
+import { ChevronRight, ChevronDown, Circle } from 'lucide-react'
 import { formatValue, getNodeIcon } from '@/lib/parse-tree-utils'
 import type { ParseTreeNode } from '@/types'
+import { useDebugStore } from '@/store/debugStore'
 
 /**
  * Tree node component props
@@ -24,6 +25,8 @@ interface TreeNodeProps {
   selectedPath?: string | null
   /** Parent node path */
   parentPath?: string
+  /** Whether breakpoints are enabled */
+  breakpointsEnabled?: boolean
 }
 
 /**
@@ -38,18 +41,26 @@ export const TreeNode = memo(function TreeNode({
   onSelect,
   selectedPath,
   parentPath = '',
+  breakpointsEnabled = true,
 }: TreeNodeProps) {
   const [isExpanded, setIsExpanded] = useState(depth < 2) // Auto-expand first 2 levels
   const hasChildren = node.children && node.children.length > 0
+  const { breakpoints, toggleBreakpoint } = useDebugStore()
 
   const currentPath = parentPath ? `${parentPath}.${node.name}` : node.name
   const isSelected = selectedPath === currentPath
+  const hasBreakpoint = breakpoints.has(currentPath)
 
   const handleClick = () => {
     if (hasChildren) {
       setIsExpanded(!isExpanded)
     }
     onSelect?.(currentPath)
+  }
+
+  const handleBreakpointClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    toggleBreakpoint(currentPath)
   }
 
   const icon = getNodeIcon(node.type)
@@ -60,13 +71,30 @@ export const TreeNode = memo(function TreeNode({
       {/* Node Row */}
       <div
         className={`
-          flex items-center gap-2 px-2 py-1 rounded cursor-pointer
+          flex items-center gap-2 px-2 py-1 rounded cursor-pointer group
           hover:bg-accent/50 transition-colors
           ${isSelected ? 'bg-accent' : ''}
         `}
         style={{ paddingLeft: `${depth * 20 + 8}px` }}
         onClick={handleClick}
       >
+        {/* Breakpoint Indicator */}
+        {breakpointsEnabled && (
+          <button
+            onClick={handleBreakpointClick}
+            className="w-4 h-4 flex items-center justify-center hover:scale-110 transition-transform"
+            title={hasBreakpoint ? 'Remove breakpoint (F9)' : 'Add breakpoint (F9)'}
+          >
+            <Circle
+              className={`w-3 h-3 ${
+                hasBreakpoint
+                  ? 'fill-red-500 text-red-500'
+                  : 'text-muted-foreground/30 group-hover:text-muted-foreground/60'
+              }`}
+            />
+          </button>
+        )}
+
         {/* Expand/Collapse Icon */}
         <div className="w-4 h-4 flex items-center justify-center">
           {hasChildren ? (
@@ -114,6 +142,7 @@ export const TreeNode = memo(function TreeNode({
               onSelect={onSelect}
               selectedPath={selectedPath}
               parentPath={currentPath}
+              breakpointsEnabled={breakpointsEnabled}
             />
           ))}
         </div>

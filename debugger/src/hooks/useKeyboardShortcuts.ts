@@ -13,10 +13,14 @@ import { useEffect } from 'react'
 interface ShortcutConfig {
   /** F5 - Play/Pause */
   onPlay?: () => void
-  /** F9 - Step Back */
+  /** F8 - Step Back */
   onStepBack?: () => void
+  /** F9 - Toggle Breakpoint */
+  onToggleBreakpoint?: () => void
   /** F10 - Step Forward */
   onStepForward?: () => void
+  /** F11 - Continue to Next Breakpoint */
+  onContinue?: () => void
   /** Ctrl+Shift+R - Reset */
   onReset?: () => void
   /** Escape - Clear selection */
@@ -45,10 +49,17 @@ export function useKeyboardShortcuts(config: ShortcutConfig) {
         return
       }
 
-      // F9 - Step Back
-      if (event.key === 'F9') {
+      // F8 - Step Back
+      if (event.key === 'F8') {
         event.preventDefault()
         config.onStepBack?.()
+        return
+      }
+
+      // F9 - Toggle Breakpoint on selected field
+      if (event.key === 'F9') {
+        event.preventDefault()
+        config.onToggleBreakpoint?.()
         return
       }
 
@@ -56,6 +67,13 @@ export function useKeyboardShortcuts(config: ShortcutConfig) {
       if (event.key === 'F10') {
         event.preventDefault()
         config.onStepForward?.()
+        return
+      }
+
+      // F11 - Continue to Next Breakpoint
+      if (event.key === 'F11') {
+        event.preventDefault()
+        config.onContinue?.()
         return
       }
 
