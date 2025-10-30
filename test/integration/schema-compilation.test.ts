@@ -263,17 +263,10 @@ types:
     it('should handle multiple concurrent parses', () => {
       const compiled = compileSchema(simpleKsy)
 
-      const binaries = Array.from({ length: 10 }, (_, i) =>
-        new Uint8Array([
-          0x4d,
-          0x5a,
-          i + 1,
-          0x00,
-          i * 10,
-          0x00,
-          0x00,
-          0x00,
-        ])
+      const binaries = Array.from(
+        { length: 10 },
+        (_, i) =>
+          new Uint8Array([0x4d, 0x5a, i + 1, 0x00, i * 10, 0x00, 0x00, 0x00])
       )
 
       const results = binaries.map((binary) =>
@@ -324,9 +317,9 @@ seq: []
       const result = parseWithSchema(compiled, new Uint8Array([]))
 
       expect(result).toBeDefined()
-      expect(Object.keys(result).filter((k) => !k.startsWith('_'))).toHaveLength(
-        0
-      )
+      expect(
+        Object.keys(result).filter((k) => !k.startsWith('_'))
+      ).toHaveLength(0)
     })
 
     it('should handle schemas with instances', () => {

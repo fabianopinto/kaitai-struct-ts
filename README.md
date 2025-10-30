@@ -145,6 +145,7 @@ const result = parse(compiled, binaryData)
 ```
 
 **Benefits:**
+
 - ✅ Eliminates redundant YAML parsing (1-5ms per parse)
 - ✅ Skips schema validation overhead (0.5-2ms per parse)
 - ✅ Ideal for batch processing or server applications

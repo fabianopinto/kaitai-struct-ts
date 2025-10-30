@@ -32,8 +32,18 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const { loadSchemaFile, loadBinaryFile } = useFileLoader()
   const { parseData, isReady } = useDebugger()
-  const { play, pause, stepForward, stepBack, reset, continueToNextBreakpoint, currentStep, totalSteps, isPlaying, hasBreakpoints } =
-    useStepDebugger()
+  const {
+    play,
+    pause,
+    stepForward,
+    stepBack,
+    reset,
+    continueToNextBreakpoint,
+    currentStep,
+    totalSteps,
+    isPlaying,
+    hasBreakpoints,
+  } = useStepDebugger()
   const {
     schemaContent,
     binaryData,

@@ -28,28 +28,31 @@ export function useDebugger() {
     useDebugStore()
 
   // Helper to extract field events from parse tree
-  const extractFieldEvents = (node: ParseTreeNode, path = ''): void => {
-    const currentPath = path ? `${path}.${node.name}` : node.name
+  const extractFieldEvents = useCallback(
+    (node: ParseTreeNode, path = ''): void => {
+      const currentPath = path ? `${path}.${node.name}` : node.name
 
-    // Add event for this node if it has offset/size (actual parsed field)
-    if (node.offset !== undefined && node.size !== undefined) {
-      addParseEvent({
-        type: 'field',
-        fieldName: currentPath,
-        offset: node.offset,
-        size: node.size,
-        value: node.type === 'object' ? undefined : node.value,
-        timestamp: Date.now(),
-      })
-    }
-
-    // Recursively process children
-    if (node.children) {
-      for (const child of node.children) {
-        extractFieldEvents(child, currentPath)
+      // Add event for this node if it has offset/size (actual parsed field)
+      if (node.offset !== undefined && node.size !== undefined) {
+        addParseEvent({
+          type: 'field',
+          fieldName: currentPath,
+          offset: node.offset,
+          size: node.size,
+          value: node.type === 'object' ? undefined : node.value,
+          timestamp: Date.now(),
+        })
       }
-    }
-  }
+
+      // Recursively process children
+      if (node.children) {
+        for (const child of node.children) {
+          extractFieldEvents(child, currentPath)
+        }
+      }
+    },
+    [addParseEvent]
+  )
 
   const parseData = useCallback(async () => {
     if (!schemaContent || !binaryData) {
