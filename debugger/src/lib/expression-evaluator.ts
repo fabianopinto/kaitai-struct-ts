@@ -173,12 +173,13 @@ export function formatValue(value: unknown): string {
   if (typeof value === 'object') {
     const keys = Object.keys(value)
     if (keys.length === 0) return '{}'
+    const obj = value as Record<string, unknown>
     if (keys.length <= 3) {
-      return `{ ${keys.map((k) => `${k}: ${formatValue((value as any)[k])}`).join(', ')} }`
+      return `{ ${keys.map((k) => `${k}: ${formatValue(obj[k])}`).join(', ')} }`
     }
     return `{ ${keys
       .slice(0, 2)
-      .map((k) => `${k}: ${formatValue((value as any)[k])}`)
+      .map((k) => `${k}: ${formatValue(obj[k])}`)
       .join(', ')}, ... (${keys.length} keys) }`
   }
 

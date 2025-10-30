@@ -91,7 +91,7 @@ export function useDebugger() {
 
       throw error
     }
-  }, [schemaContent, binaryData, setParseResult, addParseEvent])
+  }, [schemaContent, binaryData, setParseResult, addParseEvent, extractFieldEvents])
 
   const resetDebugger = useCallback(() => {
     reset()
