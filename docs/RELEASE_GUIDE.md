@@ -14,6 +14,9 @@ This guide explains how to release a new version of `@fabianopinto/kaitai-struct
 
 There are two workflows: **PR-based** (recommended) and **Direct to main** (for maintainers with bypass permissions).
 
+> **Note**
+> Only the root package `@fabianopinto/kaitai-struct` is published to npm. The `debugger/` app is built and deployed (e.g. to GitHub Pages) but is **not** published as a separate npm package.
+
 ### Option A: PR-Based Workflow (Recommended)
 
 This is the standard workflow that works for all contributors and follows best practices.

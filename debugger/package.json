@@ -1,6 +1,7 @@
 {
-  "name": "@k67/kaitai-debugger",
+  "name": "@fabianopinto/kaitai-debugger",
   "version": "0.10.0",
+  "private": true,
   "description": "Visual debugger for Kaitai Struct binary format definitions",
   "type": "module",
   "scripts": {
