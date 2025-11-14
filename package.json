@@ -4,7 +4,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "Runtime interpreter for Kaitai Struct binary format definitions in TypeScript",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -79,7 +79,7 @@
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2",
-    "tsup": "^8.5.0",
+    "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
   },
