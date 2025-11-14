@@ -10,6 +10,10 @@
 
 The Kaitai Struct Visual Debugger is a powerful, browser-based tool for debugging and visualizing binary format parsing. Built as a single-page application, it provides an intuitive interface for exploring how Kaitai Struct parses binary data according to your schema definitions.
 
+> **Disclaimer**
+>
+> This debugger is intentionally feature-rich, but its primary goal is to **demonstrate and exemplify** the `@fabianopinto/kaitai-struct` library in a real-world UI. It is not meant to be a fully generic binary analysis suite out of the box, but the architecture is designed so you can extend or adapt it to your own workflows and integrations.
+
 **Live Demo:** [https://fabianopinto.github.io/kaitai-struct-ts/](https://fabianopinto.github.io/kaitai-struct-ts/)
 
 ## What's New in v0.9.0
