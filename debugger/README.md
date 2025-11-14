@@ -140,7 +140,7 @@ pnpm format
 - **Zustand** - State management
 - **Monaco Editor** - Code editor (VS Code)
 - **Radix UI** - Accessible components
-- **@k67/kaitai-struct-ts** - Parser library
+- **@fabianopinto/kaitai-struct** - Parser library
 
 ## Project Structure
 

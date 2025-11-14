@@ -23,7 +23,7 @@ Describe the solution you'd like to see implemented.
 
 ```typescript
 // How would you use this feature?
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 // Your example here
 ```

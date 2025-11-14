@@ -30,7 +30,7 @@ What actually happened.
 
 ```typescript
 // Minimal reproducible example
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 const ksy = `
 meta:

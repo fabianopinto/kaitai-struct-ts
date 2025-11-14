@@ -6,11 +6,11 @@ The `kaitai` command-line tool allows you to parse binary files using Kaitai Str
 
 ```bash
 # Global install
-npm install -g @k67/kaitai-struct-ts
+npm install -g @fabianopinto/kaitai-struct
 
 # Or use without installing
-npx @k67/kaitai-struct-ts <args>
-pnpx @k67/kaitai-struct-ts <args>
+npx @fabianopinto/kaitai-struct <args>
+pnpx @fabianopinto/kaitai-struct <args>
 ```
 
 ## Basic Usage
@@ -219,10 +219,10 @@ kaitai format.ksy data.bin 2> progress.log
 
 ```bash
 # Check installation
-npm list -g @k67/kaitai-struct-ts
+npm list -g @fabianopinto/kaitai-struct
 
 # Reinstall
-npm install -g @k67/kaitai-struct-ts --force
+npm install -g @fabianopinto/kaitai-struct --force
 ```
 
 ### Permission Denied
@@ -237,7 +237,7 @@ chmod +x $(which kaitai)
 Ensure the package is built:
 
 ```bash
-cd node_modules/@k67/kaitai-struct-ts
+cd node_modules/@fabianopinto/kaitai-struct
 npm run build
 ```
 

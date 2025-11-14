@@ -20,7 +20,7 @@ This document provides examples of using kaitai-struct-ts with real-world binary
 ## Quick Start Example
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 // Define a simple format
 const schema = `
@@ -99,7 +99,11 @@ Many formats depend on common type definitions. Here's how to handle imports:
 ### Using KsyParser with Imports
 
 ```typescript
-import { KsyParser, TypeInterpreter, KaitaiStream } from '@k67/kaitai-struct-ts'
+import {
+  KsyParser,
+  TypeInterpreter,
+  KaitaiStream,
+} from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load schemas
@@ -153,7 +157,11 @@ kaitai examples/media/wav.ksy examples/media/wav/small.wav
 
 ```typescript
 // Library usage
-import { KsyParser, TypeInterpreter, KaitaiStream } from '@k67/kaitai-struct-ts'
+import {
+  KsyParser,
+  TypeInterpreter,
+  KaitaiStream,
+} from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 const wavKsy = readFileSync('examples/media/wav.ksy', 'utf-8')
@@ -182,7 +190,7 @@ kaitai examples/hardware/edid.ksy examples/hardware/edid/edid-1.0.bin
 ```
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 const edidKsy = readFileSync('examples/hardware/edid.ksy', 'utf-8')
@@ -214,7 +222,7 @@ kaitai examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar
 ```
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 const xarKsy = readFileSync('examples/archive/xar.ksy', 'utf-8')
@@ -244,7 +252,7 @@ kaitai examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak
 ```
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 const pakKsy = readFileSync('examples/serialization/chrome_pak.ksy', 'utf-8')
@@ -347,7 +355,7 @@ curl -O https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master
 ### 2. Use with kaitai-struct-ts
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load the .ksy definition

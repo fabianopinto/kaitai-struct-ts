@@ -19,13 +19,13 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           editor: ['@monaco-editor/react'],
-          kaitai: ['@k67/kaitai-struct-ts'],
+          kaitai: ['@fabianopinto/kaitai-struct'],
         },
       },
     },
   },
   optimizeDeps: {
-    include: ['@k67/kaitai-struct-ts'],
+    include: ['@fabianopinto/kaitai-struct'],
   },
   server: {
     port: 3000,

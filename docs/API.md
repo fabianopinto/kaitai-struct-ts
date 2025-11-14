@@ -1,6 +1,6 @@
 # API Documentation
 
-**Version:** 0.10.0  
+**Version:** 0.10.0
 **Last Updated:** 2025-10-14
 
 Complete API reference for kaitai-struct-ts library.
@@ -25,7 +25,7 @@ import {
   KaitaiStream,
   KsyParser,
   TypeInterpreter,
-} from '@k67/kaitai-struct-ts'
+} from '@fabianopinto/kaitai-struct'
 
 // Simple parsing
 const result = parse(ksyYaml, binaryData)
@@ -73,7 +73,7 @@ function parse(
 **Example:**
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 const ksyYaml = `
 meta:
@@ -194,7 +194,7 @@ isEof(): boolean                    // Check if at end of stream
 **Example:**
 
 ```typescript
-import { KaitaiStream } from '@k67/kaitai-struct-ts'
+import { KaitaiStream } from '@fabianopinto/kaitai-struct'
 
 const buffer = new Uint8Array([0x01, 0x02, 0x03, 0x04])
 const stream = new KaitaiStream(buffer)
@@ -242,7 +242,7 @@ parse(yaml: string, options?: ParseOptions): KsySchema
 **Example:**
 
 ```typescript
-import { KsyParser } from '@k67/kaitai-struct-ts'
+import { KsyParser } from '@fabianopinto/kaitai-struct'
 
 const parser = new KsyParser()
 const schema = parser.parse(ksyYaml, { validate: true, strict: false })
@@ -310,7 +310,11 @@ parse(stream: KaitaiStream, parent?: unknown, root?: unknown): Record<string, un
 **Example:**
 
 ```typescript
-import { KsyParser, TypeInterpreter, KaitaiStream } from '@k67/kaitai-struct-ts'
+import {
+  KsyParser,
+  TypeInterpreter,
+  KaitaiStream,
+} from '@fabianopinto/kaitai-struct'
 
 const parser = new KsyParser()
 const schema = parser.parse(ksyYaml)
@@ -346,7 +350,7 @@ new Context(
 **Example:**
 
 ```typescript
-import { Context, KaitaiStream } from '@k67/kaitai-struct-ts'
+import { Context, KaitaiStream } from '@fabianopinto/kaitai-struct'
 
 const stream = new KaitaiStream(buffer)
 const context = new Context(stream, rootObj, parentObj, currentObj)
@@ -498,7 +502,7 @@ async function* parseStreaming(
 **Example:**
 
 ```typescript
-import { parseStreaming } from '@k67/kaitai-struct-ts/streaming'
+import { parseStreaming } from '@fabianopinto/kaitai-struct/streaming'
 import { createReadStream } from 'fs'
 
 const schema = `
@@ -576,7 +580,7 @@ async function parseStreamingSimple(
 **Example:**
 
 ```typescript
-import { parseStreamingSimple } from '@k67/kaitai-struct-ts/streaming'
+import { parseStreamingSimple } from '@fabianopinto/kaitai-struct/streaming'
 
 const result = await parseStreamingSimple(schema, stream)
 console.log(result)
@@ -615,7 +619,7 @@ async close(): Promise<void>
 **Example:**
 
 ```typescript
-import { StreamingKaitaiStream } from '@k67/kaitai-struct-ts/streaming'
+import { StreamingKaitaiStream } from '@fabianopinto/kaitai-struct/streaming'
 import { createReadStream } from 'fs'
 
 const stream = new StreamingKaitaiStream(createReadStream('file.bin'), {
@@ -635,7 +639,7 @@ await stream.close()
 ### Expression Evaluation
 
 ```typescript
-import { evaluateExpression, Context } from '@k67/kaitai-struct-ts'
+import { evaluateExpression, Context } from '@fabianopinto/kaitai-struct'
 
 const result = evaluateExpression('field1 + field2 * 2', context)
 ```
@@ -643,7 +647,7 @@ const result = evaluateExpression('field1 + field2 * 2', context)
 ### String Encoding
 
 ```typescript
-import { decodeString } from '@k67/kaitai-struct-ts'
+import { decodeString } from '@fabianopinto/kaitai-struct'
 
 const str = decodeString(bytes, 'UTF-8')
 ```
@@ -659,7 +663,7 @@ import {
   isIntegerType,
   isFloatType,
   isStringType,
-} from '@k67/kaitai-struct-ts'
+} from '@fabianopinto/kaitai-struct'
 
 // Check if type is built-in
 if (isBuiltinType('u4le')) {
@@ -685,7 +689,7 @@ import {
   EOFError,
   ParseError,
   ValidationError,
-} from '@k67/kaitai-struct-ts'
+} from '@fabianopinto/kaitai-struct'
 
 try {
   const result = parse(ksyYaml, binaryData)
@@ -710,7 +714,11 @@ try {
 ### Custom Types with Imports
 
 ```typescript
-import { KsyParser, TypeInterpreter, KaitaiStream } from '@k67/kaitai-struct-ts'
+import {
+  KsyParser,
+  TypeInterpreter,
+  KaitaiStream,
+} from '@fabianopinto/kaitai-struct'
 
 const wavKsy = `
 meta:

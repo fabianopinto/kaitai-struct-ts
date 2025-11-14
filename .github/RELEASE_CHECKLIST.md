@@ -118,7 +118,7 @@ After release, verify:
 1. **npm package published:**
 
    ```bash
-   npm view @k67/kaitai-struct-ts version
+   npm view @fabianopinto/kaitai-struct version
    # Should show: <VERSION>
    ```
 
@@ -129,7 +129,7 @@ After release, verify:
 3. **Installation works:**
 
    ```bash
-   npm install @k67/kaitai-struct-ts@<VERSION>
+   npm install @fabianopinto/kaitai-struct@<VERSION>
    ```
 
 4. **Close release issue:**
@@ -157,7 +157,7 @@ git push origin v<VERSION>
 
 ```bash
 # Check if version already published
-npm view @k67/kaitai-struct-ts versions
+npm view @fabianopinto/kaitai-struct versions
 
 # If published, bump version and try again
 pnpm changeset version

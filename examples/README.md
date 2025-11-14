@@ -1,6 +1,6 @@
 # Examples
 
-This directory contains practical examples demonstrating how to use `@k67/kaitai-struct-ts` with real-world binary formats.
+This directory contains practical examples demonstrating how to use `@fabianopinto/kaitai-struct` with real-world binary formats.
 
 ## 📁 Directory Structure
 
@@ -104,7 +104,7 @@ node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav -o out.json
 node dist/cli.js examples/media/wav.ksy examples/media/wav/small.wav --field chunk.id
 
 # Alternate: using the published package via pnpx
-pnpx @k67/kaitai-struct-ts examples/media/wav.ksy examples/media/wav/small.wav
+pnpx @fabianopinto/kaitai-struct examples/media/wav.ksy examples/media/wav/small.wav
 ```
 
 ## 🧩 Import Resolution (Standard Feature)
@@ -129,7 +129,11 @@ seq:
 
 ```typescript
 import { readFileSync } from 'fs'
-import { KsyParser, TypeInterpreter, KaitaiStream } from '@k67/kaitai-struct-ts'
+import {
+  KsyParser,
+  TypeInterpreter,
+  KaitaiStream,
+} from '@fabianopinto/kaitai-struct'
 
 // Load format definitions
 const wavKsy = readFileSync('examples/media/wav.ksy', 'utf-8')

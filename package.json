@@ -1,5 +1,5 @@
 {
-  "name": "@k67/kaitai-struct-ts",
+  "name": "@fabianopinto/kaitai-struct",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
