@@ -1,5 +1,17 @@
 # @k67/kaitai-debugger
 
+## 0.10.0
+
+### Minor Changes
+
+- Align debugger with `@fabianopinto/kaitai-struct` 0.15.0 release:
+  - Confirmed compatibility with the renamed library package `@fabianopinto/kaitai-struct`.
+  - Updated documentation to better explain the debugger’s role:
+    - Added a disclaimer to `debugger/README.md` clarifying that the visual debugger’s primary goal is to **demonstrate and exemplify** the `@fabianopinto/kaitai-struct` library in a real-world UI.
+    - Documented that, while feature-rich, the app is designed to be extended and adapted to custom workflows rather than serving as a fully generic binary analysis suite.
+
+  **Notes:** No functional changes to the debugging behavior were introduced in this release; it is a documentation and packaging alignment with the main library’s 0.15.0 rename.
+
 ## 0.9.0
 
 ### Minor Changes

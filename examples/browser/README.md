@@ -1,6 +1,6 @@
 # Browser Usage Example
 
-This example demonstrates using `@k67/kaitai-struct-ts` in a browser environment with the optimized browser build.
+This example demonstrates using `@fabianopinto/kaitai-struct` in a browser environment with the optimized browser build.
 
 ## 📦 Bundle Size
 
@@ -34,7 +34,7 @@ Open `index.html` directly in your browser (may require a local server for ES mo
 
 ```html
 <script type="module">
-  import { parse } from '@k67/kaitai-struct-ts'
+  import { parse } from '@fabianopinto/kaitai-struct'
 
   const schema = `
 meta:
@@ -58,7 +58,7 @@ seq:
 
 ```html
 <script type="module">
-  import { parse } from 'https://unpkg.com/@k67/kaitai-struct-ts/dist/browser/index.mjs'
+  import { parse } from 'https://unpkg.com/@fabianopinto/kaitai-struct/dist/browser/index.mjs'
 
   // Use parse...
 </script>
@@ -67,7 +67,7 @@ seq:
 ### With Build Tools (Vite, Webpack, etc.)
 
 ```javascript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 // The browser build is automatically selected via package.json exports
 ```
@@ -225,7 +225,7 @@ See the included `index.html` for a complete working example with:
 
 ```javascript
 // Load parser only when needed
-const { parse } = await import('@k67/kaitai-struct-ts')
+const { parse } = await import('@fabianopinto/kaitai-struct')
 ```
 
 ### 2. Worker Threads

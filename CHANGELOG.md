@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.15.0
+
+### Minor Changes
+
+- Rename npm package and refresh documentation:
+  - Library is now published as `@fabianopinto/kaitai-struct` (formerly `@k67/kaitai-struct-ts`).
+  - Updated all public-facing docs and examples to import from `@fabianopinto/kaitai-struct`, including:
+    - `README.md` quick start and API examples
+    - `EXAMPLES.md` and per-format example READMEs (WAV, EDID, XAR, Chrome PAK, browser examples)
+    - CLI docs (`docs/CLI.md`), API docs (`docs/API.md`), streaming docs (`docs/STREAMING.md`), and quick reference (`QUICKREF.md`).
+  - Release and automation docs now refer to the new package name:
+    - `docs/RELEASE_GUIDE.md`, `.github/RELEASE_CHECKLIST.md`, and `.github/workflows/release.yml`.
+  - Historical references to the old name are kept where they describe past published versions.
+
+  **Notes:** This release is primarily about package renaming and documentation alignment. There are no breaking changes or new runtime APIs compared to 0.14.0.
+
 ## 0.13.0
 
 ### Minor Changes

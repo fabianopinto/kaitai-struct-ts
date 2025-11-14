@@ -92,15 +92,15 @@ jobs:
               '### Installation',
               '',
               '```bash',
-              `npm install @k67/kaitai-struct-ts@${version}`,
+              `npm install @fabianopinto/kaitai-struct@${version}`,
               '# or',
-              `pnpm add @k67/kaitai-struct-ts@${version}`,
+              `pnpm add @fabianopinto/kaitai-struct@${version}`,
               '```',
               '',
               '### Links',
               '',
               `- [CHANGELOG](https://github.com/${repo}/blob/main/CHANGELOG.md)`,
-              `- [npm package](https://www.npmjs.com/package/@k67/kaitai-struct-ts/v/${version})`,
+              `- [npm package](https://www.npmjs.com/package/@fabianopinto/kaitai-struct/v/${version})`,
             ].join('\n')
 
             // Check if release already exists
@@ -117,11 +117,11 @@ jobs:
                 // Create draft release (without tag since we can't create tags)
                 core.info(`Creating draft release for v${version}`)
                 core.info('Note: Tag must be created manually due to repository rules')
-                
+
                 // Save release notes to artifact for manual use
                 const fs = require('fs')
                 fs.writeFileSync('release-notes.md', fullNotes)
-                
+
                 core.info('Release notes saved. Manual steps required:')
                 core.info('1. Create tag v' + version + ' manually or via repository settings')
                 core.info('2. Create release with the generated notes')
@@ -203,7 +203,7 @@ jobs:
               labels: 'release',
             })
 
-            const existingIssue = issues.data.find(issue => 
+            const existingIssue = issues.data.find(issue =>
               issue.title.includes(`Release v${version}`)
             )
 

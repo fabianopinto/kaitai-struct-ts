@@ -159,7 +159,7 @@ type ParseEvent =
 #### Example 1: Parse Large File
 
 ```typescript
-import { parseStreaming } from '@k67/kaitai-struct-ts/streaming'
+import { parseStreaming } from '@fabianopinto/kaitai-struct/streaming'
 import { createReadStream } from 'fs'
 
 const schema = `

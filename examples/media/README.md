@@ -1,6 +1,6 @@
 # WAV Audio Format Example
 
-This example demonstrates parsing Microsoft WAVE audio files using `@k67/kaitai-struct-ts`.
+This example demonstrates parsing Microsoft WAVE audio files using `@fabianopinto/kaitai-struct`.
 
 ## 📄 Files
 
@@ -34,19 +34,19 @@ This example showcases:
 
 ```bash
 # Parse and display full structure
-npx @k67/kaitai-struct-ts examples/wav/wav.ksy examples/wav/small.wav
+npx @fabianopinto/kaitai-struct examples/wav/wav.ksy examples/wav/small.wav
 
 # Save to JSON file
-npx @k67/kaitai-struct-ts examples/wav/wav.ksy examples/wav/small.wav -o output.json
+npx @fabianopinto/kaitai-struct examples/wav/wav.ksy examples/wav/small.wav -o output.json
 
 # Extract specific field
-npx @k67/kaitai-struct-ts examples/wav/wav.ksy examples/wav/small.wav --field subchunks
+npx @fabianopinto/kaitai-struct examples/wav/wav.ksy examples/wav/small.wav --field subchunks
 ```
 
 ### Library
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load format and data
@@ -148,8 +148,8 @@ Test parsing with different WAV files:
 
 ```bash
 # Test with the provided sample
-npx @k67/kaitai-struct-ts examples/wav/wav.ksy examples/wav/small.wav
+npx @fabianopinto/kaitai-struct examples/wav/wav.ksy examples/wav/small.wav
 
 # Test with your own WAV files
-npx @k67/kaitai-struct-ts examples/wav/wav.ksy /path/to/your/file.wav
+npx @fabianopinto/kaitai-struct examples/wav/wav.ksy /path/to/your/file.wav
 ```

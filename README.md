@@ -3,7 +3,7 @@
 
 # kaitai-struct-ts
 
-[![npm version](https://badge.fury.io/js/%40k67%2Fkaitai-struct-ts.svg)](https://www.npmjs.com/package/@k67/kaitai-struct-ts)
+[![npm version](https://badge.fury.io/js/%40fabianopinto%2Fkaitai-struct.svg)](https://www.npmjs.com/package/@fabianopinto/kaitai-struct)
 [![CI](https://github.com/fabianopinto/kaitai-struct-ts/workflows/CI/badge.svg)](https://github.com/fabianopinto/kaitai-struct-ts/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
@@ -21,48 +21,48 @@ Parse any binary data format by providing a `.ksy` (Kaitai Struct YAML) definiti
 
 ### Core Features
 
-- 🚀 **Runtime interpretation** - No code generation needed
-- 📦 **Zero dependencies** (runtime) - Only YAML parser for development
-- 🎯 **TypeScript native** - Full type safety and IntelliSense support
-- 🌐 **Universal** - Works in Node.js and browsers
-- 🧪 **Well tested** - 283 comprehensive tests
-- 📖 **Well documented** - Clear API and examples
+- **Runtime interpretation** - No code generation needed
+- **Zero dependencies** (runtime) - Only YAML parser for development
+- **TypeScript native** - Full type safety and IntelliSense support
+- **Universal** - Works in Node.js and browsers
+- **Well tested** - 283 comprehensive tests
+- **Well documented** - Clear API and examples
 
 ### Advanced Features
 
-- ⚡ **Expression evaluation** - Full support for Kaitai expressions
-- 🔀 **Switch/case types** - Dynamic type selection based on data
-- 💎 **Instances** - Lazy-evaluated fields with caching
-- 🎨 **Enums** - Named constants with expression access
-- 🔁 **Conditional parsing** - if, repeat-expr, repeat-until
-- 📍 **Positioned reads** - Absolute positioning with pos attribute
-- 🌊 **Streaming API** - Parse large files progressively (v0.10.0)
+- **Expression evaluation** - Full support for Kaitai expressions
+- **Switch/case types** - Dynamic type selection based on data
+- **Instances** - Lazy-evaluated fields with caching
+- **Enums** - Named constants with expression access
+- **Conditional parsing** - if, repeat-expr, repeat-until
+- **Positioned reads** - Absolute positioning with pos attribute
+- **Streaming API** - Parse large files progressively (v0.10.0)
 
 ### Visual Debugger
 
-**[🚀 Launch Debugger](https://fabianopinto.github.io/kaitai-struct-ts/)** | **[📚 Documentation](./debugger/README.md)**
+**[Launch Debugger](https://fabianopinto.github.io/kaitai-struct-ts/)** | **[Documentation](./debugger/README.md)**
 
 Interactive web-based debugger for visualizing and stepping through binary parsing:
 
-- 🔍 **Hex Viewer** - Editable hex view with virtual scrolling, and field highlighting
-- 🌳 **Parse Tree** - Interactive tree view with expandable nodes
-- ✏️ **Schema Editor** - Monaco-based .ksy editor with syntax highlighting
-- 🐛 **Step Debugger** - Play/pause/step controls with breakpoints
-- 💻 **Expression Console** - REPL for evaluating expressions against parsed data
+- **Hex Viewer** - Editable hex view with virtual scrolling, and field highlighting
+- **Parse Tree** - Interactive tree view with expandable nodes
+- **Schema Editor** - Monaco-based .ksy editor with syntax highlighting
+- **Step Debugger** - Play/pause/step controls with breakpoints
+- **Expression Console** - REPL for evaluating expressions against parsed data
   - Context variables: `root`, `_` (selected field), `data` (binary)
   - Helper functions: `hex()`, `bin()`, `bytes()`, `sizeof()`, `offsetof()`
   - Command history with ↑↓ navigation
-- 📦 **Built-in Examples** - GIF, PNG, WAV, EDID formats ready to test
-- ⌨️ **Keyboard Shortcuts** - F5 (run), F9 (breakpoint), F10 (step), F11 (step in)
+- **Built-in Examples** - GIF, PNG, WAV, EDID formats ready to test
+- **Keyboard Shortcuts** - F5 (run), F9 (breakpoint), F10 (step), F11 (step in)
 
 ## Installation
 
 ```bash
-npm install @k67/kaitai-struct-ts
+npm install @fabianopinto/kaitai-struct
 # or
-pnpm add @k67/kaitai-struct-ts
+pnpm add @fabianopinto/kaitai-struct
 # or
-yarn add @k67/kaitai-struct-ts
+yarn add @fabianopinto/kaitai-struct
 ```
 
 ## Quick Start
@@ -73,13 +73,13 @@ Parse binary files directly from the command line:
 
 ```bash
 # Using npx (no installation needed)
-npx @k67/kaitai-struct-ts format.ksy data.bin
+npx @fabianopinto/kaitai-struct format.ksy data.bin
 
 # Or with pnpm
-pnpx @k67/kaitai-struct-ts format.ksy data.bin
+pnpx @fabianopinto/kaitai-struct format.ksy data.bin
 
 # After installing globally
-npm install -g @k67/kaitai-struct-ts
+npm install -g @fabianopinto/kaitai-struct
 kaitai format.ksy data.bin
 
 # Save output to file
@@ -95,7 +95,7 @@ kaitai --help
 ### Library Usage
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load your .ksy definition
@@ -129,7 +129,7 @@ console.log(result.name)
 For optimal performance when parsing multiple files with the same schema, pre-compile the schema once and reuse it:
 
 ```typescript
-import { compileSchema, parseWithSchema } from '@k67/kaitai-struct-ts'
+import { compileSchema, parseWithSchema } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Compile schema once
@@ -146,18 +146,18 @@ const result = parse(compiled, binaryData)
 
 **Benefits:**
 
-- ✅ Eliminates redundant YAML parsing (1-5ms per parse)
-- ✅ Skips schema validation overhead (0.5-2ms per parse)
-- ✅ Ideal for batch processing or server applications
-- ✅ Backward compatible - existing code works unchanged
+- Eliminates redundant YAML parsing (1-5ms per parse)
+- Skips schema validation overhead (0.5-2ms per parse)
+- Ideal for batch processing or server applications
+- Backward compatible - existing code works unchanged
 
 ## Current Status
 
 **Version:** 0.14.0
-**Status:** Production Ready 🚀
+**Status:** Production Ready
 **Latest:** Schema Compilation API for performance optimization
 
-### ✅ Fully Implemented
+### Fully Implemented
 
 - **Core Runtime** - Complete binary stream reader with all primitive types
 - **Streaming API** - Parse files larger than RAM with progressive results (NEW in v0.10.0)
@@ -169,7 +169,7 @@ const result = parse(compiled, binaryData)
 - **Testing** - 283 comprehensive tests, all passing
 - **Documentation** - Complete user and developer documentation
 
-### 🎉 What's New in v0.14.0
+### What's New in v0.14.0
 
 - **Schema Compilation API** - Pre-compile schemas for optimal performance (NEW)
   - `compileSchema()` - Compile .ksy schemas once for reuse
@@ -178,7 +178,7 @@ const result = parse(compiled, binaryData)
   - 50-70% performance improvement for batch processing
   - Zero breaking changes - fully backward compatible
 
-### 🎉 What's New in v0.12.0
+### What's New in v0.12.0
 
 - **Visual Debugger** - Interactive debugger with hex viewer, parse tree, and step debugging
   - **Expression Console/REPL** - Interactive JavaScript console in the debugger
@@ -187,7 +187,7 @@ const result = parse(compiled, binaryData)
   - Try [Visual Debugger](https://fabianopinto.github.io/kaitai-struct-ts/) in your browser
   - See [debugger/README.md](./debugger/README.md)
 
-### 🚀 What's New in v0.10.0
+### What's New in v0.10.0
 
 - **Streaming API** - Parse large files without loading everything into memory
   - `StreamingKaitaiStream` - Forward-only stream reader
@@ -195,7 +195,7 @@ const result = parse(compiled, binaryData)
   - Memory-efficient for files larger than RAM
   - See [docs/STREAMING.md](./docs/STREAMING.md)
 
-### 🔄 Remaining for v1.0.0
+### Remaining for v1.0.0
 
 - Processing implementations (zlib, encryption)
 - Type imports across files
@@ -220,7 +220,7 @@ Parse binary data using a Kaitai Struct definition.
 **Example:**
 
 ```typescript
-import { parse } from 'kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 const result = parse(ksyYaml, binaryData, { validate: true })
 console.log(result.fieldName)
@@ -231,7 +231,7 @@ console.log(result.fieldName)
 Low-level binary stream reader.
 
 ```typescript
-import { KaitaiStream } from '@k67/kaitai-struct-ts'
+import { KaitaiStream } from '@fabianopinto/kaitai-struct'
 
 const stream = new KaitaiStream(buffer)
 const value = stream.readU4le() // Read 4-byte unsigned little-endian integer

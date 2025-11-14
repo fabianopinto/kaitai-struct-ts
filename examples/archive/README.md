@@ -1,6 +1,6 @@
 # XAR Archive Format Example
 
-This example demonstrates parsing XAR (eXtensible ARchive) files using `@k67/kaitai-struct-ts`.
+This example demonstrates parsing XAR (eXtensible ARchive) files using `@fabianopinto/kaitai-struct`.
 
 ## 📄 Files
 
@@ -43,22 +43,22 @@ This example showcases:
 
 ```bash
 # Parse XAR with SHA-1 checksum
-npx @k67/kaitai-struct-ts examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar
+npx @fabianopinto/kaitai-struct examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar
 
 # Parse compressed XAR
-npx @k67/kaitai-struct-ts examples/archive/xar.ksy examples/archive/xar/sha1-file-bzip2.xar
+npx @fabianopinto/kaitai-struct examples/archive/xar.ksy examples/archive/xar/sha1-file-bzip2.xar
 
 # Save to JSON file
-npx @k67/kaitai-struct-ts examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar -o output.json
+npx @fabianopinto/kaitai-struct examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar -o output.json
 
 # Extract TOC XML
-npx @k67/kaitai-struct-ts examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar --field toc.xml_string
+npx @fabianopinto/kaitai-struct examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar --field toc.xml_string
 ```
 
 ### Library
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load format and data
@@ -166,7 +166,7 @@ Test parsing with different XAR variants:
 # Test all sample files
 for file in examples/archive/xar/*.xar; do
   echo "Parsing $file..."
-  npx @k67/kaitai-struct-ts examples/archive/xar.ksy "$file"
+  npx @fabianopinto/kaitai-struct examples/archive/xar.ksy "$file"
 done
 ```
 
@@ -176,7 +176,7 @@ Extract and examine the Table of Contents XML:
 
 ```bash
 # Extract TOC to file
-npx @k67/kaitai-struct-ts examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar \
+npx @fabianopinto/kaitai-struct examples/archive/xar.ksy examples/archive/xar/sha1-dir.xar \
   --field toc.xml_string > toc.xml
 
 # View TOC

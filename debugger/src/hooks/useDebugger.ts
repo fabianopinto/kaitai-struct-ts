@@ -6,7 +6,7 @@
  */
 
 import { useCallback } from 'react'
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { useDebugStore } from '@/store/debugStore'
 import { resultToTree } from '@/lib/parse-tree-utils'
 import type { ParseTreeNode } from '@/types'

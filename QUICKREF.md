@@ -87,8 +87,8 @@ docs/
 
 ## 🎯 Current Status
 
-**Version:** 0.10.0  
-**Status:** Production Ready 🚀  
+**Version:** 0.10.0
+**Status:** Production Ready 🚀
 **Latest:** Streaming API for large files
 
 ### ✅ Completed
@@ -114,7 +114,7 @@ docs/
 ### KaitaiStream
 
 ```typescript
-import { KaitaiStream } from 'kaitai-struct-ts'
+import { KaitaiStream } from '@fabianopinto/kaitai-struct'
 
 const buffer = new Uint8Array([0x01, 0x02, 0x03, 0x04])
 const stream = new KaitaiStream(buffer)
@@ -147,7 +147,7 @@ import {
   ParseError,
   ValidationError,
   NotImplementedError,
-} from 'kaitai-struct-ts'
+} from '@fabianopinto/kaitai-struct'
 
 try {
   stream.readU4le()
@@ -472,7 +472,7 @@ pnpm test:coverage
 ### Library Usage
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 const ksyDefinition = `
 meta:
@@ -508,5 +508,5 @@ kaitai --help
 
 ---
 
-**Last Updated:** 2025-10-02  
+**Last Updated:** 2025-10-02
 **Version:** 0.7.0

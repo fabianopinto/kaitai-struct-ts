@@ -1,7 +1,7 @@
 # Project Progress
 
-**Last Updated:** 2025-10-02  
-**Current Phase:** Phase 3 - Advanced Features (In Progress)  
+**Last Updated:** 2025-10-02
+**Current Phase:** Phase 3 - Advanced Features (In Progress)
 **Overall Completion:** ~85%
 
 ## Summary
@@ -349,7 +349,7 @@ Overall Progress:            ~85% to v1.0.0
 ✅ Documentation:            Complete JSDoc
 ✅ Build Status:             Passing
 ✅ CI/CD:                    Fully operational
-✅ NPM Published:            @k67/kaitai-struct-ts@0.3.0
+✅ NPM Published:            @fabianopinto/kaitai-struct@0.3.0
 ```
 
 ### Recent Milestones
@@ -427,7 +427,7 @@ The kaitai-struct-ts project has reached **~85% completion** toward v1.0.0!
 - ✅ Clean linting (0 errors, 0 warnings)
 - ✅ Build passing (ESM + CJS + Type definitions)
 - ✅ GitHub repository with full CI/CD
-- ✅ Published to npm: @k67/kaitai-struct-ts@0.3.0
+- ✅ Published to npm: @fabianopinto/kaitai-struct@0.3.0
 - ✅ Professional documentation with logo
 - ✅ 69% test increase in this session (58 → 98)
 

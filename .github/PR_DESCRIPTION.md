@@ -9,7 +9,7 @@ This release adds a complete command-line interface for parsing binary files and
 ### CLI Utility
 
 - **Command-line executable** `kaitai` for parsing binary files without writing code
-- Available via `npx @k67/kaitai-struct-ts` or global install
+- Available via `npx @fabianopinto/kaitai-struct` or global install
 - Zero external dependencies (uses Node.js built-in APIs)
 
 ### CLI Features
@@ -85,7 +85,7 @@ done
 ### Library (unchanged)
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 
 const result = parse(ksyDefinition, binaryData)
 console.log(result.version)

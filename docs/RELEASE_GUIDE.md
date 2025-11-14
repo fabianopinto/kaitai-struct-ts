@@ -1,6 +1,6 @@
 # Release Guide
 
-This guide explains how to release a new version of `@k67/kaitai-struct-ts`.
+This guide explains how to release a new version of `@fabianopinto/kaitai-struct`.
 
 ## Prerequisites
 
@@ -13,6 +13,9 @@ This guide explains how to release a new version of `@k67/kaitai-struct-ts`.
 ## Release Process
 
 There are two workflows: **PR-based** (recommended) and **Direct to main** (for maintainers with bypass permissions).
+
+> **Note**
+> Only the root package `@fabianopinto/kaitai-struct` is published to npm. The `debugger/` app is built and deployed (e.g. to GitHub Pages) but is **not** published as a separate npm package.
 
 ### Option A: PR-Based Workflow (Recommended)
 
@@ -80,7 +83,7 @@ git push --follow-tags
 **Check NPM:**
 
 ```bash
-npm view @k67/kaitai-struct-ts version
+npm view @fabianopinto/kaitai-struct version
 ```
 
 **Check GitHub Release:**
@@ -175,7 +178,7 @@ pnpm changeset publish
 git push --follow-tags
 
 # 5. Verify
-npm view @k67/kaitai-struct-ts version
+npm view @fabianopinto/kaitai-struct version
 # Should show: 0.12.1 (or whatever the new version is)
 ```
 
@@ -208,7 +211,7 @@ The changeset file will be created in `.changeset/` directory.
 
 ```markdown
 ---
-'@k67/kaitai-struct-ts': patch
+'@fabianopinto/kaitai-struct': patch
 ---
 
 Fix memory leak in stream processing

@@ -1,6 +1,6 @@
 # EDID Display Identification Example
 
-This example demonstrates parsing VESA Enhanced Extended Display Identification Data (EDID) using `@k67/kaitai-struct-ts`.
+This example demonstrates parsing VESA Enhanced Extended Display Identification Data (EDID) using `@fabianopinto/kaitai-struct`.
 
 ## 📄 Files
 
@@ -36,25 +36,25 @@ This example showcases:
 
 ```bash
 # Parse EDID 1.0
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.0.bin
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.0.bin
 
 # Parse EDID 1.1
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.1.bin
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.1.bin
 
 # Parse EDID 1.2
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.2.bin
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.2.bin
 
 # Save to JSON
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.0.bin -o edid.json
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.0.bin -o edid.json
 
 # Extract manufacturer info
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.0.bin --field mfg_str
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.0.bin --field mfg_str
 ```
 
 ### Library
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load format and data
@@ -195,7 +195,7 @@ Test parsing with different EDID versions:
 # Test all versions
 for file in examples/edid/edid-*.bin; do
   echo "Parsing $file..."
-  npx @k67/kaitai-struct-ts examples/edid/edid.ksy "$file"
+  npx @fabianopinto/kaitai-struct examples/edid/edid.ksy "$file"
 done
 ```
 
@@ -205,7 +205,7 @@ Compare different EDID versions to see format evolution:
 
 ```bash
 # Extract version info from all samples
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.0.bin --field edid_version_major
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.1.bin --field edid_version_major
-npx @k67/kaitai-struct-ts examples/edid/edid.ksy examples/edid/edid-1.2.bin --field edid_version_major
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.0.bin --field edid_version_major
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.1.bin --field edid_version_major
+npx @fabianopinto/kaitai-struct examples/edid/edid.ksy examples/edid/edid-1.2.bin --field edid_version_major
 ```

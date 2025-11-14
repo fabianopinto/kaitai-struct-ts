@@ -231,7 +231,7 @@ function App() {
               <div>
                 <h1 className="text-xl font-bold">Kaitai Struct Debugger</h1>
                 <p className="text-sm text-muted-foreground">
-                  Visual binary format debugger v0.9.0
+                  Visual binary format debugger v0.10.0
                 </p>
               </div>
             </div>

@@ -1,6 +1,6 @@
 # Chrome PAK Serialization Format Example
 
-This example demonstrates parsing Chrome PAK (Package) files using `@k67/kaitai-struct-ts`.
+This example demonstrates parsing Chrome PAK (Package) files using `@fabianopinto/kaitai-struct`.
 
 ## 📄 Files
 
@@ -46,25 +46,25 @@ This example showcases:
 
 ```bash
 # Parse PAK v4
-npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak
+npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak
 
 # Parse PAK v5
-npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy examples/serialization/pak/v5.pak
+npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy examples/serialization/pak/v5.pak
 
 # Parse PAK v5 UTF-16
-npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy examples/serialization/pak/v5-utf16.pak
+npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy examples/serialization/pak/v5-utf16.pak
 
 # Save to JSON file
-npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak -o output.json
+npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak -o output.json
 
 # Extract specific resource
-npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak --field resources
+npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy examples/serialization/pak/v4.pak --field resources
 ```
 
 ### Library
 
 ```typescript
-import { parse } from '@k67/kaitai-struct-ts'
+import { parse } from '@fabianopinto/kaitai-struct'
 import { readFileSync } from 'fs'
 
 // Load format and data
@@ -217,7 +217,7 @@ Test parsing with different PAK versions:
 # Test all versions
 for file in examples/serialization/pak/*.pak; do
   echo "Parsing $file..."
-  npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy "$file"
+  npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy "$file"
 done
 ```
 
@@ -227,7 +227,7 @@ Extract and decode text resources:
 
 ```bash
 # Parse and save to JSON
-npx @k67/kaitai-struct-ts examples/serialization/chrome_pak.ksy \
+npx @fabianopinto/kaitai-struct examples/serialization/chrome_pak.ksy \
   examples/serialization/pak/v4.pak -o pak.json
 
 # Use jq to extract resource bodies
